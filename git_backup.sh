@@ -13,5 +13,5 @@ $GIT_BIN add .
 $GIT_BIN commit -m "Auto backup $(date '+%Y-%m-%d %H:%M:%S')"
 
 # Push to remote
-$GIT_BIN push -u origin main
+$GIT_BIN push origin main
 
