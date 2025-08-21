@@ -1,8 +1,7 @@
 #!/bin/bash
-export PATH=$PATH:/usr/bin
 
 # Navigate to HA config folder
-cd /config || exit 1
+cd /config
 
 # Full path to git
 GIT_BIN=/usr/bin/git

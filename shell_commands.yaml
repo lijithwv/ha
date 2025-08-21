@@ -1,1 +1,1 @@
-git_backup: bash /config/git_backup.sh
+git_backup: bash /config/git_backup.sh > /config/git_backup.log
