@@ -1,0 +1,16 @@
+# Sensitive files
+secrets.yaml
+
+# Logs & temporary files
+*.db
+*.db-shm
+*.db-wal
+home-assistant.log*
+*.log
+*.log.*
+home-assistant_v2.db
+tts/
+.storage/
+www/snapshots/
+hhhh/
+

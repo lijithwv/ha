@@ -1,0 +1,145 @@
+living_night_routine:
+  sequence:
+  - action: script.living_corner_lamp_on
+    metadata: {}
+    data:
+      brightness: 10
+  - action: script.living_table_lamp_off
+    metadata: {}
+    data: {}
+  - if:
+    - condition: state
+      entity_id: remote.livingroomtv
+      state: 'on'
+    then:
+    - action: remote.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: remote.livingroomtv
+  alias: Living Night Routine
+  description: ''
+living_away_routine:
+  sequence:
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      area_id: living_room
+  - if:
+    - condition: state
+      entity_id: remote.livingroomtv
+      state: 'on'
+    then:
+    - action: remote.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: remote.livingroomtv
+  alias: Living Away Routine
+  description: ''
+porch_light_on:
+  sequence:
+  - target:
+      entity_id: light.porch_light
+    data:
+      color_temp_kelvin: 2000
+      brightness_pct: '{{ brightness | default(100) }}'
+    action: light.turn_on
+  alias: Porch Light On
+  fields:
+    brightness:
+      description: Brightness percentage (1-100)
+      example: 50
+  description: ''
+living_corner_lamp_on:
+  sequence:
+  - target:
+      entity_id: light.living_corner_lamp
+    data:
+      color_temp_kelvin: 2000
+      brightness_pct: '{{ brightness | default(100) }}'
+    action: light.turn_on
+  alias: Living Corner Lamp On
+  fields:
+    brightness:
+      description: Brightness percentage (1-100)
+      example: 50
+  description: ''
+living_table_lamp_on:
+  sequence:
+  - action: light.turn_on
+    metadata: {}
+    data:
+      color_temp_kelvin: 2000
+      brightness_pct: '{{ brightness | default(30) }}'
+    target:
+      entity_id: light.living_table_lamp
+  fields:
+    brightness:
+      description: Brightness percentage (1-100)
+      example: 50
+  description: ''
+  alias: Living Table Lamp On
+porch_light_off:
+  sequence:
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.porch_light
+  alias: Porch Light Off
+  description: ''
+living_corner_lamp_off:
+  sequence:
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.living_corner_lamp
+  alias: Living Corner Lamp Off
+  description: ''
+living_table_lamp_off:
+  sequence:
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.living_table_lamp
+  alias: Living Table Lamp Off
+  description: ''
+living_lights_and_tv_off:
+  sequence:
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      area_id: living_room
+  - if:
+    - condition: state
+      entity_id: remote.livingroomtv
+      state: 'on'
+    then:
+    - action: remote.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: remote.livingroomtv
+  alias: Living Lights and Tv Off
+  description: ''
+test:
+  sequence:
+  - action: cover.open_cover
+    metadata: {}
+    data: {}
+    target:
+      entity_id: cover.smart_garage
+  alias: test
+  description: ''
+backup_ha_config_to_github:
+  sequence:
+  - action: shell_command.git_backup
+    metadata: {}
+    data: {}
+  alias: Backup HA Config to GitHub
+  description: ''

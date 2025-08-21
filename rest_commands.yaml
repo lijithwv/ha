@@ -1,0 +1,9 @@
+garage_open:
+  url: !secret cgd_api_open_url
+  method: post
+garage_close:
+  url: !secret cgd_api_close_url
+  method: post
+garage_stop:
+  url: !secret cgd_api_stop_url
+  method: post

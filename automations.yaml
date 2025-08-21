@@ -1,0 +1,367 @@
+- id: '1740055511112'
+  alias: Rain test
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.home_thunderstorm_probability_day_0
+    - sensor.home_thunderstorm_probability_day_1
+    below: 1
+  conditions: []
+  actions:
+  - action: notify.mobile_app_iphone_l
+    metadata: {}
+    data:
+      message: Rain chance
+      title: Rain chance title
+  mode: single
+- id: '1741757525230'
+  alias: Doorbell on/off working
+  description: ''
+  triggers:
+  - type: motion
+    device_id: 7f6fff4f5227214d8831b7df92e030be
+    entity_id: 62876a67a9af723b95f828b2bf24aeda
+    domain: binary_sensor
+    trigger: device
+  conditions: []
+  actions:
+  - action: remote.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - remote.65_the_frame
+  - action: camera.play_stream
+    metadata: {}
+    data:
+      media_player: media_player.65_the_frame
+      format: hls
+    target:
+      entity_id: camera.reolink_video_doorbell_poe_fluent
+  mode: single
+- id: '1741758100295'
+  alias: Turn On Monitor via KEY_POWER
+  description: Overwrite Turn On action to send KEY_POWER command instead of default
+    Wake on LAN
+  triggers:
+  - trigger: samsungtv.turn_on
+    entity_id: media_player.65_the_frame
+  conditions: []
+  actions:
+  - action: remote.send_command
+    data:
+      command: KEY_POWER
+      device_id: '{{ trigger.device_id }}'
+  mode: single
+- id: '1741781364375'
+  alias: Camera to TV
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.reolink_video_doorbell_poe_motion
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  conditions: []
+  actions:
+  - action: camera.play_stream
+    target:
+      entity_id: camera.reolink_video_doorbell_poe_fluent
+    data:
+      format: hls
+      media_player: media_player.plex_plex_for_samsung_tv_2024
+  mode: single
+- id: '1741934557066'
+  alias: Doorbell to Theatre TV
+  description: ''
+  triggers: []
+  conditions: []
+  actions:
+  - action: media_player.play_media
+    metadata: {}
+    data:
+      media_content_id: camera.reolink_video_doorbell_poe_fluent
+      media_content_type: video
+    target:
+      device_id: bf31c607514d82e49dba926873c07714
+  mode: single
+- id: '1747358358083'
+  alias: Doorbell motion
+  description: ''
+  triggers:
+  - type: motion
+    device_id: 7f6fff4f5227214d8831b7df92e030be
+    entity_id: 62876a67a9af723b95f828b2bf24aeda
+    domain: binary_sensor
+    trigger: device
+  conditions: []
+  actions:
+  - action: camera.snapshot
+    metadata: {}
+    data:
+      filename: /config/www/snapshots/doorbell_snapshot.jpg
+    target:
+      entity_id:
+      - camera.reolink_video_doorbell_poe_fluent
+  - delay: 00:00:02
+  - action: notify.mobile_app_iphone_l
+    metadata: {}
+    data:
+      message: Doorbell detected motion
+      title: Motion detected
+      data:
+        image: http://homeassistant.local:8123/local/snapshots/doorbell_snapshot.jpg
+        url: http://homeassistant.local:8123/local/snapshots/doorbell_snapshot.jpg
+  mode: single
+- id: '1747369470809'
+  alias: West motion
+  description: ''
+  triggers:
+  - type: motion
+    device_id: 4b96c88a3b3cce1f71f255f98f89e5e6
+    entity_id: ea348dfd36fc81134060fea55e9dd6b9
+    domain: binary_sensor
+    trigger: device
+  conditions: []
+  actions:
+  - action: camera.snapshot
+    metadata: {}
+    data:
+      filename: /config/www/snapshots/west_snapshot.jpg
+    target:
+      entity_id: camera.west_fluent_lens_1
+  - delay: 00:00:02
+  - action: notify.mobile_app_iphone_l
+    metadata: {}
+    data:
+      message: West detected motion
+      title: Motion detected
+      data:
+        image: http://homeassistant.local:8123/local/snapshots/west_snapshot.jpg
+        url: http://192.168.20.97:8123/local/snapshots/west_snapshot.jpg
+  mode: single
+- id: '1747390039694'
+  alias: Doorbell Person
+  description: ''
+  triggers:
+  - type: turned_on
+    device_id: 7f6fff4f5227214d8831b7df92e030be
+    entity_id: 52e76781228cb7bfd5055f2748de6dc5
+    domain: binary_sensor
+    trigger: device
+  conditions: []
+  actions:
+  - action: camera.snapshot
+    metadata: {}
+    data:
+      filename: /config/www/snapshots/doorbell_snapshot.jpg
+    target:
+      entity_id:
+      - camera.reolink_video_doorbell_poe_fluent
+  - delay: 00:00:02
+  - action: notify.mobile_app_iphone_l
+    metadata: {}
+    data:
+      message: Doorbell detected person
+      title: Person detected
+      data:
+        image: http://homeassistant.local:8123/local/snapshots/doorbell_snapshot.jpg
+        url: http://homeassistant.local:8123/local/snapshots/doorbell_snapshot.jpg
+  mode: single
+- id: '1747390068757'
+  alias: West person
+  description: ''
+  triggers:
+  - type: turned_on
+    device_id: 4b96c88a3b3cce1f71f255f98f89e5e6
+    entity_id: 14078750b3b275a386c009b99ee89888
+    domain: binary_sensor
+    trigger: device
+  conditions: []
+  actions:
+  - action: camera.snapshot
+    metadata: {}
+    data:
+      filename: /config/www/snapshots/west_snapshot.jpg
+    target:
+      entity_id: camera.west_fluent_lens_1
+  - delay: 00:00:02
+  - action: notify.mobile_app_iphone_l
+    metadata: {}
+    data:
+      message: West detected person
+      title: Person detected
+      data:
+        image: http://homeassistant.local:8123/local/snapshots/west_snapshot.jpg
+        url: http://192.168.20.97:8123/local/snapshots/west_snapshot.jpg
+  mode: single
+- id: '1749037121895'
+  alias: Porch light on person
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.garage_front_person
+    to: 'on'
+  - trigger: state
+    entity_id:
+    - binary_sensor.reolink_video_doorbell_poe_person
+    to: 'on'
+  conditions:
+  - condition: sun
+    before: sunrise
+    after: sunset
+  actions:
+  - action: notify.mobile_app_iphone_l
+    metadata: {}
+    data:
+      message: Porch light on person triggered
+      data:
+        url: rtsp://admin:Lj@Reolink20@192.168.0.100/Preview_01_main
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: light.porch_light
+        state: 'off'
+      sequence:
+      - action: script.porch_light_on
+        metadata: {}
+        data: {}
+      - delay:
+          hours: 0
+          minutes: 10
+          seconds: 0
+          milliseconds: 0
+      - action: script.porch_light_off
+        metadata: {}
+        data: {}
+    - conditions:
+      - condition: state
+        entity_id: light.porch_light
+        state: 'on'
+      - condition: numeric_state
+        entity_id: light.porch_light
+        attribute: brightness
+        below: 100
+      sequence:
+      - variables:
+          prev_brightness: '{{ state_attr(''light.porch_light'', ''brightness'') }}'
+      - action: script.porch_light_on
+        metadata: {}
+        data: {}
+      - delay:
+          hours: 0
+          minutes: 10
+          seconds: 0
+          milliseconds: 0
+      - action: script.porch_light_on
+        metadata: {}
+        data:
+          brightness: '{{ prev_brightness }}'
+  mode: single
+- id: '1749085915742'
+  alias: Vaccum error
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.roborock_qrevo_vacuum_error
+    from: none
+    to:
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  - trigger: state
+    entity_id:
+    - sensor.roborock_qrevo_dock_error
+    from: ok
+    to:
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  conditions: []
+  actions:
+  - action: notify.mobile_app_iphone_l
+    metadata: {}
+    data:
+      message: Vaccum error {{ trigger.to_state.name }}
+      title: Vacuum alert
+  mode: single
+- id: '1755504874286'
+  alias: Refresh Plex Libraries
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - remote.livingroomtv
+    to: 'on'
+  conditions: []
+  actions:
+  - action: plex.refresh_library
+    metadata: {}
+    data:
+      library_name: MiniMovies
+  mode: single
+- id: '1755514817754'
+  alias: Living sunset lights on
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunset
+    offset: 00:20:00
+  conditions: []
+  actions:
+  - action: script.living_corner_lamp_on
+    metadata: {}
+    data: {}
+  - action: script.living_table_lamp_on
+    metadata: {}
+    data: {}
+  mode: single
+- id: '1755590895676'
+  alias: Porch Light Schedule
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunset
+    offset: 00:10:00
+    id: 'on'
+  - trigger: time
+    at: '21:00:00'
+    id: 'off'
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.id == ''on'' }}'
+      sequence:
+      - action: script.porch_light_on
+        metadata: {}
+        data:
+          brightness: 10
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.id == ''off'' }}'
+      sequence:
+      - action: script.porch_light_off
+        metadata: {}
+        data: {}
+  mode: single
+- id: '1755743513676'
+  alias: Nightly Git Backup
+  description: ''
+  triggers:
+  - trigger: time
+    at: 02:00:00
+  conditions: []
+  actions:
+  - action: script.backup_ha_config_to_github
+    metadata: {}
+    data: {}
+  mode: single

@@ -1,0 +1,11 @@
+- platform: template
+  covers:
+    smart_garage:
+      friendly_name: "Garage Door"
+      open_cover:
+        service: rest_command.garage_open
+      close_cover:
+        service: rest_command.garage_close
+      stop_cover:
+        service: rest_command.garage_stop
+      value_template: "{{ states('sensor.garage_status') }}"
