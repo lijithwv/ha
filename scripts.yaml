@@ -108,38 +108,28 @@ living_table_lamp_off:
       entity_id: light.living_table_lamp
   alias: Living Table Lamp Off
   description: ''
-living_lights_and_tv_off:
-  sequence:
-  - action: light.turn_off
-    metadata: {}
-    data: {}
-    target:
-      area_id: living_room
-  - if:
-    - condition: state
-      entity_id: remote.livingroomtv
-      state: 'on'
-    then:
-    - action: remote.turn_off
-      metadata: {}
-      data: {}
-      target:
-        entity_id: remote.livingroomtv
-  alias: Living Lights and Tv Off
-  description: ''
-test:
-  sequence:
-  - action: cover.open_cover
-    metadata: {}
-    data: {}
-    target:
-      entity_id: cover.smart_garage
-  alias: test
-  description: ''
 backup_ha_config_to_github:
   sequence:
   - action: shell_command.git_backup
     metadata: {}
     data: {}
   alias: Backup HA Config to GitHub
+  description: ''
+theatre_sunset_light_on:
+  sequence:
+  - action: light.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.anko_wi_fi_sunset_light
+  alias: Theatre Sunset Light On
+  description: ''
+theatre_sunset_light_off:
+  sequence:
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.anko_wi_fi_sunset_light
+  alias: Theatre Sunset light off
   description: ''
