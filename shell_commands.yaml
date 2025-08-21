@@ -1,5 +1,5 @@
 git_backup: >
   cd /config &&
   git add . &&
-  git commit -m "Auto backup {{ now().strftime('%Y-%m-%d %H:%M:%S') }}" &&
+  git commit -m "Auto backup" &&
   git push origin main
