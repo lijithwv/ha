@@ -7,16 +7,9 @@ living_night_routine:
   - action: script.living_table_lamp_off
     metadata: {}
     data: {}
-  - if:
-    - condition: state
-      entity_id: remote.livingroomtv
-      state: 'on'
-    then:
-    - action: remote.turn_off
-      metadata: {}
-      data: {}
-      target:
-        entity_id: remote.livingroomtv
+  - action: script.living_tv_off
+    metadata: {}
+    data: {}
   alias: Living Night Routine
   description: ''
 living_away_routine:
@@ -132,4 +125,90 @@ theatre_sunset_light_off:
     target:
       entity_id: light.anko_wi_fi_sunset_light
   alias: Theatre Sunset light off
+  description: ''
+living_evening_routine:
+  sequence:
+  - action: script.living_corner_lamp_on
+    metadata: {}
+    data: {}
+  - action: script.living_table_lamp_on
+    metadata: {}
+    data: {}
+  - action: script.living_tv_on
+    metadata: {}
+    data: {}
+  alias: Living Evening Routine
+  description: ''
+living_tv_on:
+  sequence:
+  - if:
+    - condition: template
+      value_template: '{{ states(''remote.livingroomtv'') != ''on'' }}'
+    then:
+    - action: remote.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: remote.livingroomtv
+  alias: Living TV On
+  description: ''
+living_tv_off:
+  sequence:
+  - if:
+    - condition: template
+      value_template: '{{ states(''remote.livingroomtv'') != ''off'' }}'
+    then:
+    - action: remote.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: remote.livingroomtv
+  alias: Living TV Off
+  description: ''
+away_routine:
+  sequence:
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      area_id:
+      - living_room
+      - theatre
+  - action: script.living_tv_off
+    metadata: {}
+    data: {}
+  alias: Away Routine
+  description: ''
+doors_check:
+  sequence:
+  - variables:
+      sensors:
+      - binary_sensor.living_room_sensor_sliding_door_window
+      - binary_sensor.laundry_room_sensor_sliding_door_window
+      - binary_sensor.entrance_sensor_door
+      garage_not_closed: '{{ states(''sensor.garage_status'') != ''closed'' }}'
+      open_sensors: '{{ sensors | select(''equalto'', ''on'') | map(''entity_id'')
+        | list }}
+
+        '
+      any_open_sensors: '{{ open_sensors | count > 0 }}'
+      bad_sensors: "{{ sensors\n   | select('in', ['unknown', 'unavailable'])\n   |
+        map('entity_id') | list }}\n"
+      any_bad_sensors: '{{ bad_sensors | count > 0 }}'
+  - if:
+    - condition: template
+      value_template: '{{ (any_open_sensors) or (any_bad_sensors) or (garage_not_closed)
+        }} '
+    then:
+    - data:
+        title: Open Door Sensors
+        message: '{% if garage_not_closed %} Garage is not closed. {% endif %} {%
+          if any_open_sensors %} The following doors are open: {{ open_sensors | map(''state_attr'',''friendly_name'')
+          | join('', '') }} {% endif %} {% if any_bad_sensors %} The following doors
+          are in bad status: {{ bad_sensors | map(''state_attr'',''friendly_name'')
+          | join('', '') }} {% endif %}
+
+          '
+      action: notify.mobile_app_iphone_l
+  alias: Doors Check
   description: ''

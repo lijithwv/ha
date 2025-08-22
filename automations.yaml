@@ -135,6 +135,10 @@
   - trigger: time
     at: 00:00:00
     id: night
+  - trigger: sun
+    event: sunrise
+    offset: 0
+    id: sunrise
   conditions: []
   actions:
   - choose:
@@ -159,6 +163,16 @@
         metadata: {}
         data:
           brightness: 30
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.id == ''sunrise'' }}'
+      sequence:
+      - action: script.living_corner_lamp_off
+        metadata: {}
+        data: {}
+      - action: script.living_table_lamp_off
+        metadata: {}
+        data: {}
   mode: single
 - id: '1755590895676'
   alias: Porch Light Schedule
