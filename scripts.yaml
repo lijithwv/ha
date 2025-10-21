@@ -217,3 +217,19 @@ doors_check:
         \   - {{ binary_sensor.laundry_room_sensor_sliding_door_window}}\n    - {{binary_sensor.entrance_sensor_door}}"
   alias: Doors Check
   description: ''
+turn_on_backyard_floodlight:
+  sequence:
+  - type: turn_on
+    device_id: e58b62ad3d2b0852fbb8c3b65dd5d75b
+    entity_id: 33efe388716a0405121ef6b8c89acd08
+    domain: light
+  alias: Backyard Floodlight On
+  description: ''
+backyard_floodlight_off:
+  sequence:
+  - type: turn_off
+    device_id: e58b62ad3d2b0852fbb8c3b65dd5d75b
+    entity_id: 33efe388716a0405121ef6b8c89acd08
+    domain: light
+  alias: Backyard Floodlight Off
+  description: ''
