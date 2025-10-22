@@ -4,3 +4,5 @@
   method: GET
   value_template: "{{ value_json.door }}"
   scan_interval: 10   # check every 10 seconds
+  json_attributes:
+    - dt

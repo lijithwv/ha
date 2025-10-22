@@ -145,10 +145,7 @@
       - condition: template
         value_template: '{{ trigger.id == ''sunset'' }}'
       sequence:
-      - action: script.living_corner_lamp_on
-        metadata: {}
-        data: {}
-      - action: script.living_table_lamp_on
+      - action: script.living_evening_routine
         metadata: {}
         data: {}
     - conditions:
