@@ -220,6 +220,7 @@
   - trigger: sun
     event: sunset
     id: 'on'
+    offset: -00:30:00
   - trigger: time
     at: '23:59:00'
     id: 'off'
