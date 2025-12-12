@@ -1,4 +1,4 @@
-cover: !include covers.yaml
+template: !include templates.yaml
 rest_command: !include rest_commands.yaml
 sensor: !include sensors.yaml
 shell_command: !include shell_commands.yaml

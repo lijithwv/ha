@@ -139,6 +139,7 @@
     event: sunrise
     offset: 0
     id: sunrise
+    enabled: false
   conditions: []
   actions:
   - choose:
@@ -160,6 +161,10 @@
         metadata: {}
         data:
           brightness: 30
+        enabled: false
+      - action: script.living_corner_lamp_off
+        metadata: {}
+        data: {}
     - conditions:
       - condition: template
         value_template: '{{ trigger.id == ''sunrise'' }}'
@@ -237,6 +242,12 @@
     - conditions:
       - condition: template
         value_template: '{{ trigger.id == ''off'' }}'
+      - condition: state
+        entity_id: media_player.theatre_tv
+        state:
+        - 'off'
+        - unavailable
+        - unknown
       sequence:
       - action: script.theatre_sunset_light_off
         metadata: {}

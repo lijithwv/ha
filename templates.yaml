@@ -1,0 +1,10 @@
+- cover:
+  - open_cover:
+    - action: rest_command.garage_open
+    close_cover:
+    - action: rest_command.garage_close
+    stop_cover:
+    - action: rest_command.garage_stop
+    default_entity_id: cover.smart_garage
+    name: Garage Door
+    state: '{{ states(''sensor.garage_status'') }}'
