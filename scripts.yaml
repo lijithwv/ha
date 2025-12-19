@@ -233,27 +233,3 @@ backyard_floodlight_off:
     domain: light
   alias: Backyard Floodlight Off
   description: ''
-turn_off_front_camera_push:
-  sequence:
-  - type: turn_off
-    device_id: 5c0b5cef0f49d5beeb3371afbd7e22f7
-    entity_id: d2e715a51990c14bcd950dc97c0a9fa7
-    domain: switch
-  - type: turn_off
-    device_id: 7f6fff4f5227214d8831b7df92e030be
-    entity_id: 1903cd300e38de1473f15f8da7fe1ada
-    domain: switch
-  alias: 'Front Cams Push Turn off '
-  description: ''
-front_cams_push_turn_on:
-  sequence:
-  - type: turn_on
-    device_id: 5c0b5cef0f49d5beeb3371afbd7e22f7
-    entity_id: d2e715a51990c14bcd950dc97c0a9fa7
-    domain: switch
-  - type: turn_on
-    device_id: 7f6fff4f5227214d8831b7df92e030be
-    entity_id: 1903cd300e38de1473f15f8da7fe1ada
-    domain: switch
-  alias: Front Cams Push Turn on
-  description: ''
