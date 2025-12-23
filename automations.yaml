@@ -1,20 +1,3 @@
-- id: '1740055511112'
-  alias: Rain test
-  description: ''
-  triggers:
-  - trigger: numeric_state
-    entity_id:
-    - sensor.home_thunderstorm_probability_day_0
-    - sensor.home_thunderstorm_probability_day_1
-    below: 1
-  conditions: []
-  actions:
-  - action: notify.mobile_app_iphone_l
-    metadata: {}
-    data:
-      message: Rain chance
-      title: Rain chance title
-  mode: single
 - id: '1749037121895'
   alias: Porch light on person
   description: ''
@@ -117,12 +100,21 @@
     entity_id:
     - remote.livingroomtv
     to: 'on'
+  - trigger: state
+    entity_id:
+    - media_player.plex_plex_for_lg_lg_86qned86asa_aaufljd
+    to:
+    - 'on'
   conditions: []
   actions:
   - action: plex.refresh_library
     metadata: {}
     data:
       library_name: MiniMovies
+  - action: plex.refresh_library
+    metadata: {}
+    data:
+      library_name: MiniShows
   mode: single
 - id: '1755514817754'
   alias: Living Lights Schedule
@@ -252,47 +244,4 @@
       - action: script.theatre_sunset_light_off
         metadata: {}
         data: {}
-  mode: single
-- id: '1761026500861'
-  alias: Backyard Floodlight On Sliding door open
-  description: ''
-  triggers:
-  - type: opened
-    device_id: 25fc2b249a58c07a66a9cac975ebb1b0
-    entity_id: ff1b8e0b25591c29449b3d72028146cc
-    domain: binary_sensor
-    trigger: device
-  conditions:
-  - condition: sun
-    after: sunset
-    before: sunrise
-  - condition: device
-    type: is_off
-    device_id: e58b62ad3d2b0852fbb8c3b65dd5d75b
-    entity_id: 33efe388716a0405121ef6b8c89acd08
-    domain: light
-  actions:
-  - action: script.turn_on_backyard_floodlight
-    metadata: {}
-    data: {}
-  - wait_for_trigger:
-    - type: not_opened
-      device_id: 25fc2b249a58c07a66a9cac975ebb1b0
-      entity_id: ff1b8e0b25591c29449b3d72028146cc
-      domain: binary_sensor
-      trigger: device
-      for:
-        hours: 0
-        minutes: 1
-        seconds: 0
-  - condition: state
-    entity_id: binary_sensor.backyard_person
-    state: 'off'
-    for:
-      hours: 0
-      minutes: 1
-      seconds: 0
-  - action: script.backyard_floodlight_off
-    metadata: {}
-    data: {}
   mode: single
