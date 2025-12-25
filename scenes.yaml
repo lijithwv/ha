@@ -1,0 +1,51 @@
+- id: '1766644469786'
+  name: Living Party
+  entities:
+    light.living_corner_lamp:
+      min_color_temp_kelvin: 2500
+      max_color_temp_kelvin: 6500
+      min_mireds: 153
+      max_mireds: 400
+      effect_list:
+      - 'Off'
+      - Party
+      - Relax
+      supported_color_modes:
+      - color_temp
+      - hs
+      effect: Party
+      color_mode: brightness
+      brightness: 255
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      friendly_name: Living corner lamp
+      supported_features: 36
+      state: 'on'
+    light.living_table_lamp:
+      min_color_temp_kelvin: 2500
+      max_color_temp_kelvin: 6500
+      min_mireds: 153
+      max_mireds: 400
+      effect_list:
+      - 'Off'
+      - Party
+      - Relax
+      supported_color_modes:
+      - color_temp
+      - hs
+      effect: Party
+      color_mode: brightness
+      brightness: 178
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      friendly_name: Living table lamp
+      supported_features: 36
+      state: 'on'
+  icon: mdi:party-popper
+  metadata: {}
