@@ -12,3 +12,4 @@ home-assistant_v2.db
 tts/
 .storage/
 www/snapshots/
+.ha_run.lock

@@ -6,3 +6,5 @@
   scan_interval: 10   # check every 10 seconds
   json_attributes:
     - dt
+    - error
+    - camera
