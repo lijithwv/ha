@@ -8,16 +8,16 @@
     default_entity_id: cover.smart_garage
     name: Garage Door
     state: '{{ states(''sensor.garage_status'') }}'
-# - trigger:
-#   - platform: time_pattern
-#     minutes: "/1"
-#   sensor:
-#     - name: "Garage Status Last Changed"
-#       icon: mdi:calendar
-#       state: >
-#         {% set dt = state_attr('sensor.garage_status', 'dt') %}
-#         {% if dt is string and dt != '' %}
-#           {{ relative_time(strptime(dt, '%Y-%m-%d %H:%M:%S') | as_utc | as_local) }}
-#         {% else %}
-#           Unknown
-#         {% endif %}
+- trigger:
+  - platform: time_pattern
+    minutes: "/1"
+  sensor:
+    - name: "Garage Status Last Changed"
+      icon: mdi:calendar
+      state: >
+        {% set dt = state_attr('sensor.garage_status', 'dt') %}
+        {% set utc_date = strptime(dt, "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%dT%H:%M:%SZ") %}
+        {% set exact_time = utc_date | as_timestamp | timestamp_custom('%H:%M %p') %}
+        {% set rel_time = relative_time(as_datetime(utc_date))  %}
+        {{ exact_time }} - {{ rel_time }} ago
+          
