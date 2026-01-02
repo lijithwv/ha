@@ -245,3 +245,49 @@
         metadata: {}
         data: {}
   mode: single
+- id: '1767328530029'
+  alias: Garage Left Open
+  description: ''
+  triggers:
+  - trigger: template
+    value_template: '{{ ''open'' in states(''sensor.garage_status'') | lower or ''stop''
+      in states(''sensor.garage_status'') | lower }}'
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+  conditions:
+  - condition: template
+    value_template: "{{ 'open' in states('sensor.garage_status') | lower\n         or
+      'stop' in states('sensor.garage_status') | lower }}"
+  actions:
+  - alias: Set up variables for the actions
+    variables:
+      action_open: '{{ ''OPEN_'' ~ context.id }}'
+      action_close: '{{ ''CLOSE_'' ~ context.id }}'
+  - alias: Ask to close
+    action: notify.mobile_app_iphone_l
+    data:
+      message: "The garage status is:         \n\"{{ states('sensor.garage_status')
+        }}\"         \nfor more than 10 minutes."
+      title: "Garage Door Alert \U0001F6A8"
+      data:
+        actions:
+        - action: '{{ action_close }}'
+          title: Close Garage
+  - alias: Wait for a response
+    wait_for_trigger:
+    - event_type: mobile_app_notification_action
+      event_data:
+        action: '{{ action_close }}'
+      trigger: event
+  - alias: Perform the action
+    choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ wait.trigger.event.data.action == action_close }}'
+      sequence:
+      - action: cover.close_cover
+        target:
+          entity_id: cover.smart_garage
+  mode: restart
