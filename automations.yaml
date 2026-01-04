@@ -129,9 +129,9 @@
     id: night
   - trigger: sun
     event: sunrise
-    offset: 0
+    offset: -01:00:00
     id: sunrise
-    enabled: false
+    enabled: true
   conditions: []
   actions:
   - choose:
@@ -153,10 +153,7 @@
         metadata: {}
         data:
           brightness: 30
-        enabled: false
-      - action: script.living_corner_lamp_off
-        metadata: {}
-        data: {}
+        enabled: true
     - conditions:
       - condition: template
         value_template: '{{ trigger.id == ''sunrise'' }}'
@@ -178,6 +175,9 @@
     id: 'on'
   - trigger: time
     at: '21:00:00'
+    id: 'off'
+  - trigger: time
+    at: '22:00:00'
     id: 'off'
   conditions: []
   actions:
@@ -221,6 +221,10 @@
   - trigger: time
     at: '23:59:00'
     id: 'off'
+  - trigger: sun
+    event: sunrise
+    offset: -01:00:00
+    id: sunrise
   conditions: []
   actions:
   - choose:
@@ -240,6 +244,13 @@
         - 'off'
         - unavailable
         - unknown
+      sequence:
+      - action: script.theatre_sunset_light_off
+        metadata: {}
+        data: {}
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.id == ''sunrise'' }}'
       sequence:
       - action: script.theatre_sunset_light_off
         metadata: {}
