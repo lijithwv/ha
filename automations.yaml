@@ -302,3 +302,20 @@
         target:
           entity_id: cover.smart_garage
   mode: restart
+- id: '1767683421184'
+  alias: frigate test
+  description: ''
+  triggers:
+  - type: motion
+    device_id: 4b956710e2258cd9b5aa9470c53c2800
+    entity_id: 79130046ad4951440840c5f2a8d66146
+    domain: binary_sensor
+    trigger: device
+  conditions: []
+  actions:
+  - action: notify.mobile_app_iphone_l
+    metadata: {}
+    data:
+      message: Frigate motion detected
+      title: Frigate motion
+  mode: single
