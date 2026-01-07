@@ -91,6 +91,11 @@
     data:
       message: Vaccum error {{ trigger.to_state.name }}
       title: Vacuum alert
+  - action: notify.mobile_app_sreelakshmis_iphone
+    metadata: {}
+    data:
+      message: Vaccum error {{ trigger.to_state.name }}
+      title: Vacuum alert
   mode: single
 - id: '1755504874286'
   alias: Refresh Plex Libraries
@@ -302,20 +307,90 @@
         target:
           entity_id: cover.smart_garage
   mode: restart
-- id: '1767683421184'
-  alias: frigate test
+- id: '1767750985016'
+  alias: Driveway Person
   description: ''
   triggers:
-  - type: motion
-    device_id: 4b956710e2258cd9b5aa9470c53c2800
-    entity_id: 79130046ad4951440840c5f2a8d66146
-    domain: binary_sensor
-    trigger: device
-  conditions: []
+  - trigger: state
+    entity_id:
+    - binary_sensor.driveway_person_occupancy
+    to:
+    - 'on'
+  conditions:
+  - condition: sun
+    after: sunset
   actions:
   - action: notify.mobile_app_iphone_l
     metadata: {}
     data:
-      message: Frigate motion detected
-      title: Frigate motion
+      message: Driveway Person detected
+      title: Driveway Person
+      data:
+        push:
+          sound:
+            name: US-EN-Alexa-Motion-In-Front-Yard.wav
+            critical: 1
+            volume: 1
+  mode: single
+- id: '1767769246794'
+  alias: Night Street Car
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.street_car_active_count
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 15
+    above: 0
+  conditions:
+  - condition: time
+    after: '21:00:00'
+  actions:
+  - action: notify.mobile_app_iphone_l
+    metadata: {}
+    data:
+      title: 'Street: Car Loittering'
+      message: Car Loittering in front street
+      data:
+        push:
+          sound:
+            name: default
+            critical: 1
+            volume: 1
+  mode: single
+- id: '1767776656798'
+  alias: Front Cams Push Notification Schedule
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunset
+    offset: 0
+    id: 'on'
+  - trigger: sun
+    event: sunrise
+    offset: 0
+    id: 'off'
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.id == ''on'' }}'
+      sequence:
+      - action: switch.turn_on
+        metadata: {}
+        target:
+          entity_id: switch.all_cams_push_notify
+        data: {}
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.id == ''off'' }}'
+      sequence:
+      - action: switch.turn_off
+        metadata: {}
+        target:
+          entity_id: switch.all_cams_push_notify
+        data: {}
   mode: single
