@@ -19,8 +19,6 @@
     metadata: {}
     data:
       message: Porch light on person triggered
-      data:
-        url: rtsp://admin:Lj@Reolink20@192.168.0.100/Preview_01_main
   - choose:
     - conditions:
       - condition: state
