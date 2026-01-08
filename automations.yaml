@@ -63,7 +63,7 @@
           brightness: '{{ prev_brightness }}'
   mode: single
 - id: '1749085915742'
-  alias: Vaccum error
+  alias: Vaccum Error
   description: ''
   triggers:
   - trigger: state
@@ -316,9 +316,7 @@
     - binary_sensor.driveway_person_occupancy
     to:
     - 'on'
-  conditions:
-  - condition: sun
-    after: sunset
+  conditions: []
   actions:
   - action: notify.mobile_app_iphone_l
     metadata: {}
