@@ -19,6 +19,9 @@
     metadata: {}
     data:
       message: Porch light on person triggered
+      data:
+        entity_id: camera.garage_cam
+        url: /dashboard-home/cameras
   - choose:
     - conditions:
       - condition: state
@@ -306,7 +309,7 @@
           entity_id: cover.smart_garage
   mode: restart
 - id: '1767750985016'
-  alias: Driveway Person
+  alias: Front Person
   description: ''
   triggers:
   - trigger: state
@@ -314,19 +317,50 @@
     - binary_sensor.driveway_person_occupancy
     to:
     - 'on'
-  conditions: []
+  - trigger: state
+    entity_id:
+    - binary_sensor.porch_person_occupancy
+    to:
+    - 'on'
+  conditions:
+  - condition: state
+    entity_id: switch.front_cams_push_notify
+    state:
+    - 'on'
   actions:
-  - action: notify.mobile_app_iphone_l
-    metadata: {}
-    data:
-      message: Driveway Person detected
-      title: Driveway Person
-      data:
-        push:
-          sound:
-            name: US-EN-Alexa-Motion-In-Front-Yard.wav
-            critical: 1
-            volume: 1
+  - choose:
+    - conditions:
+      - condition: sun
+        after: sunset
+      sequence:
+      - action: notify.mobile_app_iphone_l
+        metadata: {}
+        data:
+          message: Front Person detected
+          title: Front Person
+          data:
+            push:
+              sound:
+                name: US-EN-Alexa-Motion-In-Front-Yard.wav
+                critical: 1
+                volume: 1
+            entity_id: camera.garage_cam
+            url: /dashboard-home/cameras
+    - conditions:
+      - condition: sun
+        before: sunset
+      sequence:
+      - action: notify.mobile_app_iphone_l
+        metadata: {}
+        data:
+          message: Front Person detected
+          title: Front Person
+          data:
+            push:
+              sound:
+                name: US-EN-Alexa-Motion-In-Front-Yard.wav
+            entity_id: camera.garage_cam
+            url: /dashboard-home/cameras
   mode: single
 - id: '1767769246794'
   alias: Night Street Car
@@ -388,5 +422,10 @@
         metadata: {}
         target:
           entity_id: switch.all_cams_push_notify
+        data: {}
+      - action: switch.turn_on
+        metadata: {}
+        target:
+          entity_id: switch.front_cams_push_notify
         data: {}
   mode: single
