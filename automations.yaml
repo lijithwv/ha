@@ -429,3 +429,29 @@
           entity_id: switch.front_cams_push_notify
         data: {}
   mode: single
+- id: '1768798510194'
+  alias: Doors Check Schedule
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunset
+    offset: 0
+  - trigger: time
+    at: '23:59:00'
+  conditions: []
+  actions:
+  - action: script.doors_check
+    metadata: {}
+    data: {}
+  mode: single
+- id: '1768801283172'
+  alias: Frigate Notifications Test
+  description: ''
+  use_blueprint:
+    path: SgtBatten/Stable.yaml
+    input:
+      camera:
+      - camera.garage_cam
+      notify_device: 83f5d3039d66859d74a9998ea9308889
+      ios_live_view: camera.garage_front_fluent
+      zone_filter: false

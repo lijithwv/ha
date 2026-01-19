@@ -186,14 +186,15 @@ doors_check:
       - binary_sensor.living_room_sensor_sliding_door_window
       - binary_sensor.laundry_room_sensor_sliding_door_window
       - binary_sensor.entrance_sensor_door
-      garage_not_closed: '{{ ''closed'' in states(''sensor.garage_status'') }}'
-      open_sensors: '{{ sensors | select(''equalto'', ''Open'') | map(''entity_id'')
-        | list }}
+      garage_not_closed: '{{ ''closed'' not in states(''sensor.garage_status'') |
+        lower }}
 
         '
+      open_sensors: "{{ expand(sensors)\n  | selectattr('state', 'eq', 'on')\n  |
+        map(attribute='entity_id')\n  | list }}\n"
       any_open_sensors: '{{ open_sensors | count > 0 }}'
-      bad_sensors: "{{ sensors\n   | select('in', ['unknown', 'unavailable'])\n   |
-        map('entity_id') | list }}\n"
+      bad_sensors: "{{ expand(sensors)\n  | selectattr('state', 'in', ['unknown',
+        'unavailable'])\n  | map(attribute='entity_id')\n  | list }}\n"
       any_bad_sensors: '{{ bad_sensors | count > 0 }}'
   - if:
     - condition: template
@@ -201,20 +202,19 @@ doors_check:
         }} '
     then:
     - data:
-        title: Open Door Sensors
-        message: '{% if garage_not_closed %} Garage is not closed. {% endif %} {%
-          if any_open_sensors %} The following doors are open: {{ open_sensors | map(''state_attr'',''friendly_name'')
-          | join('', '') }} {% endif %} {% if any_bad_sensors  %} The following doors
-          are in bad status: {{ bad_sensors | map(''state_attr'',''friendly_name'')
-          | join('', '') }} {% endif %}
-
-          '
+        title: Open Door Alert
+        message: "{% if garage_not_closed %}Garage is not closed.{% endif %} {% if
+          any_open_sensors %}\n  The following doors are open:\n  {{ open_sensors
+          | map('state_attr', 'friendly_name') | join(', ') }}\n{% endif %} {% if
+          any_bad_sensors %}\n  The following doors are in bad status:\n  {{ bad_sensors
+          | map('state_attr', 'friendly_name') | join(', ') }}\n{% endif %}\n"
       action: notify.mobile_app_iphone_l
-  - action: notify.mobile_app_iphone_l
-    metadata: {}
-    data:
-      message: "    - {{ binary_sensor.living_room_sensor_sliding_door_window }}\n
-        \   - {{ binary_sensor.laundry_room_sensor_sliding_door_window}}\n    - {{binary_sensor.entrance_sensor_door}}"
+    else:
+    - action: notify.mobile_app_iphone_l
+      metadata: {}
+      data:
+        message: All doors are closed
+        title: Doors Check
   alias: Doors Check
   description: ''
 turn_on_backyard_floodlight:
@@ -232,4 +232,27 @@ backyard_floodlight_off:
     entity_id: 33efe388716a0405121ef6b8c89acd08
     domain: light
   alias: Backyard Floodlight Off
+  description: ''
+garage_door_control:
+  use_blueprint:
+    path: homeassistant/confirmable_notification.yaml
+    input:
+      notify_device: 83f5d3039d66859d74a9998ea9308889
+      title: Open/Close Garage
+      confirm_action:
+      - action: cover.open_cover
+        metadata: {}
+        target:
+          entity_id: cover.smart_garage
+        data: {}
+      message: Force press for options
+      confirm_text: Open
+      dismiss_text: Close
+      dismiss_action:
+      - action: cover.close_cover
+        metadata: {}
+        target:
+          entity_id: cover.smart_garage
+        data: {}
+  alias: Garage Door Control
   description: ''
