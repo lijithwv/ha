@@ -455,3 +455,11 @@
       notify_device: 83f5d3039d66859d74a9998ea9308889
       ios_live_view: camera.garage_front_fluent
       zone_filter: false
+      title: Frigate Notifications Test
+      url_1: '{{base_url}}/api/frigate{{client_id}}/notifications/{{id}}/{{camera}}/master.m3u8'
+      cooldown: 3
+      master_condition:
+      - condition: state
+        entity_id: switch.front_cams_push_notify
+        state:
+        - 'on'
