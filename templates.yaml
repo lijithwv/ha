@@ -20,4 +20,21 @@
         {% set exact_time = utc_date | as_timestamp | timestamp_custom('%H:%M %p') %}
         {% set rel_time = relative_time(as_datetime(utc_date))  %}
         {{ exact_time }} - {{ rel_time }} ago
-          
+- trigger:
+  - platform: time_pattern
+    minutes: "/1"
+  sensor:
+    - name: "Garage Door Simple"
+      state: >
+        {% set door = states('sensor.garage_status') | lower %}
+        {% if 'closed' in door %}
+          closed
+        {% elif 'opened' in door %}
+          opened
+        {% elif 'closing' in door %}
+          closing
+        {% elif 'opening' in door %}
+          opening
+        {% else %}
+          unknown
+        {% endif %}          
