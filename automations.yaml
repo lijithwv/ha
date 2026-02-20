@@ -463,3 +463,19 @@
         entity_id: switch.front_cams_push_notify
         state:
         - 'on'
+- id: '1771550130081'
+  alias: Illumination test
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.light_sensor_65_the_frame_illuminance
+    below: 100
+  conditions: []
+  actions:
+  - action: notify.mobile_app_iphone_l
+    metadata: {}
+    data:
+      message: 'Illumination below 100. Value: "{{ states(''sensor.light_sensor_65_the_frame_illuminance'')
+        }}" '
+  mode: single
