@@ -21,7 +21,7 @@
       message: Porch light on person triggered
       data:
         entity_id: camera.garage_cam
-        url: /dashboard-home/cameras
+        url: '{{ states(''input_text.camera_dashboard_url'') }}'
   - choose:
     - conditions:
       - condition: state
@@ -345,7 +345,7 @@
                 critical: 1
                 volume: 1
             entity_id: camera.garage_cam
-            url: /dashboard-home/cameras
+            url: '{{ states(''input_text.camera_dashboard_url'') }}'
     - conditions:
       - condition: sun
         before: sunset
@@ -360,7 +360,7 @@
               sound:
                 name: US-EN-Alexa-Motion-In-Front-Yard.wav
             entity_id: camera.garage_cam
-            url: /dashboard-home/cameras
+            url: '{{ states(''input_text.camera_dashboard_url'') }}'
   mode: single
 - id: '1767769246794'
   alias: Night Street Car
