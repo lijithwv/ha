@@ -346,6 +346,9 @@
                 volume: 1
             entity_id: camera.garage_cam
             url: '{{ states(''input_text.camera_dashboard_url'') }}'
+            data:
+              group: front-person-alert
+              tag: front-person-alert
     - conditions:
       - condition: sun
         before: sunset
@@ -361,6 +364,9 @@
                 name: US-EN-Alexa-Motion-In-Front-Yard.wav
             entity_id: camera.garage_cam
             url: '{{ states(''input_text.camera_dashboard_url'') }}'
+            data:
+              group: front-person-alert
+              tag: front-person-alert
   mode: single
 - id: '1767769246794'
   alias: Night Street Car
@@ -471,11 +477,40 @@
     entity_id:
     - sensor.light_sensor_65_the_frame_illuminance
     below: 100
-  conditions: []
+  conditions:
+  - condition: sun
+    before: sunset
   actions:
   - action: notify.mobile_app_iphone_l
     metadata: {}
     data:
       message: 'Illumination below 100. Value: "{{ states(''sensor.light_sensor_65_the_frame_illuminance'')
         }}" '
+  mode: single
+- id: '1771921430053'
+  alias: Bin Alert
+  description: ''
+  triggers:
+  - trigger: calendar.event_started
+    target:
+      entity_id: calendar.bin_collection
+    options:
+      offset:
+        days: 0
+        hours: 0
+        minutes: 0
+        seconds: 0
+      offset_type: before
+  conditions:
+  - condition: template
+    value_template: '{{ trigger.calendar_event.summary == ''Red Bin'' }}'
+  actions:
+  - action: notify.all_devices
+    metadata: {}
+    data:
+      title: ♻️ Bin Day
+      message: Please take the bin out
+      data:
+        group: bin-alerts
+        tag: bin-alerts
   mode: single

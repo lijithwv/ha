@@ -23,3 +23,11 @@ http:
   ssl_key: /ssl/privkey.pem
 
 ffmpeg:
+
+# Example configuration.yaml entry
+notify:
+  - platform: group
+    name: "ALL_DEVICES"
+    services:
+      - action: mobile_app_iphone_one
+      - action: mobile_app_iphone_two
