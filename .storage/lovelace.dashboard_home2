@@ -1,0 +1,751 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "lovelace.dashboard_home2",
+  "data": {
+    "config": {
+      "views": [
+        {
+          "type": "sections",
+          "sections": [
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "markdown",
+                  "content": "----------\n",
+                  "grid_options": {
+                    "columns": "full"
+                  },
+                  "text_only": true
+                }
+              ],
+              "column_span": 4
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "tile",
+                  "entity": "switch.all_cams_push_notify",
+                  "name": "All Cams Push",
+                  "show_entity_picture": false,
+                  "hide_state": false,
+                  "vertical": false,
+                  "tap_action": {
+                    "action": "toggle"
+                  },
+                  "features_position": "bottom"
+                },
+                {
+                  "type": "tile",
+                  "entity": "switch.front_cams_push_notify",
+                  "name": "Front Cams Push",
+                  "show_entity_picture": false,
+                  "hide_state": false,
+                  "vertical": false,
+                  "tap_action": {
+                    "action": "toggle"
+                  },
+                  "features_position": "bottom"
+                },
+                {
+                  "type": "tile",
+                  "entity": "script.doors_check",
+                  "show_entity_picture": false,
+                  "hide_state": true,
+                  "vertical": false,
+                  "tap_action": {
+                    "action": "toggle"
+                  },
+                  "features_position": "bottom"
+                },
+                {
+                  "type": "tile",
+                  "entity": "light.backyard_floodlight",
+                  "vertical": false,
+                  "tap_action": {
+                    "action": "toggle"
+                  },
+                  "features_position": "bottom"
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "cover.smart_garage"
+                    }
+                  ]
+                },
+                {
+                  "type": "markdown",
+                  "content": "# `Lights`",
+                  "text_only": true
+                },
+                {
+                  "show_name": true,
+                  "show_icon": true,
+                  "type": "button",
+                  "icon": "",
+                  "show_state": false,
+                  "entity": "light.porch_light"
+                },
+                {
+                  "show_name": true,
+                  "show_icon": true,
+                  "type": "button",
+                  "icon": "",
+                  "show_state": false,
+                  "entity": "light.living_table_lamp"
+                },
+                {
+                  "show_name": true,
+                  "show_icon": true,
+                  "type": "button",
+                  "icon": "",
+                  "show_state": false,
+                  "entity": "light.living_corner_lamp"
+                },
+                {
+                  "show_name": true,
+                  "show_icon": true,
+                  "type": "button",
+                  "icon": "",
+                  "show_state": false,
+                  "entity": "light.anko_wi_fi_sunset_light"
+                },
+                {
+                  "type": "markdown",
+                  "content": "# `Routines`",
+                  "text_only": true
+                },
+                {
+                  "show_name": true,
+                  "show_icon": true,
+                  "type": "button",
+                  "name": "Living away",
+                  "icon": "mdi:power-plug-off-outline",
+                  "show_state": false,
+                  "entity": "script.living_away_routine",
+                  "tap_action": {
+                    "action": "toggle"
+                  }
+                },
+                {
+                  "show_name": true,
+                  "show_icon": true,
+                  "type": "button",
+                  "name": "Living evening",
+                  "icon": "mdi:lightbulb-multiple",
+                  "show_state": false,
+                  "entity": "script.living_evening_routine",
+                  "tap_action": {
+                    "action": "toggle"
+                  }
+                },
+                {
+                  "show_name": true,
+                  "show_icon": true,
+                  "type": "button",
+                  "name": "Living night routine",
+                  "icon": "mdi:lightbulb-night-outline",
+                  "show_state": false,
+                  "entity": "script.living_night_routine",
+                  "tap_action": {
+                    "action": "toggle"
+                  }
+                },
+                {
+                  "show_name": true,
+                  "show_icon": true,
+                  "type": "button",
+                  "entity": "scene.living_party",
+                  "show_state": false
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "custom:mushroom-vacuum-card",
+                  "entity": "vacuum.roborock_qrevo",
+                  "icon_animation": true,
+                  "fill_container": false,
+                  "commands": [
+                    "start_pause",
+                    "stop",
+                    "locate",
+                    "clean_spot",
+                    "return_home"
+                  ],
+                  "grid_options": {
+                    "columns": "full"
+                  }
+                },
+                {
+                  "type": "gauge",
+                  "needle": false,
+                  "grid_options": {
+                    "columns": 3,
+                    "rows": "auto"
+                  },
+                  "entity": "sensor.kunjappan_dock_strainer_time_left",
+                  "severity": {
+                    "green": 10,
+                    "yellow": 0,
+                    "red": -100000
+                  },
+                  "min": -100000,
+                  "max": 0,
+                  "name": "Strainer"
+                },
+                {
+                  "type": "gauge",
+                  "needle": false,
+                  "grid_options": {
+                    "columns": 3,
+                    "rows": "auto"
+                  },
+                  "severity": {
+                    "green": 10,
+                    "yellow": 0,
+                    "red": -100000
+                  },
+                  "min": -100000,
+                  "max": 0,
+                  "entity": "sensor.roborock_qrevo_side_brush_time_left",
+                  "tap_action": {
+                    "action": "perform-action",
+                    "confirmation": {
+                      "text": "Reset the Side Brush time left?"
+                    },
+                    "perform_action": "button.press",
+                    "target": {
+                      "entity_id": "button.roborock_qrevo_reset_side_brush_consumable"
+                    }
+                  },
+                  "name": "Side Brush"
+                },
+                {
+                  "type": "gauge",
+                  "needle": false,
+                  "grid_options": {
+                    "columns": 3,
+                    "rows": "auto"
+                  },
+                  "severity": {
+                    "green": 10,
+                    "yellow": 0,
+                    "red": -100000
+                  },
+                  "min": -100000,
+                  "entity": "sensor.roborock_qrevo_sensor_time_left",
+                  "tap_action": {
+                    "action": "perform-action",
+                    "confirmation": {
+                      "text": "Reset the Sensor time left?"
+                    },
+                    "perform_action": "button.press",
+                    "target": {
+                      "entity_id": "button.roborock_qrevo_reset_sensor_consumable"
+                    }
+                  },
+                  "name": "Sensor",
+                  "max": 1000
+                },
+                {
+                  "type": "gauge",
+                  "needle": false,
+                  "grid_options": {
+                    "columns": 3,
+                    "rows": "auto"
+                  },
+                  "severity": {
+                    "green": 10,
+                    "yellow": 0,
+                    "red": -100000
+                  },
+                  "min": -100000,
+                  "max": 0,
+                  "entity": "sensor.roborock_qrevo_main_brush_time_left",
+                  "tap_action": {
+                    "action": "perform-action",
+                    "confirmation": {
+                      "text": "Reset the Main Brush time left?"
+                    },
+                    "perform_action": "button.press",
+                    "target": {
+                      "entity_id": "button.roborock_qrevo_reset_main_brush_consumable"
+                    }
+                  },
+                  "name": "Main Brush"
+                },
+                {
+                  "type": "gauge",
+                  "needle": false,
+                  "grid_options": {
+                    "columns": 3,
+                    "rows": "auto"
+                  },
+                  "severity": {
+                    "green": 10,
+                    "yellow": 0,
+                    "red": -100000
+                  },
+                  "min": -100000,
+                  "max": 0,
+                  "entity": "sensor.roborock_qrevo_filter_time_left",
+                  "name": "Filter"
+                },
+                {
+                  "type": "markdown",
+                  "content": "# `TVs`",
+                  "text_only": true
+                },
+                {
+                  "type": "tile",
+                  "entity": "media_player.livingroomtv"
+                },
+                {
+                  "type": "tile",
+                  "entity": "media_player.theatre_tv"
+                },
+                {
+                  "type": "markdown",
+                  "content": "# `Misc`",
+                  "text_only": true
+                },
+                {
+                  "show_name": true,
+                  "show_icon": true,
+                  "type": "button",
+                  "name": "Git Backup",
+                  "icon": "mdi:cloud-upload-outline",
+                  "show_state": false,
+                  "tap_action": {
+                    "action": "perform-action",
+                    "perform_action": "script.backup_ha_config_to_github",
+                    "target": {}
+                  }
+                },
+                {
+                  "show_name": true,
+                  "show_icon": true,
+                  "type": "button",
+                  "icon": "mdi:plex",
+                  "show_state": false,
+                  "tap_action": {
+                    "action": "perform-action",
+                    "perform_action": "plex.refresh_library",
+                    "target": {},
+                    "data": {
+                      "library_name": "MiniMovies"
+                    }
+                  },
+                  "name": "Refresh Plex"
+                },
+                {
+                  "show_state": true,
+                  "show_name": true,
+                  "camera_view": "auto",
+                  "fit_mode": "cover",
+                  "type": "picture-entity",
+                  "entity": "image.roborock_qrevo_home1"
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "type": "section",
+                      "label": "Garage"
+                    },
+                    {
+                      "entity": "sensor.garage_status",
+                      "icon": "mdi:garage-variant",
+                      "name": "Status",
+                      "secondary_info": "none"
+                    },
+                    {
+                      "entity": "sensor.garage_status_last_changed",
+                      "name": "Last Changed",
+                      "secondary_info": "none"
+                    },
+                    {
+                      "type": "attribute",
+                      "entity": "sensor.garage_status",
+                      "attribute": "error",
+                      "name": "Error",
+                      "icon": "mdi:alert-circle"
+                    },
+                    {
+                      "type": "attribute",
+                      "entity": "sensor.garage_status",
+                      "attribute": "camera",
+                      "name": "Camera",
+                      "icon": "mdi:camera"
+                    },
+                    {
+                      "type": "section",
+                      "label": "Doors"
+                    },
+                    {
+                      "entity": "binary_sensor.entrance_sensor_door",
+                      "secondary_info": "last-changed",
+                      "name": "Front Main Door"
+                    },
+                    {
+                      "entity": "binary_sensor.laundry_room_sensor_sliding_door_window_2",
+                      "secondary_info": "last-changed",
+                      "name": "Laundry Sliding Door"
+                    },
+                    {
+                      "entity": "binary_sensor.living_room_sensor_sliding_door_window",
+                      "secondary_info": "last-changed",
+                      "name": "Living Sliding Door"
+                    },
+                    {
+                      "type": "section",
+                      "label": "Cameras"
+                    },
+                    {
+                      "entity": "binary_sensor.reolink_video_doorbell_poe_motion",
+                      "secondary_info": "last-changed"
+                    },
+                    {
+                      "entity": "binary_sensor.garage_front_motion",
+                      "secondary_info": "last-changed"
+                    },
+                    {
+                      "entity": "binary_sensor.east_motion",
+                      "secondary_info": "last-changed"
+                    },
+                    {
+                      "entity": "binary_sensor.west_motion",
+                      "secondary_info": "last-changed"
+                    },
+                    {
+                      "entity": "binary_sensor.backyard_motion",
+                      "secondary_info": "last-changed"
+                    },
+                    {
+                      "type": "section",
+                      "label": "Alarms"
+                    },
+                    {
+                      "entity": "siren.reolink_video_doorbell_poe_siren"
+                    },
+                    {
+                      "entity": "siren.backyard_siren",
+                      "secondary_info": "none"
+                    }
+                  ],
+                  "state_color": true,
+                  "show_header_toggle": false,
+                  "title": "Security"
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "markdown",
+                  "content": "# `Today's Forecast`",
+                  "text_only": true
+                },
+                {
+                  "type": "markdown",
+                  "content": "{{ states('sensor.home_extended_text_0') }}\n\n{{ states('sensor.home_uv_forecast_0') }}"
+                },
+                {
+                  "type": "custom:clock-weather-card",
+                  "entity": "weather.home_2",
+                  "weather_icon_type": "fill",
+                  "date_pattern": "cccc, dd/MM/yyyy",
+                  "show_decimal": true,
+                  "hide_today_section": false,
+                  "show_humidity": true
+                }
+              ]
+            }
+          ],
+          "cards": [],
+          "header": {
+            "layout": "center",
+            "badges_position": "bottom",
+            "badges_wrap": "wrap",
+            "card": {
+              "type": "markdown",
+              "text_only": true,
+              "content": "{% set hour = now().hour %}\n{% if hour < 12 %}\n  # 🌅 Good Morning!\n{% elif hour < 18 %}\n  # 🌞 Good Afternoon!\n{% else %}\n  # 🌙 Good Evening!\n{% endif %}"
+            }
+          },
+          "badges": [
+            {
+              "type": "custom:mushroom-template-badge",
+              "content": "Entrance  ",
+              "icon": "mdi:door-open",
+              "color": "red",
+              "visibility": [
+                {
+                  "condition": "state",
+                  "entity": "binary_sensor.entrance_sensor_door",
+                  "state_not": "off"
+                }
+              ],
+              "entity": "binary_sensor.entrance_sensor_door",
+              "label": "Open Door",
+              "tap_action": {
+                "action": "navigate",
+                "navigation_path": "/dashboard-cameras"
+              }
+            },
+            {
+              "type": "custom:mushroom-template-badge",
+              "icon": "mdi:door-open",
+              "color": "red",
+              "visibility": [
+                {
+                  "condition": "state",
+                  "entity": "binary_sensor.laundry_room_sensor_sliding_door_window_2",
+                  "state_not": "off"
+                }
+              ],
+              "entity": "binary_sensor.laundry_room_sensor_sliding_door_window_2",
+              "label": "Open Door",
+              "content": "Laundry",
+              "tap_action": {
+                "action": "navigate",
+                "navigation_path": "/dashboard-cameras"
+              }
+            },
+            {
+              "type": "custom:mushroom-template-badge",
+              "icon": "mdi:door-open",
+              "color": "red",
+              "visibility": [
+                {
+                  "condition": "state",
+                  "entity": "binary_sensor.living_room_sensor_sliding_door_window",
+                  "state_not": "off"
+                }
+              ],
+              "label": "Open Door",
+              "content": "Living",
+              "tap_action": {
+                "action": "navigate",
+                "navigation_path": "/dashboard-cameras"
+              },
+              "entity": "binary_sensor.living_room_sensor_sliding_door_window"
+            },
+            {
+              "type": "custom:mushroom-template-badge",
+              "icon": "mdi:door-open",
+              "color": "red",
+              "visibility": [
+                {
+                  "condition": "state",
+                  "entity": "sensor.garage_door_simple",
+                  "state_not": "closed"
+                }
+              ],
+              "label": "Open Door",
+              "content": "Garage",
+              "tap_action": {
+                "action": "navigate",
+                "navigation_path": "/dashboard-cameras"
+              },
+              "entity": "cover.smart_garage"
+            },
+            {
+              "event_grouping": true,
+              "drop_todayevents_from": "10:00:00",
+              "next_days": 4,
+              "pattern": [
+                {
+                  "icon": "mdi:trash-can",
+                  "color": "red",
+                  "type": "organic",
+                  "label": "Red",
+                  "pattern": "Red Bin"
+                },
+                {
+                  "icon": "mdi:glass-cocktail",
+                  "color": "deep-purple",
+                  "type": "paper",
+                  "label": "Purple",
+                  "pattern": "Purple Bin"
+                },
+                {
+                  "icon": "mdi:recycle-variant",
+                  "color": "amber",
+                  "type": "recycle",
+                  "label": "Yellow",
+                  "pattern": "Yellow Bin"
+                },
+                {
+                  "icon": "mdi:trash-can-outline",
+                  "color": "grey",
+                  "type": "waste"
+                },
+                {
+                  "icon": "mdi:dump-truck",
+                  "color": "purple",
+                  "type": "others"
+                }
+              ],
+              "day_style": "counter",
+              "card_style": "chip",
+              "alignment_style": "left",
+              "color_mode": "icon",
+              "items_per_row": 2,
+              "refresh_rate": 60,
+              "with_label": true,
+              "type": "custom:trash-card",
+              "entities": [
+                "calendar.bin_collection"
+              ],
+              "filter_events": false,
+              "use_summary": true,
+              "hide_time_range": true,
+              "full_size": false
+            },
+            {
+              "type": "custom:mushroom-template-badge",
+              "content": "Vaccum Error",
+              "icon": "mdi:vacuum",
+              "color": "red",
+              "entity": "sensor.roborock_qrevo_vacuum_error",
+              "visibility": [
+                {
+                  "condition": "or",
+                  "conditions": [
+                    {
+                      "condition": "state",
+                      "entity": "sensor.roborock_qrevo_dock_error",
+                      "state_not": "ok"
+                    },
+                    {
+                      "condition": "state",
+                      "entity": "sensor.roborock_qrevo_vacuum_error",
+                      "state_not": "none"
+                    },
+                    {
+                      "condition": "state",
+                      "entity": "binary_sensor.roborock_qrevo_water_shortage",
+                      "state_not": "off"
+                    },
+                    {
+                      "condition": "state",
+                      "entity": "binary_sensor.kunjappan_dock_clean_water_box",
+                      "state_not": "off"
+                    },
+                    {
+                      "condition": "state",
+                      "entity": "binary_sensor.kunjappan_dock_dirty_water_box",
+                      "state_not": "off"
+                    },
+                    {
+                      "condition": "state",
+                      "entity": "binary_sensor.roborock_qrevo_water_box_attached",
+                      "state_not": "on"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "max_columns": 4,
+          "icon": "mdi:monitor",
+          "path": "desktop"
+        },
+        {
+          "type": "sections",
+          "max_columns": 4,
+          "path": "cams",
+          "icon": "mdi:cctv",
+          "sections": [
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "custom:advanced-camera-card",
+                  "cameras": [
+                    {
+                      "camera_entity": "camera.doorbell_cam"
+                    }
+                  ],
+                  "view": {
+                    "default": "image"
+                  }
+                },
+                {
+                  "show_state": true,
+                  "show_name": true,
+                  "camera_view": "auto",
+                  "fit_mode": "cover",
+                  "type": "picture-entity",
+                  "entity": "camera.garage",
+                  "camera_image": "camera.garage"
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "show_state": true,
+                  "show_name": true,
+                  "camera_view": "auto",
+                  "fit_mode": "cover",
+                  "type": "picture-entity",
+                  "entity": "camera.backyard_fluent",
+                  "camera_image": "camera.backyard_fluent"
+                },
+                {
+                  "show_state": true,
+                  "show_name": true,
+                  "camera_view": "auto",
+                  "fit_mode": "cover",
+                  "type": "picture-entity",
+                  "entity": "camera.garage_front_fluent",
+                  "camera_image": "camera.garage_front_fluent"
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "show_state": true,
+                  "show_name": true,
+                  "camera_view": "auto",
+                  "fit_mode": "cover",
+                  "type": "picture-entity",
+                  "entity": "camera.east_fluent",
+                  "camera_image": "camera.east_fluent"
+                },
+                {
+                  "show_state": true,
+                  "show_name": true,
+                  "camera_view": "auto",
+                  "fit_mode": "cover",
+                  "type": "picture-entity",
+                  "entity": "camera.west_fluent_lens_1",
+                  "camera_image": "camera.west_fluent_lens_1"
+                }
+              ]
+            }
+          ],
+          "cards": []
+        }
+      ]
+    }
+  }
+}

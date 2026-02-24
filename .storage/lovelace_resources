@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "lovelace_resources",
+  "data": {
+    "items": [
+      {
+        "id": "f19e42c496f54674832677397ed674a2",
+        "url": "/hacsfiles/lovelace-card-mod/card-mod.js?hacstag=190927524421",
+        "type": "module"
+      },
+      {
+        "id": "dc7f3874e72f47bf9df28f222436a841",
+        "url": "/hacsfiles/clock-weather-card/clock-weather-card.js?hacstag=522634019292",
+        "type": "module"
+      },
+      {
+        "id": "2a5f5fb9c95740f3a735cf0fda736d0f",
+        "url": "/hacsfiles/atomic-calendar-revive/atomic-calendar-revive.js?hacstag=2465497471020",
+        "type": "module"
+      },
+      {
+        "id": "d28c8da468d240f68b41fb8151ff23c8",
+        "url": "/hacsfiles/hassio-trash-card/trashcard.js?hacstag=678764124247",
+        "type": "module"
+      },
+      {
+        "id": "cf5e5157e25b40e4aab652acc3ebadef",
+        "url": "/hacsfiles/advanced-camera-card/advanced-camera-card.js?hacstag=3940825527273",
+        "type": "module"
+      },
+      {
+        "id": "9b23e4b7a46a4131bd95f00bdd4a3552",
+        "url": "/hacsfiles/lovelace-mushroom/mushroom.js?hacstag=4443503755011",
+        "type": "module"
+      }
+    ]
+  }
+}

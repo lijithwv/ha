@@ -10,6 +10,13 @@ home-assistant.log*
 *.log.*
 home-assistant_v2.db
 tts/
-.storage/
+
+# Capture lovelace dashboards
+# Have to enable the folder first, then the individual files
+# Lovelace files are NOT .yaml, so include anything that matches
+.storage/*
+!.storage/
+!.storage/lovelace*
+
 www/snapshots/
 .ha_run.lock

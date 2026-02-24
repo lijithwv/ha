@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "lovelace.dashboard_areas",
+  "data": {
+    "config": {
+      "strategy": {
+        "type": "areas",
+        "areas_display": {
+          "hidden": [
+            "bedroom",
+            "kitchen"
+          ],
+          "order": [
+            "front",
+            "east_path",
+            "west_path",
+            "backyard",
+            "laundry",
+            "living_room",
+            "study",
+            "theatre"
+          ]
+        },
+        "areas_options": {
+          "east_path": {
+            "groups_options": {
+              "lights": {
+                "hidden": [
+                  "light.east_floodlight"
+                ]
+              }
+            }
+          },
+          "west_path": {
+            "groups_options": {
+              "lights": {
+                "hidden": [
+                  "light.west_floodlight"
+                ]
+              }
+            }
+          },
+          "backyard": {
+            "groups_options": {
+              "lights": {
+                "hidden": [
+                  "light.backyard_floodlight"
+                ]
+              }
+            }
+          },
+          "front": {
+            "groups_options": {
+              "lights": {
+                "hidden": [
+                  "light.garage_front_floodlight"
+                ],
+                "order": [
+                  "light.porch_light"
+                ]
+              },
+              "others": {
+                "hidden": [
+                  "select.reolink_video_doorbell_poe_play_quick_reply_message"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

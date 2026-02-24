@@ -1,0 +1,116 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "lovelace.dashboard_cameras",
+  "data": {
+    "config": {
+      "views": [
+        {
+          "title": "All Cameras",
+          "sections": [
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "heading",
+                  "heading": "Front",
+                  "heading_style": "title"
+                },
+                {
+                  "show_state": true,
+                  "show_name": false,
+                  "camera_view": "live",
+                  "fit_mode": "cover",
+                  "type": "picture-entity",
+                  "entity": "camera.garage_front_fluent",
+                  "image": "https://demo.home-assistant.io/stub_config/bedroom.png"
+                },
+                {
+                  "show_state": true,
+                  "show_name": false,
+                  "camera_view": "live",
+                  "fit_mode": "cover",
+                  "type": "picture-entity",
+                  "entity": "camera.reolink_video_doorbell_poe_fluent",
+                  "image": "https://demo.home-assistant.io/stub_config/bedroom.png"
+                },
+                {
+                  "show_state": true,
+                  "show_name": false,
+                  "camera_view": "auto",
+                  "fit_mode": "cover",
+                  "type": "picture-entity",
+                  "entity": "camera.garage"
+                }
+              ],
+              "column_span": 2
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "heading",
+                  "heading": "West",
+                  "heading_style": "title"
+                },
+                {
+                  "show_state": true,
+                  "show_name": false,
+                  "camera_view": "live",
+                  "fit_mode": "cover",
+                  "type": "picture-entity",
+                  "entity": "camera.west_fluent_lens_1",
+                  "image": "https://demo.home-assistant.io/stub_config/bedroom.png",
+                  "name": " "
+                },
+                {
+                  "show_state": true,
+                  "show_name": false,
+                  "camera_view": "live",
+                  "fit_mode": "cover",
+                  "type": "picture-entity",
+                  "entity": "camera.west_fluent_lens_0",
+                  "image": "https://demo.home-assistant.io/stub_config/bedroom.png"
+                },
+                {
+                  "type": "heading",
+                  "heading": "East",
+                  "heading_style": "title"
+                },
+                {
+                  "show_state": false,
+                  "show_name": false,
+                  "camera_view": "live",
+                  "fit_mode": "cover",
+                  "type": "picture-entity",
+                  "entity": "camera.east_fluent",
+                  "image": {
+                    "media_content_id": "https://demo.home-assistant.io/stub_config/bedroom.png"
+                  }
+                },
+                {
+                  "type": "heading",
+                  "heading": "Backyard",
+                  "heading_style": "title"
+                },
+                {
+                  "show_state": true,
+                  "show_name": false,
+                  "camera_view": "live",
+                  "fit_mode": "cover",
+                  "type": "picture-entity",
+                  "entity": "camera.backyard_fluent",
+                  "image": "https://demo.home-assistant.io/stub_config/bedroom.png"
+                }
+              ],
+              "column_span": 2
+            }
+          ],
+          "type": "sections",
+          "max_columns": 4,
+          "cards": []
+        }
+      ]
+    }
+  }
+}
