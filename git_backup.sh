@@ -28,7 +28,7 @@ if git diff --cached --quiet; then
 EOF
 
 else
-    git commit -m "Nightly backup $NOW"
+    git commit -m "Auto backup $NOW"
     git push origin main
 
     echo "Backup successful"
