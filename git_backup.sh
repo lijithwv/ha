@@ -10,7 +10,7 @@ cd /config
 
 # Git commands
 git add .
-git commit -m "Auto backup $(date '+%Y-%m-%d %H:%M:%S')" || echo "No changes. Nothing to commit."
+git commit -m "Auto backup $(date '+%Y-%m-%d %H:%M:%S')" || echo "No changes."
 git push origin main
 
 echo "===== Git Backup finished at $(date '+%Y-%m-%d %H:%M:%S') ====="
