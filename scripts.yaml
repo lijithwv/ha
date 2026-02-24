@@ -115,8 +115,8 @@ backup_ha_config_to_github:
       metadata: {}
       data:
         title: ❌ Backup Failed
-        message: "Git backup failed.                 \nExit code: {{ backup_result.returncode
-          }}          Error: {{ backup_result.stderr }}"
+        message: "Git backup failed.                 \nExit code: {{ backup_result
+          }}"
   alias: Backup HA Config to GitHub
   description: ''
 theatre_sunset_light_on:
