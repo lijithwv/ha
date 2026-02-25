@@ -8,3 +8,11 @@
     - dt
     - error
     - camera
+- platform: file
+  name: Git Backup Status
+  file_path: /config/git_backup_status.json
+  value_template: "{{ value_json.status }}"
+  json_attributes:
+    - last_run
+    - last_success
+    - message

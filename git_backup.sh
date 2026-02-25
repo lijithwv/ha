@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eo pipefail
 
-STATUS_FILE="/config/git_backup_status.json"
+STATUS_FILE="/config/www/git_backup_status.json"
 LOG_FILE="/config/git_backup.log"
 exec >> "$LOG_FILE" 2>&1
 NOW=$(date '+%Y-%m-%d %H:%M:%S')

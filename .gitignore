@@ -21,4 +21,4 @@ tts/
 www/snapshots/
 .ha_run.lock
 
-git_backup_status.json
+www/git_backup_status.json
