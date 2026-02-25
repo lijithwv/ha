@@ -22,6 +22,9 @@
       data:
         entity_id: camera.garage_cam
         url: '{{ states(''input_text.camera_dashboard_url'') }}'
+        data:
+          group: porch-light-on
+          tag: porch-light-on
   - choose:
     - conditions:
       - condition: state

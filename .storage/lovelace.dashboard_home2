@@ -161,12 +161,12 @@
                   "type": "button",
                   "entity": "scene.living_party",
                   "show_state": false
-                }
-              ]
-            },
-            {
-              "type": "grid",
-              "cards": [
+                },
+                {
+                  "type": "markdown",
+                  "content": "# `Vacuum`",
+                  "text_only": true
+                },
                 {
                   "type": "custom:mushroom-vacuum-card",
                   "entity": "vacuum.roborock_qrevo",
@@ -297,7 +297,12 @@
                   "max": 0,
                   "entity": "sensor.roborock_qrevo_filter_time_left",
                   "name": "Filter"
-                },
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
                 {
                   "type": "markdown",
                   "content": "# `TVs`",
@@ -344,14 +349,6 @@
                     }
                   },
                   "name": "Refresh Plex"
-                },
-                {
-                  "show_state": true,
-                  "show_name": true,
-                  "camera_view": "auto",
-                  "fit_mode": "cover",
-                  "type": "picture-entity",
-                  "entity": "image.roborock_qrevo_home1"
                 }
               ]
             },
@@ -461,7 +458,8 @@
                 },
                 {
                   "type": "markdown",
-                  "content": "{{ states('sensor.home_extended_text_0') }}\n\n{{ states('sensor.home_uv_forecast_0') }}"
+                  "content": "{{ states('sensor.home_extended_text_0') }}\n\n{{ states('sensor.home_uv_forecast_0') }}",
+                  "text_only": true
                 },
                 {
                   "type": "custom:clock-weather-card",
