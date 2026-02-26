@@ -327,12 +327,13 @@
                   "type": "button",
                   "name": "Git Backup",
                   "icon": "mdi:cloud-upload-outline",
-                  "show_state": false,
+                  "show_state": true,
                   "tap_action": {
                     "action": "perform-action",
                     "perform_action": "script.backup_ha_config_to_github",
                     "target": {}
-                  }
+                  },
+                  "entity": "sensor.git_last_run"
                 },
                 {
                   "show_name": true,
