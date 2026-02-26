@@ -333,7 +333,7 @@
                     "perform_action": "script.backup_ha_config_to_github",
                     "target": {}
                   },
-                  "entity": "sensor.git_last_run"
+                  "entity": "sensor.git_status"
                 },
                 {
                   "show_name": true,
