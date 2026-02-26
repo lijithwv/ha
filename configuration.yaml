@@ -24,10 +24,14 @@ http:
 
 ffmpeg:
 
-# Example configuration.yaml entry
+homeassistant:
+  allowlist_external_dirs:
+    - /config/www
+
+# Notification group
 notify:
   - platform: group
     name: "ALL_DEVICES"
     services:
-      - action: mobile_app_iphone_one
-      - action: mobile_app_iphone_two
+      - action: mobile_app_iphone_l
+      - action: mobile_app_sreelakshmis_iphone
