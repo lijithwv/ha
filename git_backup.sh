@@ -19,12 +19,7 @@ if git diff --cached --quiet; then
 
     # Still mark run as successful
     cat <<EOF > "$STATUS_FILE"
-{
-  "last_run": "$NOW",
-  "last_success": "$NOW",
-  "status": "success",
-  "message": "No changes"
-}
+{"last_run": "$NOW","last_success": "$NOW","status": "success","message": "No changes"}
 EOF
 
 else
@@ -34,12 +29,7 @@ else
     echo "Backup successful"
 
     cat <<EOF > "$STATUS_FILE"
-{
-  "last_run": "$NOW",
-  "last_success": "$NOW",
-  "status": "success",
-  "message": "Committed and pushed"
-}
+{"last_run": "$NOW","last_success": "$NOW","status": "success","message": "Committed and pushed"}
 EOF
 fi
 
