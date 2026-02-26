@@ -658,6 +658,19 @@
                   ]
                 }
               ]
+            },
+            {
+              "type": "custom:mushroom-template-badge",
+              "content": "Git Error",
+              "icon": "mdi:git",
+              "color": "red",
+              "visibility": [
+                {
+                  "condition": "state",
+                  "entity": "sensor.git_status",
+                  "state": "failed"
+                }
+              ]
             }
           ],
           "max_columns": 4,

@@ -11,13 +11,13 @@ handle_error() {
   EXIT_CODE=$?
   echo "Backup failed with exit code $EXIT_CODE"
 
-  printf '{"last_run":"%s","status":"failed","message":"Git command failed (exit %s)"}' \
+printf '{"last_run":"%s","status":"failed","message":"Git command failed (exit %s)"}' \
   "$NOW" "$EXIT_CODE" > "$STATUS_FILE"
 
   exit $EXIT_CODE
 }
 
-trap 'echo "Error on line $LINENO"; handle_error' ERR
+trap 'echo "Error at line $LINENO in git_backup.sh file"; handle_error' ERR
 
 echo "===== Git Backup started at $NOW ====="
 
