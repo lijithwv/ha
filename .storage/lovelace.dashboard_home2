@@ -198,7 +198,7 @@
                   },
                   "min": -100000,
                   "max": 0,
-                  "name": "Strainer"
+                  "name": "Strainer Tray"
                 },
                 {
                   "type": "gauge",
@@ -240,33 +240,6 @@
                     "red": -100000
                   },
                   "min": -100000,
-                  "entity": "sensor.roborock_qrevo_sensor_time_left",
-                  "tap_action": {
-                    "action": "perform-action",
-                    "confirmation": {
-                      "text": "Reset the Sensor time left?"
-                    },
-                    "perform_action": "button.press",
-                    "target": {
-                      "entity_id": "button.roborock_qrevo_reset_sensor_consumable"
-                    }
-                  },
-                  "name": "Sensor",
-                  "max": 1000
-                },
-                {
-                  "type": "gauge",
-                  "needle": false,
-                  "grid_options": {
-                    "columns": 3,
-                    "rows": "auto"
-                  },
-                  "severity": {
-                    "green": 10,
-                    "yellow": 0,
-                    "red": -100000
-                  },
-                  "min": -100000,
                   "max": 0,
                   "entity": "sensor.roborock_qrevo_main_brush_time_left",
                   "tap_action": {
@@ -294,9 +267,36 @@
                     "red": -100000
                   },
                   "min": -100000,
+                  "entity": "sensor.roborock_qrevo_sensor_time_left",
+                  "tap_action": {
+                    "action": "perform-action",
+                    "confirmation": {
+                      "text": "Reset the Sensor time left?"
+                    },
+                    "perform_action": "button.press",
+                    "target": {
+                      "entity_id": "button.roborock_qrevo_reset_sensor_consumable"
+                    }
+                  },
+                  "name": "Main Sensor",
+                  "max": 1000
+                },
+                {
+                  "type": "gauge",
+                  "needle": false,
+                  "grid_options": {
+                    "columns": 3,
+                    "rows": "auto"
+                  },
+                  "severity": {
+                    "green": 10,
+                    "yellow": 0,
+                    "red": -100000
+                  },
+                  "min": -100000,
                   "max": 0,
                   "entity": "sensor.roborock_qrevo_filter_time_left",
-                  "name": "Filter"
+                  "name": "Main Filter"
                 }
               ]
             },
@@ -703,8 +703,8 @@
                   "camera_view": "auto",
                   "fit_mode": "cover",
                   "type": "picture-entity",
-                  "entity": "camera.garage",
-                  "camera_image": "camera.garage"
+                  "entity": "camera.garage_front_fluent",
+                  "camera_image": "camera.garage_front_fluent"
                 }
               ]
             },
@@ -717,8 +717,8 @@
                   "camera_view": "auto",
                   "fit_mode": "cover",
                   "type": "picture-entity",
-                  "entity": "camera.backyard_fluent",
-                  "camera_image": "camera.backyard_fluent"
+                  "entity": "camera.garage",
+                  "camera_image": "camera.garage"
                 },
                 {
                   "show_state": true,
@@ -726,8 +726,8 @@
                   "camera_view": "auto",
                   "fit_mode": "cover",
                   "type": "picture-entity",
-                  "entity": "camera.garage_front_fluent",
-                  "camera_image": "camera.garage_front_fluent"
+                  "entity": "camera.backyard_fluent",
+                  "camera_image": "camera.backyard_fluent"
                 }
               ]
             },
