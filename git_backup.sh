@@ -6,6 +6,19 @@ LOG_FILE="/config/git_backup.log"
 exec >> "$LOG_FILE" 2>&1
 NOW=$(date '+%Y-%m-%dT%H:%M:%S')
 
+# --- Failure handler ---
+handle_error() {
+  EXIT_CODE=$?
+  echo "Backup failed with exit code $EXIT_CODE"
+
+  printf '{"last_run":"%s","status":"failed","message":"Git command failed (exit %s)"}' \
+  "$NOW" "$EXIT_CODE" > "$STATUS_FILE"
+
+  exit $EXIT_CODE
+}
+
+trap 'echo "Error on line $LINENO"; handle_error' ERR
+
 echo "===== Git Backup started at $NOW ====="
 
 # Navigate to HA config folder
