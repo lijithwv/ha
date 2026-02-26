@@ -371,34 +371,6 @@
               group: front-person-alert
               tag: front-person-alert
   mode: single
-- id: '1767769246794'
-  alias: Night Street Car
-  description: ''
-  triggers:
-  - trigger: numeric_state
-    entity_id:
-    - sensor.street_car_active_count
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 15
-    above: 0
-  conditions:
-  - condition: time
-    after: '21:00:00'
-  actions:
-  - action: notify.mobile_app_iphone_l
-    metadata: {}
-    data:
-      title: 'Street: Car Loittering'
-      message: Car Loittering in front street
-      data:
-        push:
-          sound:
-            name: default
-            critical: 1
-            volume: 1
-  mode: single
 - id: '1767776656798'
   alias: Front Cams Push Notification Schedule
   description: ''
@@ -453,25 +425,6 @@
     metadata: {}
     data: {}
   mode: single
-- id: '1768801283172'
-  alias: Frigate Notifications Test
-  description: ''
-  use_blueprint:
-    path: SgtBatten/Stable.yaml
-    input:
-      camera:
-      - camera.garage_cam
-      notify_device: 83f5d3039d66859d74a9998ea9308889
-      ios_live_view: camera.garage_front_fluent
-      zone_filter: false
-      title: Frigate Notifications Test
-      url_1: '{{base_url}}/api/frigate{{client_id}}/notifications/{{id}}/{{camera}}/master.m3u8'
-      cooldown: 3
-      master_condition:
-      - condition: state
-        entity_id: switch.front_cams_push_notify
-        state:
-        - 'on'
 - id: '1771550130081'
   alias: Illumination test
   description: ''
@@ -517,3 +470,25 @@
         group: bin-alerts
         tag: bin-alerts
   mode: single
+- id: '1772094107770'
+  alias: Front Person2
+  description: ''
+  use_blueprint:
+    path: SgtBatten/Stable.yaml
+    input:
+      camera:
+      - camera.garage_cam
+      - camera.doorbell_cam
+      notify_device: 83f5d3039d66859d74a9998ea9308889
+      base_url: https://riverhills85.duckdns.org:8123
+      zone_filter: true
+      zones:
+      - Porch
+      - Driveway
+      labels:
+      - person
+      cooldown: 3
+      critical: '{{''true'' if is_state(''sun.sun'', ''below_horizon'') else ''false''
+        }}'
+      alert_once: false
+      title: Frigate Notifications Blueprint
