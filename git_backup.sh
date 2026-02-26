@@ -17,14 +17,14 @@ git add .
 if git diff --cached --quiet; then
     echo "No changes."
     # Still mark run as successful
-    printf '{"last_run":"%s","last_success":"%s","status":"success","message":"No changes"}' \
-    "$NOW" "$NOW" > "$STATUS_FILE"
+    printf '{"last_run":"%s","status":"success","message":"No changes"}' \
+    "$NOW" > "$STATUS_FILE"
 else
     git commit -m "Auto backup $NOW"
     git push origin main
     echo "Backup successful"
-    printf '{"last_run":"%s","last_success":"%s","status":"success","message":"Committed and pushed"}' \
-    "$NOW" "$NOW" > "$STATUS_FILE"
+    printf '{"last_run":"%s","status":"success","message":"Committed and pushed"}' \
+    "$NOW" > "$STATUS_FILE"
 fi
 
 echo "===== Git Backup finished at $(date '+%Y-%m-%d %H:%M:%S') ====="
