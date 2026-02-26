@@ -40,5 +40,4 @@ else
     "$NOW" > "$STATUS_FILE"
 fi
 
-
 echo "===== Git Backup finished at $(date '+%Y-%m-%d %H:%M:%S') ====="
