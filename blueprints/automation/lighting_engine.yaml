@@ -1,0 +1,106 @@
+blueprint:
+  name: Universal Room Lighting Engine
+  description: >
+    Resolves lighting mode based on:
+    - House State (global)
+    - Time Phase (environmental)
+    - Room Intent (per room)
+    - Manual Override (highest priority)
+
+    Execution order:
+    1. Manual override → do nothing
+    2. If house_state != Home → call script.<room>_off
+    3. If room_intent != Auto → call script.<room>_<intent>
+    4. Otherwise → call script.<room>_<time_phase>
+
+  domain: automation
+
+  input:
+
+    room_key:
+      name: Room Key
+      description: Lowercase key used in script naming (e.g. living, theatre)
+      selector:
+        text:
+
+    room_intent:
+      name: Room Intent Selector
+      selector:
+        entity:
+          domain: input_select
+
+    house_state:
+      name: House State Selector
+      selector:
+        entity:
+          domain: input_select
+
+    time_phase:
+      name: Time Phase Selector
+      selector:
+        entity:
+          domain: input_select
+
+    manual_override:
+      name: Manual Override Boolean
+      selector:
+        entity:
+          domain: input_boolean
+
+trigger:
+  - platform: state
+    entity_id: !input room_intent
+
+  - platform: state
+    entity_id: !input house_state
+
+  - platform: state
+    entity_id: !input time_phase
+
+  - platform: state
+    entity_id: !input manual_override
+
+mode: restart
+
+action:
+  - variables:
+      room: !input room_key
+      intent: "{{ states('!input room_intent') }}"
+      house: "{{ states('!input house_state') }}"
+      phase: "{{ states('!input time_phase') }}"
+      manual: "{{ is_state('!input manual_override', 'on') }}"
+
+      resolved_mode: >
+        {% if manual %}
+          manual
+        {% elif house in ['Away', 'Vacation'] %}
+          off
+        {% elif intent != 'Auto' %}
+          {{ intent | lower }}
+        {% else %}
+          {{ phase | lower }}
+        {% endif %}
+
+      target_script: >
+        {% if resolved_mode != 'manual' %}
+          script.{{ room }}_{{ resolved_mode }}
+        {% else %}
+          none
+        {% endif %}
+
+  - choose:
+
+      # 🔴 Manual override → do nothing
+      - conditions:
+          - condition: template
+            value_template: "{{ manual }}"
+        sequence: []
+
+      # 🟢 Normal execution
+      - conditions:
+          - condition: template
+            value_template: "{{ not manual }}"
+        sequence:
+          - service: script.turn_on
+            target:
+              entity_id: "{{ target_script }}"

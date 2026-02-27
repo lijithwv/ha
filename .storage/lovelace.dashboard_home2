@@ -135,13 +135,15 @@
                   "show_name": true,
                   "show_icon": true,
                   "type": "button",
-                  "name": "Living evening",
-                  "icon": "mdi:lightbulb-multiple",
+                  "name": "Living Evening",
+                  "icon": "",
                   "show_state": false,
-                  "entity": "script.living_evening_routine",
                   "tap_action": {
-                    "action": "toggle"
-                  }
+                    "action": "perform-action",
+                    "perform_action": "script.living_evening_routine",
+                    "target": {}
+                  },
+                  "entity": "input_boolean.living_evening_mode"
                 },
                 {
                   "show_name": true,

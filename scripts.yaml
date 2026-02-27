@@ -1,15 +1,16 @@
 living_night_routine:
   sequence:
-  - action: script.living_corner_lamp_on
-    metadata: {}
-    data:
-      brightness: 10
-  - action: script.living_table_lamp_off
-    metadata: {}
-    data: {}
-  - action: script.living_tv_off
-    metadata: {}
-    data: {}
+  - parallel:
+    - action: script.living_corner_lamp_on
+      metadata: {}
+      data:
+        brightness: 10
+    - action: script.living_table_lamp_off
+      metadata: {}
+      data: {}
+    - action: script.living_tv_off
+      metadata: {}
+      data: {}
   alias: Living Night Routine
   description: ''
 living_away_routine:
@@ -138,15 +139,23 @@ theatre_sunset_light_off:
   description: ''
 living_evening_routine:
   sequence:
-  - action: script.living_corner_lamp_on
-    metadata: {}
-    data: {}
-  - action: script.living_table_lamp_on
-    metadata: {}
-    data: {}
-  - action: script.living_tv_on
-    metadata: {}
-    data: {}
+  - parallel:
+    - action: script.living_table_lamp_on
+      metadata: {}
+      data:
+        brightness: 30
+    - action: script.living_corner_lamp_on
+      metadata: {}
+      data:
+        brightness: 100
+    - action: script.living_tv_on
+      metadata: {}
+      data: {}
+    - action: input_boolean.turn_on
+      metadata: {}
+      target:
+        entity_id: input_boolean.living_evening_mode
+      data: {}
   alias: Living Evening Routine
   description: ''
 living_tv_on:
@@ -265,4 +274,11 @@ garage_door_control:
           entity_id: cover.smart_garage
         data: {}
   alias: Garage Door Control
+  description: ''
+theatre_evening_routine:
+  sequence:
+  - action: script.theatre_sunset_light_on
+    metadata: {}
+    data: {}
+  alias: Theatre Evening Routine
   description: ''
