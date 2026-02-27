@@ -311,66 +311,6 @@
         target:
           entity_id: cover.smart_garage
   mode: restart
-- id: '1767750985016'
-  alias: Front Person
-  description: ''
-  triggers:
-  - trigger: state
-    entity_id:
-    - binary_sensor.driveway_person_occupancy
-    to:
-    - 'on'
-  - trigger: state
-    entity_id:
-    - binary_sensor.porch_person_occupancy
-    to:
-    - 'on'
-  conditions:
-  - condition: state
-    entity_id: switch.front_cams_push_notify
-    state:
-    - 'on'
-  actions:
-  - choose:
-    - conditions:
-      - condition: sun
-        after: sunset
-      sequence:
-      - action: notify.mobile_app_iphone_l
-        metadata: {}
-        data:
-          message: Front Person detected
-          title: Front Person
-          data:
-            push:
-              sound:
-                name: US-EN-Alexa-Motion-In-Front-Yard.wav
-                critical: 1
-                volume: 1
-            entity_id: camera.garage_cam
-            url: '{{ states(''input_text.camera_dashboard_url'') }}'
-            data:
-              group: front-person-alert
-              tag: front-person-alert
-    - conditions:
-      - condition: sun
-        before: sunset
-      sequence:
-      - action: notify.mobile_app_iphone_l
-        metadata: {}
-        data:
-          message: Front Person detected
-          title: Front Person
-          data:
-            push:
-              sound:
-                name: US-EN-Alexa-Motion-In-Front-Yard.wav
-            entity_id: camera.garage_cam
-            url: '{{ states(''input_text.camera_dashboard_url'') }}'
-            data:
-              group: front-person-alert
-              tag: front-person-alert
-  mode: single
 - id: '1767776656798'
   alias: Front Cams Push Notification Schedule
   description: ''
@@ -471,7 +411,7 @@
         tag: bin-alerts
   mode: single
 - id: '1772094107770'
-  alias: Front Person2
+  alias: Front Person-Car Alerts
   description: ''
   use_blueprint:
     path: SgtBatten/Stable.yaml
@@ -483,12 +423,65 @@
       base_url: https://riverhills85.duckdns.org:8123
       zone_filter: true
       zones:
-      - Porch
       - Driveway
+      - Porch
       labels:
       - person
-      cooldown: 3
+      - car
+      cooldown: 0
       critical: '{{''true'' if is_state(''sun.sun'', ''below_horizon'') else ''false''
         }}'
       alert_once: false
-      title: Frigate Notifications Blueprint
+      title: Front Camera Alert
+      attachment: '{{base_url}}/api/frigate{{client_id}}/notifications/{{review_id}}/review_preview.gif'
+      attachment_2: '{{base_url}}/api/frigate{{client_id}}/notifications/{{review_id}}/review_preview.gif'
+      final_update: true
+      icon: mdi:cctv
+      sound: US-EN-Alexa-Motion-In-Front-Yard.wav
+      master_condition:
+      - condition: state
+        entity_id: switch.front_cams_push_notify
+        state:
+        - 'on'
+      tap_action: '{{ states(''input_text.camera_dashboard_url'') }}'
+- id: '1772154439254'
+  alias: Front Night Alert
+  description: ''
+  use_blueprint:
+    path: SgtBatten/Stable.yaml
+    input:
+      camera:
+      - camera.doorbell_cam
+      - camera.garage_cam
+      notify_device: 83f5d3039d66859d74a9998ea9308889
+      base_url: https://riverhills85.duckdns.org:8123
+      title: Front Night Alert
+      message: '{{ label }}{{ '' was'' if type == ''end'' else '''' }} detected on
+        the {{ camera_name }} camera{{'' in the '' if after_zones|length}}{{ after_zones
+        | join('', '') | replace(''_'', '' '' ) | title }}.'
+      critical: '{{''true'' if is_state(''sun.sun'', ''below_horizon'') else ''false''
+        }}'
+      attachment: '{{base_url}}/api/frigate{{client_id}}/notifications/{{review_id}}/review_preview.gif'
+      attachment_2: '{{base_url}}/api/frigate{{client_id}}/notifications/{{review_id}}/review_preview.gif'
+      final_update: true
+      icon: mdi:cctv
+      group: '{{camera}}-frigate-notification-night-car'
+      disable_times:
+      - '7'
+      - '8'
+      - '9'
+      - '10'
+      - '11'
+      - '12'
+      - '13'
+      - '14'
+      - '15'
+      - '16'
+      - '17'
+      - '18'
+      - '19'
+      - '20'
+      - '21'
+      - '22'
+      loiter_timer: 8
+      tap_action: '{{ states(''input_text.camera_dashboard_url'') }}'
