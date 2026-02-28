@@ -406,7 +406,7 @@
         tag: bin-alerts
   mode: single
 - id: '1772094107770'
-  alias: Front Person-Car Alerts
+  alias: Front Person Alerts
   description: ''
   use_blueprint:
     path: SgtBatten/Stable.yaml
@@ -422,7 +422,6 @@
       - Porch
       labels:
       - person
-      - car
       cooldown: 0
       critical: '{{''true'' if is_state(''sun.sun'', ''below_horizon'') else ''false''
         }}'
@@ -482,39 +481,6 @@
       loiter_timer: 8
       tap_action: '{{ states(''input_text.camera_dashboard_url'') }}'
       url_1: '{{base_url}}/api/frigate{{client_id}}/notifications/{{id}}/{{camera}}/master.m3u8'
-- id: '1772171276927'
-  alias: Apply House Mode
-  description: ''
-  triggers:
-  - entity_id: input_select.house_mode
-    trigger: state
-  actions:
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: input_select.house_mode
-        state: Evening
-      sequence:
-      - action: script.living_evening_routine
-        metadata: {}
-        data: {}
-    - conditions:
-      - condition: state
-        entity_id: input_select.house_mode
-        state: Night
-      sequence:
-      - action: script.living_night_routine
-        metadata: {}
-        data: {}
-    - conditions:
-      - condition: state
-        entity_id: input_select.house_mode
-        state: Away
-      sequence:
-      - action: script.living_away_routine
-        metadata: {}
-        data: {}
-  mode: single
 - id: '1772199853558'
   alias: Time Phase Engine
   description: ''
@@ -548,41 +514,14 @@
         data:
           option: Night
         action: input_select.select_option
-- id: '1772201473778'
-  alias: 'Test Living '
+- id: '1772264255820'
+  alias: Living Mode Engine
   description: ''
-  triggers:
-  - entity_id: input_select.living_mode
-    trigger: state
-  - entity_id:
-    - input_select.house_mode_2
-    trigger: state
-  - entity_id: input_select.time_phase
-    trigger: state
-  - entity_id: input_boolean.living_manual_override
-    trigger: state
-  actions:
-  - variables:
-      room: living
-      intent: '{{ states(''!input room_intent'') }}'
-      house: '{{ states(''!input house_state'') }}'
-      phase: '{{ states(''!input time_phase'') }}'
-      manual: '{{ is_state(''!input manual_override'', ''on'') }}'
-      resolved_mode: "{% if manual %}\n  manual\n{% elif house != 'Home' %}\n  {{
-        house }}\n{% elif intent != 'Auto' %}\n  {{ intent | lower }}\n{% else %}\n
-        \ {{ phase | lower }}\n{% endif %}\n"
-      target_script: "{% if resolved_mode != 'manual' %}\n  script.{{ room }}_{{ resolved_mode
-        }}\n{% else %}\n  none\n{% endif %}\n"
-  - choose:
-    - conditions:
-      - condition: template
-        value_template: '{{ manual }}'
-      sequence: []
-    - conditions:
-      - condition: template
-        value_template: '{{ not manual }}'
-      sequence:
-      - target:
-          entity_id: '{{ target_script }}'
-        action: script.turn_on
-  mode: restart
+  use_blueprint:
+    path: room_mode_engine.yaml
+    input:
+      room_key: living
+      room_intent: input_select.living_mode
+      house_state: input_select.house_mode
+      time_phase: input_select.time_phase
+      manual_override: input_boolean.living_manual_override

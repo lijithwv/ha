@@ -123,13 +123,13 @@
                   "show_name": true,
                   "show_icon": true,
                   "type": "button",
-                  "name": "Living away",
+                  "name": "Living Away",
                   "icon": "mdi:power-plug-off-outline",
                   "show_state": false,
-                  "entity": "script.living_away_routine",
                   "tap_action": {
                     "action": "toggle"
-                  }
+                  },
+                  "entity": "script.living_off"
                 },
                 {
                   "show_name": true,
@@ -139,23 +139,21 @@
                   "icon": "",
                   "show_state": false,
                   "tap_action": {
-                    "action": "perform-action",
-                    "perform_action": "script.living_evening_routine",
-                    "target": {}
+                    "action": "toggle"
                   },
-                  "entity": "input_boolean.living_evening_mode"
+                  "entity": "script.living_evening"
                 },
                 {
                   "show_name": true,
                   "show_icon": true,
                   "type": "button",
-                  "name": "Living night routine",
+                  "name": "Living Night",
                   "icon": "mdi:lightbulb-night-outline",
                   "show_state": false,
-                  "entity": "script.living_night_routine",
                   "tap_action": {
                     "action": "toggle"
-                  }
+                  },
+                  "entity": "script.living_night"
                 },
                 {
                   "show_name": true,
@@ -305,6 +303,34 @@
             {
               "type": "grid",
               "cards": [
+                {
+                  "type": "markdown",
+                  "content": "# `Modes`",
+                  "text_only": true
+                },
+                {
+                  "type": "custom:mushroom-select-card",
+                  "entity": "input_select.house_mode",
+                  "fill_container": false,
+                  "secondary_info": "last-changed"
+                },
+                {
+                  "type": "custom:mushroom-select-card",
+                  "fill_container": false,
+                  "secondary_info": "last-changed",
+                  "entity": "input_select.living_mode"
+                },
+                {
+                  "type": "tile",
+                  "entity": "input_select.time_phase",
+                  "show_entity_picture": false,
+                  "hide_state": false,
+                  "vertical": false,
+                  "tap_action": {
+                    "action": "none"
+                  },
+                  "features_position": "bottom"
+                },
                 {
                   "type": "markdown",
                   "content": "# `TVs`",
@@ -567,7 +593,7 @@
             {
               "event_grouping": true,
               "drop_todayevents_from": "10:00:00",
-              "next_days": 4,
+              "next_days": 2,
               "pattern": [
                 {
                   "icon": "mdi:trash-can",

@@ -1,0 +1,160 @@
+blueprint:
+  name: Universal Room Mode Engine
+  description: |
+      ROOM MODE ENGINE
+    
+      PURPOSE
+      -------
+      Resolves the active mode for a room based on house state, room intent, time phase,
+      and manual override. Delegates execution to scripts, allowing any behavior
+      (lighting, blinds, audio, notifications, etc.) to be defined per room.
+    
+      PRIORITY
+      --------
+        1. Manual Override → Do nothing (automation yields control)
+        2. House State ≠ Home → script.<room>_off
+           • For bedrooms, “Sleeping” can be included to trigger a _sleeping script instead of _off
+        3. Room Intent ≠ Auto → script.<room>_<intent>
+        4. Otherwise → script.<room>_<time_phase>
+    
+      SETUP
+      -----
+      1. Create input helpers:
+         • input_boolean: Manual Override
+         • input_boolean: Room is a bedroom (affects behavior in Sleeping mode)
+         • input_select: Room Intent (Auto, Relax, Movie, Bright)
+         • input_select: House State (Home, Away, Vacation, Sleeping, etc.)
+         • input_select: Time Phase (Morning, Day, Evening, Night)
+    
+      2. Create scripts following the naming convention: script.<room_key>_<mode>
+         • <room_key> = lowercase room identifier (e.g., living, bedroom)
+         • <mode> = desired mode (lowercase), e.g., off, sleeping, evening, relax, movie
+    
+      3. Configure the blueprint:
+         • Enter the room key (lowercase, no spaces)
+         • Specify if room is a bedroom
+         • Link the input helpers for this room:
+             – Room Intent
+             – House State
+             – Time Phase
+             – Manual Override
+    
+      REQUIRED SCRIPTS
+      ----------------
+      • Minimum: script.<room>_off
+      • Recommended for full functionality: one script per Time Phase and per non-Auto Room Intent
+      • Optional: script.<room>_sleeping for bedrooms
+    
+      NOTES
+      -----
+      • Script suffixes are automatically converted to lowercase
+      • Missing optional scripts generate a “service not found” log error but do not break the automation
+      • Manual Override prevents any script execution
+      • The automation does not control devices directly — scripts handle all behavior
+      • Active states can be customized per room; for example, bedrooms may treat “Sleeping” as active
+  domain: automation
+  input:
+    room_key:
+      name: Room Key
+      description: Lowercase key used in script naming (e.g. living, theatre)
+      selector:
+        text:
+
+    is_bedroom:
+      name: Room is a bedroom
+      description: Enable if this room is a bedroom. Affects behavior in Sleeping mode
+      default: false
+      selector:
+        boolean: {}
+
+    room_intent:
+      name: Room Intent Selector
+      selector:
+        entity:
+          domain: input_select
+
+    house_state:
+      name: House State Selector
+      selector:
+        entity:
+          domain: input_select
+
+    time_phase:
+      name: Time Phase Selector
+      selector:
+        entity:
+          domain: input_select
+
+    manual_override:
+      name: Manual Override Boolean
+      selector:
+        entity:
+          domain: input_boolean
+triggers:
+  - trigger: state
+    entity_id: !input room_intent
+
+  - trigger: state
+    entity_id: !input house_state
+
+  - trigger: state
+    entity_id: !input time_phase
+
+  - trigger: state
+    entity_id: !input manual_override
+mode: restart
+action:
+  - variables:
+      room: !input room_key
+      isBed: !input is_bedroom
+      
+      room_int: !input room_intent
+      intent: "{{ states(room_int) }}"
+      
+      house_md: !input house_state
+      house: "{{ states(house_md) }}"
+      
+      time_ph: !input time_phase
+      phase: "{{ states(time_ph) }}"
+      
+      manual_ovr: !input manual_override
+      manual: "{{ is_state(manual_ovr, on) }}"
+
+      resolved_mode: >
+        {% if manual %}
+          manual
+        {% elif house != 'Home' %}
+          {% if is_bedroom and house == 'Sleeping' %}
+            sleeping
+          {% else %}
+            off
+          {% endif %}
+        {% elif intent != 'Auto' %}
+          {{ intent | lower }}
+        {% else %}
+          {{ phase | lower }}
+        {% endif %}
+
+      target_script: >
+        {% if resolved_mode != 'manual' %}
+          script.{{ room }}_{{ resolved_mode }}
+        {% else %}
+          none
+        {% endif %}
+
+  - choose:
+
+      # 🔴 Manual override → do nothing
+      - conditions:
+          - condition: template
+            value_template: "{{ manual }}"
+        sequence: []
+
+      # 🟢 Normal execution
+      - conditions:
+          - condition: template
+            value_template: "{{ not manual }}"
+        sequence:
+          - service: script.turn_on
+            target:
+              entity_id: "{{ target_script }}"

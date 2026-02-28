@@ -30,7 +30,7 @@ living_away_routine:
       data: {}
       target:
         entity_id: remote.livingroomtv
-  alias: Living Away Routine
+  alias: Living Off Routine
   description: ''
 porch_light_on:
   sequence:
@@ -150,11 +150,6 @@ living_evening_routine:
         brightness: 100
     - action: script.living_tv_on
       metadata: {}
-      data: {}
-    - action: input_boolean.turn_on
-      metadata: {}
-      target:
-        entity_id: input_boolean.living_evening_mode
       data: {}
   alias: Living Evening Routine
   description: ''
