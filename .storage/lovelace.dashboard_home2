@@ -116,54 +116,6 @@
                 },
                 {
                   "type": "markdown",
-                  "content": "# `Routines`",
-                  "text_only": true
-                },
-                {
-                  "show_name": true,
-                  "show_icon": true,
-                  "type": "button",
-                  "name": "Living Away",
-                  "icon": "mdi:power-plug-off-outline",
-                  "show_state": false,
-                  "tap_action": {
-                    "action": "toggle"
-                  },
-                  "entity": "script.living_off"
-                },
-                {
-                  "show_name": true,
-                  "show_icon": true,
-                  "type": "button",
-                  "name": "Living Evening",
-                  "icon": "",
-                  "show_state": false,
-                  "tap_action": {
-                    "action": "toggle"
-                  },
-                  "entity": "script.living_evening"
-                },
-                {
-                  "show_name": true,
-                  "show_icon": true,
-                  "type": "button",
-                  "name": "Living Night",
-                  "icon": "mdi:lightbulb-night-outline",
-                  "show_state": false,
-                  "tap_action": {
-                    "action": "toggle"
-                  },
-                  "entity": "script.living_night"
-                },
-                {
-                  "show_name": true,
-                  "show_icon": true,
-                  "type": "button",
-                  "entity": "scene.living_party",
-                  "show_state": false
-                },
-                {
-                  "type": "markdown",
                   "content": "# `Vacuum`",
                   "text_only": true
                 },
@@ -487,7 +439,7 @@
                 },
                 {
                   "type": "markdown",
-                  "content": "{{ states('sensor.home_extended_text_0') }}\n\n{{ states('sensor.home_uv_forecast_0') }}",
+                  "content": "{{ states('sensor.home_short_text_0') }}\n\n{{ states('sensor.home_uv_forecast_0') }}",
                   "text_only": true
                 },
                 {
@@ -504,13 +456,13 @@
           ],
           "cards": [],
           "header": {
-            "layout": "center",
+            "layout": "responsive",
             "badges_position": "bottom",
             "badges_wrap": "wrap",
             "card": {
               "type": "markdown",
               "text_only": true,
-              "content": "{% set hour = now().hour %}\n{% if hour < 12 %}\n  # 🌅 Good Morning!\n{% elif hour < 18 %}\n  # 🌞 Good Afternoon!\n{% else %}\n  # 🌙 Good Evening!\n{% endif %}"
+              "content": "{% set now_dt = now() %}\n{% set greeting = \"🌅 Good Morning\" if now_dt.hour < 12\n  else \"🌞 Good Afternoon\" if now_dt.hour < 18\n  else \"🌙 Good Evening\" %}\n\n# {{ greeting }}  \n### {{ now_dt.strftime('%H:%M · %A, %d %B') }}\n"
             }
           },
           "badges": [
