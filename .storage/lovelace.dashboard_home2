@@ -452,6 +452,19 @@
                   "show_humidity": true
                 }
               ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "heading",
+                  "heading": "8.8.8.8"
+                },
+                {
+                  "type": "tile",
+                  "entity": "binary_sensor.8_8_8_8"
+                }
+              ]
             }
           ],
           "cards": [],
@@ -651,6 +664,13 @@
                   "state": "failed"
                 }
               ]
+            },
+            {
+              "type": "entity",
+              "show_name": false,
+              "show_state": true,
+              "show_icon": true,
+              "entity": "binary_sensor.8_8_8_8"
             }
           ],
           "max_columns": 4,
