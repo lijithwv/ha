@@ -475,7 +475,7 @@
             "card": {
               "type": "markdown",
               "text_only": true,
-              "content": "{% set now_dt = now() %}\n{% set greeting = \"🌅 Good Morning\" if now_dt.hour < 12\n  else \"🌞 Good Afternoon\" if now_dt.hour < 18\n  else \"🌙 Good Evening\" %}\n\n# {{ greeting }}  \n### {{ now_dt.strftime('%H:%M · %A, %d %B') }}\n"
+              "content": "{% set now_dt = now() %}\n{% set greeting = \"🌅 Good Morning\" if now_dt.hour < 12\n  else \"🌞 Good Afternoon\" if now_dt.hour < 18\n  else \"🌙 Good Evening\" %}\n\n# {{ greeting }}  \n### {{ now_dt.strftime('%H:%M · %A, %d %B') }}\n\nNext Sunrise: {{ as_timestamp(states('sensor.sun_next_rising')) | timestamp_custom('%d %b %I:%M %p') }}\nNext Sunset: {{ as_timestamp(states('sensor.sun_next_setting')) | timestamp_custom('%d %b %I:%M %p') }}"
             }
           },
           "badges": [

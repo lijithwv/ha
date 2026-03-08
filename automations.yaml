@@ -162,10 +162,7 @@
       - condition: template
         value_template: '{{ trigger.id == ''sunrise'' }}'
       sequence:
-      - action: script.living_corner_lamp_off
-        metadata: {}
-        data: {}
-      - action: script.living_table_lamp_off
+      - action: script.living_away_routine
         metadata: {}
         data: {}
   mode: single
@@ -525,3 +522,21 @@
       house_state: input_select.house_mode
       time_phase: input_select.time_phase
       manual_override: input_boolean.living_manual_override
+- id: '1772956375185'
+  alias: House Mode Engine
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_select.house_mode
+  conditions: []
+  actions:
+  - variables:
+      mode: '{{ states(''input_select.house_mode'') | lower}}'
+      target_script: script.house_{{ mode }}
+  - action: script.turn_on
+    metadata: {}
+    target:
+      entity_id: '{{ target_script }}'
+    data: {}
+  mode: single

@@ -21,7 +21,6 @@ blueprint:
       -----
       1. Create input helpers:
          • input_boolean: Manual Override
-         • input_boolean: Room is a bedroom (affects behavior in Sleeping mode)
          • input_select: Room Intent (Auto, Relax, Movie, Bright)
          • input_select: House State (Home, Away, Vacation, Sleeping, etc.)
          • input_select: Time Phase (Morning, Day, Evening, Night)
@@ -32,7 +31,7 @@ blueprint:
     
       3. Configure the blueprint:
          • Enter the room key (lowercase, no spaces)
-         • Specify if room is a bedroom
+         • Specify if room is a bedroom (affects behavior in Sleeping mode)
          • Link the input helpers for this room:
              – Room Intent
              – House State
@@ -51,7 +50,7 @@ blueprint:
       • Missing optional scripts generate a “service not found” log error but do not break the automation
       • Manual Override prevents any script execution
       • The automation does not control devices directly — scripts handle all behavior
-      • Active states can be customized per room; for example, bedrooms may treat “Sleeping” as active
+
   domain: automation
   input:
     room_key:
