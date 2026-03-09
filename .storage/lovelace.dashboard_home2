@@ -450,19 +450,14 @@
                   "show_decimal": true,
                   "hide_today_section": false,
                   "show_humidity": true
-                }
-              ]
-            },
-            {
-              "type": "grid",
-              "cards": [
-                {
-                  "type": "heading",
-                  "heading": "8.8.8.8"
                 },
                 {
-                  "type": "tile",
-                  "entity": "binary_sensor.8_8_8_8"
+                  "type": "custom:horizon-card",
+                  "southern_flip": false,
+                  "fields": {
+                    "dawn": false,
+                    "dusk": false
+                  }
                 }
               ]
             }
@@ -475,7 +470,7 @@
             "card": {
               "type": "markdown",
               "text_only": true,
-              "content": "{% set now_dt = now() %}\n{% set greeting = \"🌅 Good Morning\" if now_dt.hour < 12\n  else \"🌞 Good Afternoon\" if now_dt.hour < 18\n  else \"🌙 Good Evening\" %}\n\n# {{ greeting }}  \n### {{ now_dt.strftime('%H:%M · %A, %d %B') }}\n\nNext Sunrise: {{ as_timestamp(states('sensor.sun_next_rising')) | timestamp_custom('%d %b %I:%M %p') }}\nNext Sunset: {{ as_timestamp(states('sensor.sun_next_setting')) | timestamp_custom('%d %b %I:%M %p') }}"
+              "content": "{% set now_dt = now() %}\n{% set greeting = \"🌅 Good Morning\" if now_dt.hour < 12\n  else \"🌞 Good Afternoon\" if now_dt.hour < 18\n  else \"🌙 Good Evening\" %}\n\n# {{ greeting }}  \n### {{ now_dt.strftime('%H:%M · %A, %d %B') }}"
             }
           },
           "badges": [

@@ -33,6 +33,11 @@
         "id": "9b23e4b7a46a4131bd95f00bdd4a3552",
         "url": "/hacsfiles/lovelace-mushroom/mushroom.js?hacstag=444350375511",
         "type": "module"
+      },
+      {
+        "id": "1645cbc9a2914a6dbe1cd6566a2eb6e0",
+        "url": "/hacsfiles/lovelace-horizon-card/lovelace-horizon-card.js?hacstag=614083491140",
+        "type": "module"
       }
     ]
   }

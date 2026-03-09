@@ -126,7 +126,7 @@
       library_name: MiniShows
   mode: single
 - id: '1755514817754'
-  alias: Living Lights Schedule
+  alias: Living Lights Engine
   description: ''
   triggers:
   - trigger: sun
@@ -141,6 +141,16 @@
     offset: -01:00:00
     id: sunrise
     enabled: true
+  - trigger: numeric_state
+    entity_id:
+    - sensor.light_sensor_65_the_frame_illuminance
+    below: 100
+    id: illuminance
+    value_template: '{% set illuminance = states(''sensor.light_sensor_65_the_frame_illuminance'')
+      | float %}
+
+
+      {{ illuminance >= 100 or illuminance < 100  }}'
   conditions: []
   actions:
   - choose:
@@ -165,6 +175,46 @@
       - action: script.living_away_routine
         metadata: {}
         data: {}
+    - conditions:
+      - condition: state
+        entity_id: sun.sun
+        state:
+        - above_horizon
+      - condition: state
+        entity_id: input_select.house_mode
+        state:
+        - Home
+      - condition: template
+        value_template: '{{ trigger.id == ''illuminance'' }}'
+      sequence:
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ states(''sensor.light_sensor_65_the_frame_illuminance'')
+              | float < 100 }} '
+          sequence:
+          - parallel:
+            - action: script.turn_on
+              metadata: {}
+              target:
+                entity_id: script.living_corner_lamp_on
+              data: {}
+            - action: script.turn_on
+              metadata: {}
+              target:
+                entity_id: script.living_table_lamp_on
+              data: {}
+            enabled: true
+        - conditions:
+          - condition: template
+            value_template: '{{ states(''sensor.light_sensor_65_the_frame_illuminance'')
+              | float > 100 }} '
+          sequence:
+          - action: light.turn_off
+            metadata: {}
+            target:
+              area_id: living_room
+            data: {}
   mode: single
 - id: '1755590895676'
   alias: Porch Light Schedule
