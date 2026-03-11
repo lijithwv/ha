@@ -48,31 +48,68 @@ porch_light_on:
   description: ''
 living_corner_lamp_on:
   sequence:
-  - target:
-      entity_id: light.living_corner_lamp
-    data:
-      color_temp_kelvin: 2000
-      brightness_pct: '{{ brightness | default(100) }}'
-    action: light.turn_on
+  - if:
+    - condition: template
+      value_template: '{{ preset | lower == ''movie'' }}'
+    then:
+    - target:
+        entity_id: light.living_corner_lamp
+      data:
+        brightness_pct: '{{ brightness | default(100) }}'
+        rgb_color:
+        - 171
+        - 36
+        - 255
+        transition: 5
+      action: light.turn_on
+    else:
+    - target:
+        entity_id: light.living_corner_lamp
+      data:
+        color_temp_kelvin: 2000
+        brightness_pct: '{{ brightness | default(100) }}'
+      action: light.turn_on
   alias: Living Corner Lamp On
   fields:
     brightness:
       description: Brightness percentage (1-100)
       example: 50
+    preset:
+      description: Preset to be selected
+      example: movie
   description: ''
 living_table_lamp_on:
   sequence:
-  - action: light.turn_on
-    metadata: {}
-    data:
-      color_temp_kelvin: 2000
-      brightness_pct: '{{ brightness | default(30) }}'
-    target:
-      entity_id: light.living_table_lamp
+  - if:
+    - condition: template
+      value_template: '{{ preset | lower == ''movie'' }}'
+    then:
+    - action: light.turn_on
+      metadata: {}
+      target:
+        entity_id: light.living_table_lamp
+      data:
+        brightness_pct: '{{ brightness | default(30) }}'
+        rgb_color:
+        - 171
+        - 36
+        - 255
+    else:
+    - action: light.turn_on
+      metadata: {}
+      data:
+        color_temp_kelvin: 2000
+        brightness_pct: '{{ brightness | default(30) }}'
+      target:
+        entity_id: light.living_table_lamp
+      enabled: true
   fields:
     brightness:
       description: Brightness percentage (1-100)
       example: 50
+    preset:
+      description: Preset to be selected
+      example: movie
   description: ''
   alias: Living Table Lamp On
 porch_light_off:
@@ -276,4 +313,22 @@ theatre_evening_routine:
     metadata: {}
     data: {}
   alias: Theatre Evening Routine
+  description: ''
+living_movie_mode:
+  sequence:
+  - parallel:
+    - action: script.living_table_lamp_on
+      metadata: {}
+      data:
+        brightness: 30
+        preset: movie
+    - action: script.living_corner_lamp_on
+      metadata: {}
+      data:
+        brightness: 100
+        preset: movie
+    - action: script.living_tv_on
+      metadata: {}
+      data: {}
+  alias: Living Movie Mode
   description: ''
