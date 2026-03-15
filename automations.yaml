@@ -540,21 +540,36 @@
     trigger: time
   actions:
   - choose:
-    - conditions: '{{ trigger.event == ''sunrise'' }}'
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.event == ''sunrise'' }}'
       sequence:
       - target:
           entity_id: input_select.time_phase
         data:
-          option: Day
+          option: Morning
         action: input_select.select_option
-    - conditions: '{{ trigger.event == ''sunset'' }}'
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.event == ''time_day'' }}'
+      sequence:
+      - target:
+          entity_id: input_select.time_phase
+        data:
+          option: Morning
+        action: input_select.select_option
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.event == ''sunset'' }}'
       sequence:
       - target:
           entity_id: input_select.time_phase
         data:
           option: Evening
         action: input_select.select_option
-    - conditions: '{{ trigger.platform == ''time'' }}'
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.platform == ''time'' }}'
       sequence:
       - target:
           entity_id: input_select.time_phase
@@ -589,4 +604,29 @@
     target:
       entity_id: '{{ target_script }}'
     data: {}
+  mode: single
+- id: '1773539189548'
+  alias: Dishwasher Alert
+  description: ''
+  triggers:
+  - trigger: time
+    at: '22:00:00'
+    id: runCheck
+    enabled: true
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ states(''sensor.bosch_dishwasher_operation_state'') !=
+          ''run'' }}'
+      sequence:
+      - action: notify.mobile_app_iphone_l
+        metadata: {}
+        data:
+          message: Not running
+          title: "\U0001F37D️ Dishwasher"
+          data:
+            group: dishwasher
+            tag: dishwasher_status
   mode: single

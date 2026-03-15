@@ -32,6 +32,7 @@ blueprint:
       3. Configure the blueprint:
          • Enter the room key (lowercase, no spaces)
          • Specify if room is a bedroom (affects behavior in Sleeping mode)
+         • Specify if room intent resets at sunrise
          • Link the input helpers for this room:
              – Room Intent
              – House State
@@ -62,6 +63,13 @@ blueprint:
     is_bedroom:
       name: Room is a bedroom
       description: Enable if this room is a bedroom. Affects behavior in Sleeping mode
+      default: false
+      selector:
+        boolean: {}
+    
+    reset_at_sunrise:
+      name: Room intent resets at sunrise
+      description: Enable if this room intent should reset at sunrise
       default: false
       selector:
         boolean: {}
@@ -106,6 +114,7 @@ action:
   - variables:
       room: !input room_key
       isBed: !input is_bedroom
+      resetAtSunrise: !input reset_at_sunrise
       
       room_int: !input room_intent
       intent: "{{ states(room_int) }}"
@@ -118,6 +127,14 @@ action:
       
       manual_ovr: !input manual_override
       manual: "{{ is_state(manual_ovr, on) }}"
+      
+      # Reset intent logically at sunrise/morning phase
+      effective_intent: >
+        {% if resetAtSunrise and phase | lower == 'morning' %}
+          Auto
+        {% else %}
+          {{ intent }}
+        {% endif %}
 
       resolved_mode: >
         {% if manual %}
@@ -128,8 +145,8 @@ action:
           {% else %}
             off
           {% endif %}
-        {% elif intent != 'Auto' %}
-          {{ intent | lower }}
+        {% elif effective_intent != 'Auto' %}
+          {{ effective_intent | lower }}
         {% else %}
           {{ phase | lower }}
         {% endif %}
