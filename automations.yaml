@@ -146,11 +146,6 @@
     - sensor.light_sensor_65_the_frame_illuminance
     below: 100
     id: illuminance
-    value_template: '{% set illuminance = states(''sensor.light_sensor_65_the_frame_illuminance'')
-      | float %}
-
-
-      {{ illuminance >= 100 or illuminance < 100  }}'
   conditions: []
   actions:
   - choose:
@@ -538,6 +533,10 @@
     trigger: sun
   - at: '23:59:59'
     trigger: time
+    id: time_night
+  - at: '10:00:00'
+    trigger: time
+    id: time_day
   actions:
   - choose:
     - conditions:
@@ -551,12 +550,12 @@
         action: input_select.select_option
     - conditions:
       - condition: template
-        value_template: '{{ trigger.event == ''time_day'' }}'
+        value_template: '{{ trigger.id == ''time_day'' }}'
       sequence:
       - target:
           entity_id: input_select.time_phase
         data:
-          option: Morning
+          option: Day
         action: input_select.select_option
     - conditions:
       - condition: template
@@ -569,7 +568,7 @@
         action: input_select.select_option
     - conditions:
       - condition: template
-        value_template: '{{ trigger.platform == ''time'' }}'
+        value_template: '{{ trigger.id == ''time_night'' }}'
       sequence:
       - target:
           entity_id: input_select.time_phase
