@@ -12,20 +12,6 @@
               "type": "grid",
               "cards": [
                 {
-                  "type": "markdown",
-                  "content": "----------\n",
-                  "grid_options": {
-                    "columns": "full"
-                  },
-                  "text_only": true
-                }
-              ],
-              "column_span": 4
-            },
-            {
-              "type": "grid",
-              "cards": [
-                {
                   "type": "tile",
                   "entity": "switch.all_cams_push_notify",
                   "name": "All Cams Push",
@@ -113,6 +99,210 @@
                   "icon": "",
                   "show_state": false,
                   "entity": "light.anko_wi_fi_sunset_light"
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "custom:mushroom-select-card",
+                  "entity": "input_select.house_mode",
+                  "fill_container": false,
+                  "secondary_info": "last-changed"
+                },
+                {
+                  "type": "custom:mushroom-select-card",
+                  "fill_container": false,
+                  "secondary_info": "last-changed",
+                  "entity": "input_select.living_mode"
+                },
+                {
+                  "type": "markdown",
+                  "content": "# `TVs`",
+                  "text_only": true
+                },
+                {
+                  "type": "tile",
+                  "entity": "media_player.livingroomtv"
+                },
+                {
+                  "type": "tile",
+                  "entity": "media_player.theatre_tv"
+                },
+                {
+                  "type": "markdown",
+                  "content": "# `Misc`",
+                  "text_only": true
+                },
+                {
+                  "show_name": true,
+                  "show_icon": true,
+                  "type": "button",
+                  "name": "Git Backup",
+                  "icon": "mdi:cloud-upload-outline",
+                  "show_state": true,
+                  "tap_action": {
+                    "action": "perform-action",
+                    "perform_action": "script.backup_ha_config_to_github",
+                    "target": {}
+                  },
+                  "entity": "sensor.git_status"
+                },
+                {
+                  "show_name": true,
+                  "show_icon": true,
+                  "type": "button",
+                  "icon": "mdi:plex",
+                  "show_state": false,
+                  "tap_action": {
+                    "action": "perform-action",
+                    "perform_action": "plex.refresh_library",
+                    "target": {},
+                    "data": {
+                      "library_name": "MiniMovies"
+                    }
+                  },
+                  "name": "Refresh Plex"
+                },
+                {
+                  "type": "tile",
+                  "entity": "input_select.time_phase",
+                  "show_entity_picture": false,
+                  "hide_state": false,
+                  "vertical": false,
+                  "tap_action": {
+                    "action": "none"
+                  },
+                  "features_position": "bottom"
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "type": "section",
+                      "label": "Garage"
+                    },
+                    {
+                      "entity": "sensor.garage_status",
+                      "icon": "mdi:garage-variant",
+                      "name": "Status",
+                      "secondary_info": "none"
+                    },
+                    {
+                      "entity": "sensor.garage_status_last_changed",
+                      "name": "Last Changed",
+                      "secondary_info": "none"
+                    },
+                    {
+                      "type": "attribute",
+                      "entity": "sensor.garage_status",
+                      "attribute": "error",
+                      "name": "Error",
+                      "icon": "mdi:alert-circle"
+                    },
+                    {
+                      "type": "attribute",
+                      "entity": "sensor.garage_status",
+                      "attribute": "camera",
+                      "name": "Camera",
+                      "icon": "mdi:camera"
+                    },
+                    {
+                      "type": "section",
+                      "label": "Doors"
+                    },
+                    {
+                      "entity": "binary_sensor.entrance_sensor_door",
+                      "secondary_info": "last-changed",
+                      "name": "Front Main Door"
+                    },
+                    {
+                      "entity": "binary_sensor.laundry_room_sensor_sliding_door_window_2",
+                      "secondary_info": "last-changed",
+                      "name": "Laundry Sliding Door"
+                    },
+                    {
+                      "entity": "binary_sensor.living_room_sensor_sliding_door_window",
+                      "secondary_info": "last-changed",
+                      "name": "Living Sliding Door"
+                    },
+                    {
+                      "type": "section",
+                      "label": "Cameras"
+                    },
+                    {
+                      "entity": "binary_sensor.reolink_video_doorbell_poe_motion",
+                      "secondary_info": "last-changed"
+                    },
+                    {
+                      "entity": "binary_sensor.garage_front_motion",
+                      "secondary_info": "last-changed"
+                    },
+                    {
+                      "entity": "binary_sensor.east_motion",
+                      "secondary_info": "last-changed"
+                    },
+                    {
+                      "entity": "binary_sensor.west_motion",
+                      "secondary_info": "last-changed"
+                    },
+                    {
+                      "entity": "binary_sensor.backyard_motion",
+                      "secondary_info": "last-changed"
+                    },
+                    {
+                      "type": "section",
+                      "label": "Alarms"
+                    },
+                    {
+                      "entity": "siren.reolink_video_doorbell_poe_siren"
+                    },
+                    {
+                      "entity": "siren.backyard_siren",
+                      "secondary_info": "none"
+                    }
+                  ],
+                  "state_color": true,
+                  "show_header_toggle": false,
+                  "title": "Security"
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "markdown",
+                  "content": "# `Today's Forecast`",
+                  "text_only": true
+                },
+                {
+                  "type": "markdown",
+                  "content": "{{ states('sensor.home_short_text_0') }}\n\n{{ states('sensor.home_uv_forecast_0') }}",
+                  "text_only": true
+                },
+                {
+                  "type": "custom:clock-weather-card",
+                  "entity": "weather.home_2",
+                  "weather_icon_type": "fill",
+                  "date_pattern": "cccc, dd/MM/yyyy",
+                  "show_decimal": true,
+                  "hide_today_section": false,
+                  "show_humidity": true
+                },
+                {
+                  "type": "custom:horizon-card",
+                  "southern_flip": false,
+                  "fields": {
+                    "dawn": false,
+                    "dusk": false
+                  }
                 },
                 {
                   "type": "markdown",
@@ -251,221 +441,12 @@
                   "name": "Main Filter"
                 }
               ]
-            },
-            {
-              "type": "grid",
-              "cards": [
-                {
-                  "type": "markdown",
-                  "content": "# `Modes`",
-                  "text_only": true
-                },
-                {
-                  "type": "custom:mushroom-select-card",
-                  "entity": "input_select.house_mode",
-                  "fill_container": false,
-                  "secondary_info": "last-changed"
-                },
-                {
-                  "type": "custom:mushroom-select-card",
-                  "fill_container": false,
-                  "secondary_info": "last-changed",
-                  "entity": "input_select.living_mode"
-                },
-                {
-                  "type": "tile",
-                  "entity": "input_select.time_phase",
-                  "show_entity_picture": false,
-                  "hide_state": false,
-                  "vertical": false,
-                  "tap_action": {
-                    "action": "none"
-                  },
-                  "features_position": "bottom"
-                },
-                {
-                  "type": "markdown",
-                  "content": "# `TVs`",
-                  "text_only": true
-                },
-                {
-                  "type": "tile",
-                  "entity": "media_player.livingroomtv"
-                },
-                {
-                  "type": "tile",
-                  "entity": "media_player.theatre_tv"
-                },
-                {
-                  "type": "markdown",
-                  "content": "# `Misc`",
-                  "text_only": true
-                },
-                {
-                  "show_name": true,
-                  "show_icon": true,
-                  "type": "button",
-                  "name": "Git Backup",
-                  "icon": "mdi:cloud-upload-outline",
-                  "show_state": true,
-                  "tap_action": {
-                    "action": "perform-action",
-                    "perform_action": "script.backup_ha_config_to_github",
-                    "target": {}
-                  },
-                  "entity": "sensor.git_status"
-                },
-                {
-                  "show_name": true,
-                  "show_icon": true,
-                  "type": "button",
-                  "icon": "mdi:plex",
-                  "show_state": false,
-                  "tap_action": {
-                    "action": "perform-action",
-                    "perform_action": "plex.refresh_library",
-                    "target": {},
-                    "data": {
-                      "library_name": "MiniMovies"
-                    }
-                  },
-                  "name": "Refresh Plex"
-                }
-              ]
-            },
-            {
-              "type": "grid",
-              "cards": [
-                {
-                  "type": "entities",
-                  "entities": [
-                    {
-                      "type": "section",
-                      "label": "Garage"
-                    },
-                    {
-                      "entity": "sensor.garage_status",
-                      "icon": "mdi:garage-variant",
-                      "name": "Status",
-                      "secondary_info": "none"
-                    },
-                    {
-                      "entity": "sensor.garage_status_last_changed",
-                      "name": "Last Changed",
-                      "secondary_info": "none"
-                    },
-                    {
-                      "type": "attribute",
-                      "entity": "sensor.garage_status",
-                      "attribute": "error",
-                      "name": "Error",
-                      "icon": "mdi:alert-circle"
-                    },
-                    {
-                      "type": "attribute",
-                      "entity": "sensor.garage_status",
-                      "attribute": "camera",
-                      "name": "Camera",
-                      "icon": "mdi:camera"
-                    },
-                    {
-                      "type": "section",
-                      "label": "Doors"
-                    },
-                    {
-                      "entity": "binary_sensor.entrance_sensor_door",
-                      "secondary_info": "last-changed",
-                      "name": "Front Main Door"
-                    },
-                    {
-                      "entity": "binary_sensor.laundry_room_sensor_sliding_door_window_2",
-                      "secondary_info": "last-changed",
-                      "name": "Laundry Sliding Door"
-                    },
-                    {
-                      "entity": "binary_sensor.living_room_sensor_sliding_door_window",
-                      "secondary_info": "last-changed",
-                      "name": "Living Sliding Door"
-                    },
-                    {
-                      "type": "section",
-                      "label": "Cameras"
-                    },
-                    {
-                      "entity": "binary_sensor.reolink_video_doorbell_poe_motion",
-                      "secondary_info": "last-changed"
-                    },
-                    {
-                      "entity": "binary_sensor.garage_front_motion",
-                      "secondary_info": "last-changed"
-                    },
-                    {
-                      "entity": "binary_sensor.east_motion",
-                      "secondary_info": "last-changed"
-                    },
-                    {
-                      "entity": "binary_sensor.west_motion",
-                      "secondary_info": "last-changed"
-                    },
-                    {
-                      "entity": "binary_sensor.backyard_motion",
-                      "secondary_info": "last-changed"
-                    },
-                    {
-                      "type": "section",
-                      "label": "Alarms"
-                    },
-                    {
-                      "entity": "siren.reolink_video_doorbell_poe_siren"
-                    },
-                    {
-                      "entity": "siren.backyard_siren",
-                      "secondary_info": "none"
-                    }
-                  ],
-                  "state_color": true,
-                  "show_header_toggle": false,
-                  "title": "Security"
-                }
-              ]
-            },
-            {
-              "type": "grid",
-              "cards": [
-                {
-                  "type": "markdown",
-                  "content": "# `Today's Forecast`",
-                  "text_only": true
-                },
-                {
-                  "type": "markdown",
-                  "content": "{{ states('sensor.home_short_text_0') }}\n\n{{ states('sensor.home_uv_forecast_0') }}",
-                  "text_only": true
-                },
-                {
-                  "type": "custom:clock-weather-card",
-                  "entity": "weather.home_2",
-                  "weather_icon_type": "fill",
-                  "date_pattern": "cccc, dd/MM/yyyy",
-                  "show_decimal": true,
-                  "hide_today_section": false,
-                  "show_humidity": true
-                },
-                {
-                  "type": "custom:horizon-card",
-                  "southern_flip": false,
-                  "fields": {
-                    "dawn": false,
-                    "dusk": false
-                  }
-                }
-              ]
             }
           ],
           "cards": [],
           "header": {
             "layout": "responsive",
-            "badges_position": "bottom",
+            "badges_position": "top",
             "badges_wrap": "wrap",
             "card": {
               "type": "markdown",
@@ -553,7 +534,7 @@
             {
               "event_grouping": true,
               "drop_todayevents_from": "10:00:00",
-              "next_days": 2,
+              "next_days": 1,
               "pattern": [
                 {
                   "icon": "mdi:trash-can",

@@ -146,6 +146,7 @@
     - sensor.light_sensor_65_the_frame_illuminance
     below: 100
     id: illuminance
+    enabled: false
   conditions: []
   actions:
   - choose:
@@ -620,7 +621,7 @@
         value_template: '{{ states(''sensor.bosch_dishwasher_operation_state'') !=
           ''run'' }}'
       sequence:
-      - action: notify.mobile_app_iphone_l
+      - action: notify.all_devices
         metadata: {}
         data:
           message: Not running
