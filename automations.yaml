@@ -587,6 +587,7 @@
       house_state: input_select.house_mode
       time_phase: input_select.time_phase
       manual_override: input_boolean.living_manual_override
+      reset_at_sunrise: true
 - id: '1772956375185'
   alias: House Mode Engine
   description: ''
@@ -624,7 +625,8 @@
       - action: notify.all_devices
         metadata: {}
         data:
-          message: Not running
+          message: 'Not running. State: {{ states(''sensor.bosch_dishwasher_operation_state'')
+            }}'
           title: "\U0001F37D️ Dishwasher"
           data:
             group: dishwasher

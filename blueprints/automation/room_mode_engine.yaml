@@ -6,16 +6,16 @@ blueprint:
       PURPOSE
       -------
       Resolves the active mode for a room based on house state, room intent, time phase,
-      and manual override. Delegates execution to scripts, allowing any behavior
+      and manual override. Delegates execution to a single mode handler script, allowing any behavior
       (lighting, blinds, audio, notifications, etc.) to be defined per room.
     
       PRIORITY
       --------
         1. Manual Override → Do nothing (automation yields control)
-        2. House State ≠ Home → script.<room>_off
-           • For bedrooms, “Sleeping” can be included to trigger a _sleeping script instead of _off
-        3. Room Intent ≠ Auto → script.<room>_<intent>
-        4. Otherwise → script.<room>_<time_phase>
+        2. House State ≠ Home → mode = off
+           • For bedrooms, “Sleeping” → mode = sleeping
+        3. Room Intent ≠ Auto → mode = intent
+        4. Otherwise → mode = time_phase
     
       SETUP
       -----
@@ -25,40 +25,31 @@ blueprint:
          • input_select: House State (Home, Away, Vacation, Sleeping, etc.)
          • input_select: Time Phase (Morning, Day, Evening, Night)
     
-      2. Create scripts following the naming convention: script.<room_key>_<mode>
-         • <room_key> = lowercase room identifier (e.g., living, bedroom)
-         • <mode> = desired mode (lowercase), e.g., off, sleeping, evening, relax, movie
+      2. Create ONE mode handler script for this room:
+         • This script must accept a variable: `mode`
+         • Example: script.living_mode_handler
     
       3. Configure the blueprint:
          • Enter the room key (lowercase, no spaces)
          • Specify if room is a bedroom (affects behavior in Sleeping mode)
          • Specify if room intent resets at sunrise
-         • Link the input helpers for this room:
-             – Room Intent
-             – House State
-             – Time Phase
-             – Manual Override
-    
-      REQUIRED SCRIPTS
-      ----------------
-      • Minimum: script.<room>_off
-      • Recommended for full functionality: one script per Time Phase and per non-Auto Room Intent
-      • Optional: script.<room>_sleeping for bedrooms
+         • Link the mode handler script
+         • Link the input helpers we created earlier for this room
     
       NOTES
       -----
-      • Script suffixes are automatically converted to lowercase
-      • Missing optional scripts generate a “service not found” log error but do not break the automation
-      • Manual Override prevents any script execution
-      • The automation does not control devices directly — scripts handle all behavior
+      • The mode handler script receives `mode` (lowercase) as a param
+      • Script handles ALL execution logic
+      • Manual override prevents any script execution
 
   domain: automation
   input:
-    room_key:
-      name: Room Key
-      description: Lowercase key used in script naming (e.g. living, theatre)
+    mode_handler:
+      name: Mode Handler Script
+      description: Script that applies the resolved mode
       selector:
-        text:
+        entity:
+          domain: script
 
     is_bedroom:
       name: Room is a bedroom
@@ -69,7 +60,7 @@ blueprint:
     
     reset_at_sunrise:
       name: Room intent resets at sunrise
-      description: Enable if this room intent should reset at sunrise
+      description: Enable if the room intent should reset at sunrise
       default: false
       selector:
         boolean: {}
@@ -109,12 +100,14 @@ triggers:
 
   - trigger: state
     entity_id: !input manual_override
+
 mode: restart
+
 action:
   - variables:
-      room: !input room_key
-      isBed: !input is_bedroom
-      resetAtSunrise: !input reset_at_sunrise
+      is_bedroom: !input is_bedroom
+      reset_at_sunrise: !input reset_at_sunrise
+      target_script: !input mode_handler
       
       room_int: !input room_intent
       intent: "{{ states(room_int) }}"
@@ -130,7 +123,7 @@ action:
       
       # Reset intent logically at sunrise/morning phase
       effective_intent: >
-        {% if resetAtSunrise and phase | lower == 'morning' %}
+        {% if reset_at_sunrise and phase | lower == 'morning' %}
           Auto
         {% else %}
           {{ intent }}
@@ -151,15 +144,7 @@ action:
           {{ phase | lower }}
         {% endif %}
 
-      target_script: >
-        {% if resolved_mode != 'manual' %}
-          script.{{ room }}_{{ resolved_mode }}
-        {% else %}
-          none
-        {% endif %}
-
   - choose:
-
       # 🔴 Manual override → do nothing
       - conditions:
           - condition: template
@@ -174,3 +159,6 @@ action:
           - service: script.turn_on
             target:
               entity_id: "{{ target_script }}"
+            data:
+              variables:
+                mode: "{{ resolved_mode }}"

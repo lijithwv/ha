@@ -332,3 +332,31 @@ living_movie_mode:
       data: {}
   alias: Living Movie Mode
   description: ''
+living_mode_handler:
+  fields:
+    mode:
+      description: Mode to be handled
+      example: Auto, Away etc
+  sequence:
+  - action: button.press
+    metadata: {}
+    data: {}
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ mode == ''evening'' }}'
+      sequence:
+        parallel:
+        - action: script.living_table_lamp_on
+          metadata: {}
+          data:
+            brightness: 30
+        - action: script.living_corner_lamp_on
+          metadata: {}
+          data:
+            brightness: 100
+        - action: script.living_tv_on
+          metadata: {}
+          data: {}
+  alias: Living Mode Handler
+  description: ''
