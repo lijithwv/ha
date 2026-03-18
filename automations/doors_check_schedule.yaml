@@ -1,0 +1,33 @@
+- id: '1768798510194'
+  alias: Doors Check Schedule
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunset
+    offset: 0
+  - trigger: time
+    at: '23:59:00'
+  conditions: []
+  actions:
+  - action: script.doors_check
+    metadata: {}
+    data: {}
+  mode: single
+- id: '1771550130081'
+  alias: Illumination test
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.light_sensor_65_the_frame_illuminance
+    below: 100
+  conditions:
+  - condition: sun
+    before: sunset
+  actions:
+  - action: notify.mobile_app_iphone_l
+    metadata: {}
+    data:
+      message: 'Illumination below 100. Value: "{{ states(''sensor.light_sensor_65_the_frame_illuminance'')
+        }}" '
+  mode: single

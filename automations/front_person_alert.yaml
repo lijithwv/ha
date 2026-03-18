@@ -1,0 +1,34 @@
+- id: '1772094107770'
+  alias: Front Person Alert
+  description: ''
+  use_blueprint:
+    path: SgtBatten/Stable.yaml
+    input:
+      camera:
+      - camera.garage_cam
+      - camera.doorbell_cam
+      notify_device: 83f5d3039d66859d74a9998ea9308889
+      base_url: https://riverhills85.duckdns.org:8123
+      zone_filter: true
+      zones:
+      - Driveway
+      - Porch
+      labels:
+      - person
+      cooldown: 0
+      critical: '{{''true'' if is_state(''sun.sun'', ''below_horizon'') else ''false''
+        }}'
+      alert_once: false
+      title: Front Camera Alert
+      attachment: '{{base_url}}/api/frigate{{client_id}}/notifications/{{review_id}}/review_preview.gif'
+      attachment_2: '{{base_url}}/api/frigate{{client_id}}/notifications/{{review_id}}/review_preview.gif'
+      final_update: true
+      icon: mdi:cctv
+      sound: US-EN-Alexa-Motion-In-Front-Yard.wav
+      master_condition:
+      - condition: state
+        entity_id: switch.front_cams_push_notify
+        state:
+        - 'on'
+      tap_action: '{{ states(''input_text.camera_dashboard_url'') }}'
+      url_1: '{{base_url}}/api/frigate{{client_id}}/notifications/{{id}}/{{camera}}/master.m3u8'

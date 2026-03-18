@@ -1,0 +1,12 @@
+- id: '1755743513676'
+  alias: Nightly Git Backup
+  description: ''
+  triggers:
+  - trigger: time
+    at: 02:00:00
+  conditions: []
+  actions:
+  - action: script.backup_ha_config_to_github
+    metadata: {}
+    data: {}
+  mode: single

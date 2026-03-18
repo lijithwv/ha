@@ -1,0 +1,24 @@
+- id: '1755504874286'
+  alias: Refresh Plex Libraries
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - remote.livingroomtv
+    to: 'on'
+  - trigger: state
+    entity_id:
+    - media_player.plex_plex_for_lg_lg_86qned86asa_aaufljd
+    to:
+    - 'on'
+  conditions: []
+  actions:
+  - action: plex.refresh_library
+    metadata: {}
+    data:
+      library_name: MiniMovies
+  - action: plex.refresh_library
+    metadata: {}
+    data:
+      library_name: MiniShows
+  mode: single

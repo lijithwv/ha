@@ -1,0 +1,39 @@
+- id: '1767776656798'
+  alias: Front Cams Push Notification Schedule
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunset
+    offset: 0
+    id: 'on'
+  - trigger: sun
+    event: sunrise
+    offset: 0
+    id: 'off'
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.id == ''on'' }}'
+      sequence:
+      - action: switch.turn_on
+        metadata: {}
+        target:
+          entity_id: switch.all_cams_push_notify
+        data: {}
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.id == ''off'' }}'
+      sequence:
+      - action: switch.turn_off
+        metadata: {}
+        target:
+          entity_id: switch.all_cams_push_notify
+        data: {}
+      - action: switch.turn_on
+        metadata: {}
+        target:
+          entity_id: switch.front_cams_push_notify
+        data: {}
+  mode: single

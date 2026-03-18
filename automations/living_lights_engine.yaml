@@ -1,0 +1,54 @@
+- id: '1755514817754'
+  alias: Living Lights Engine
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.light_sensor_65_the_frame_illuminance
+    below: 100
+    id: illuminance
+    enabled: false
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: sun.sun
+        state:
+        - above_horizon
+      - condition: state
+        entity_id: input_select.house_mode
+        state:
+        - Home
+      - condition: template
+        value_template: '{{ trigger.id == ''illuminance'' }}'
+      sequence:
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ states(''sensor.light_sensor_65_the_frame_illuminance'')
+              | float < 100 }} '
+          sequence:
+          - parallel:
+            - action: script.turn_on
+              target:
+                entity_id: script.living_corner_lamp_control
+              data:
+                state: 'on'
+            - action: script.turn_on
+              target:
+                entity_id: script.living_table_lamp_control
+              data:
+                state: 'on'
+            enabled: true
+        - conditions:
+          - condition: template
+            value_template: '{{ states(''sensor.light_sensor_65_the_frame_illuminance'')
+              | float > 100 }} '
+          sequence:
+          - action: light.turn_off
+            metadata: {}
+            target:
+              area_id: living_room
+            data: {}
+  mode: single

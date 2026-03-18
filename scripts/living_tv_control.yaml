@@ -1,0 +1,16 @@
+living_tv_control:
+  alias: "Living TV Control"
+  description: "Turn the living room TV on or off"
+  fields:
+    state:
+      description: "Desired state: 'on' or 'off'"
+      example: "on"
+  sequence:
+    - if:
+        - condition: template
+          value_template: >
+            {{ states('remote.livingroomtv') != state }}
+      then:
+        - service: remote.turn_on
+          target:
+            entity_id: remote.livingroomtv

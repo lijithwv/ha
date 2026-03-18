@@ -1,0 +1,38 @@
+doors_check:
+  sequence:
+  - variables:
+      sensors:
+      - binary_sensor.living_room_sensor_sliding_door_window
+      - binary_sensor.laundry_room_sensor_sliding_door_window
+      - binary_sensor.entrance_sensor_door
+      garage_not_closed: '{{ ''closed'' not in states(''sensor.garage_status'') |
+        lower }}
+
+        '
+      open_sensors: "{{ expand(sensors)\n  | selectattr('state', 'eq', 'on')\n  |
+        map(attribute='entity_id')\n  | list }}\n"
+      any_open_sensors: '{{ open_sensors | count > 0 }}'
+      bad_sensors: "{{ expand(sensors)\n  | selectattr('state', 'in', ['unknown',
+        'unavailable'])\n  | map(attribute='entity_id')\n  | list }}\n"
+      any_bad_sensors: '{{ bad_sensors | count > 0 }}'
+  - if:
+    - condition: template
+      value_template: '{{ any_open_sensors or any_bad_sensors or garage_not_closed
+        }} '
+    then:
+    - data:
+        title: Open Door Alert
+        message: "{% if garage_not_closed %}Garage is not closed.{% endif %} {% if
+          any_open_sensors %}\n  The following doors are open:\n  {{ open_sensors
+          | map('state_attr', 'friendly_name') | join(', ') }}\n{% endif %} {% if
+          any_bad_sensors %}\n  The following doors are in bad status:\n  {{ bad_sensors
+          | map('state_attr', 'friendly_name') | join(', ') }}\n{% endif %}\n"
+      action: notify.mobile_app_iphone_l
+    else:
+    - action: notify.mobile_app_iphone_l
+      metadata: {}
+      data:
+        message: All doors are closed
+        title: Doors Check
+  alias: Doors Check
+  description: ''

@@ -1,0 +1,46 @@
+living_corner_lamp_control:
+  alias: "Living Corner Lamp Control"
+  description: "Turn the living corner lamp on or off, with optional brightness, preset, and transition"
+  fields:
+    state:
+      description: "Desired state: 'on' or 'off'"
+      example: "on"
+    brightness:
+      description: "Brightness percentage when turning on (1-100)"
+      example: 100
+      required: false
+    preset:
+      description: "Preset to apply when turning on (e.g., 'movie')"
+      example: "movie"
+      required: false
+  sequence:
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: "{{ state == 'on' }}"
+          sequence:
+            - if:
+                - condition: template
+                  value_template: "{{ preset | default('') | lower == 'movie' }}"
+              then:
+                - service: light.turn_on
+                  target:
+                    entity_id: light.living_corner_lamp
+                  data:
+                    brightness_pct: "{{ brightness | default(100) }}"
+                    rgb_color: [171, 36, 255]
+                    transition: 5
+              else:
+                - service: light.turn_on
+                  target:
+                    entity_id: light.living_corner_lamp
+                  data:
+                    brightness_pct: "{{ brightness | default(100) }}"
+                    color_temp_kelvin: 2000
+        - conditions:
+            - condition: template
+              value_template: "{{ state == 'off' }}"
+          sequence:
+            - service: light.turn_off
+              target:
+                entity_id: light.living_corner_lamp

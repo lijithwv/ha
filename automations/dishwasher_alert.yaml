@@ -1,0 +1,26 @@
+- id: '1773539189548'
+  alias: Dishwasher Alert
+  description: ''
+  triggers:
+  - trigger: time
+    at: '22:00:00'
+    id: runCheck
+    enabled: true
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ states(''sensor.bosch_dishwasher_operation_state'') !=
+          ''run'' }}'
+      sequence:
+      - action: notify.all_devices
+        metadata: {}
+        data:
+          message: 'Not running. State: {{ states(''sensor.bosch_dishwasher_operation_state'')
+            }}'
+          title: "\U0001F37D️ Dishwasher"
+          data:
+            group: dishwasher
+            tag: dishwasher_status
+  mode: single

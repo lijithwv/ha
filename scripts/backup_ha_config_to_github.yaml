@@ -1,0 +1,17 @@
+backup_ha_config_to_github:
+  sequence:
+  - action: shell_command.git_backup
+    metadata: {}
+    data: {}
+    response_variable: backup_result
+  - if:
+    - condition: template
+      value_template: '{{ backup_result.returncode != 0 }}'
+    then:
+    - action: notify.mobile_app_iphone_l
+      metadata: {}
+      data:
+        title: ❌ Backup Failed
+        message: "Git backup failed.                 \nResult: {{ backup_result }}"
+  alias: Backup HA Config to GitHub
+  description: ''

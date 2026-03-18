@@ -1,0 +1,33 @@
+- id: '1755590895676'
+  alias: Porch Light Schedule
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunset
+    offset: -00:10:00
+    id: 'on'
+  - trigger: time
+    at: '21:00:00'
+    id: 'off'
+  - trigger: time
+    at: '22:00:00'
+    id: 'off'
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.id == ''on'' }}'
+      sequence:
+      - action: script.porch_light_on
+        metadata: {}
+        data:
+          brightness: 10
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.id == ''off'' }}'
+      sequence:
+      - action: script.porch_light_off
+        metadata: {}
+        data: {}
+  mode: single

@@ -1,0 +1,13 @@
+- id: '1772264255820'
+  alias: Living Mode Engine
+  description: ''
+  use_blueprint:
+    path: room_mode_engine.yaml
+    input:
+      room_key: living
+      room_intent: input_select.living_mode
+      house_state: input_select.house_mode
+      time_phase: input_select.time_phase
+      manual_override: input_boolean.living_manual_override
+      reset_at_sunrise: true
+      mode_handler: script.living_mode_handler

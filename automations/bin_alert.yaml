@@ -1,0 +1,26 @@
+- alias: Bin Alert
+  description: ''
+  triggers:
+  - trigger: calendar.event_started
+    target:
+      entity_id: calendar.bin_collection
+    options:
+      offset:
+        days: 0
+        hours: 0
+        minutes: 0
+        seconds: 0
+      offset_type: before
+  conditions:
+  - condition: template
+    value_template: '{{ trigger.calendar_event.summary == ''Red Bin'' }}'
+  actions:
+  - action: notify.all_devices
+    metadata: {}
+    data:
+      title: ♻️ Bin Day
+      message: Please take the bin out
+      data:
+        group: bin-alerts
+        tag: bin-alerts
+  mode: single

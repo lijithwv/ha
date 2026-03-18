@@ -1,0 +1,68 @@
+- id: '1749037121895'
+  alias: Porch light on person
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.garage_front_person
+    to: 'on'
+  - trigger: state
+    entity_id:
+    - binary_sensor.reolink_video_doorbell_poe_person
+    to: 'on'
+  conditions:
+  - condition: sun
+    before: sunrise
+    after: sunset
+  actions:
+  - action: notify.mobile_app_iphone_l
+    metadata: {}
+    data:
+      message: Porch light on person triggered
+      data:
+        entity_id: camera.garage_cam
+        url: '{{ states(''input_text.camera_dashboard_url'') }}'
+        data:
+          group: porch-light-on
+          tag: porch-light-on
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: light.porch_light
+        state: 'off'
+      sequence:
+      - action: script.porch_light_control
+        data:
+          state: 'on'
+      - delay:
+          hours: 0
+          minutes: 10
+          seconds: 0
+          milliseconds: 0
+      - action: script.porch_light_control
+        data:
+          state: 'on'
+    - conditions:
+      - condition: state
+        entity_id: light.porch_light
+        state: 'on'
+      - condition: numeric_state
+        entity_id: light.porch_light
+        attribute: brightness
+        below: 100
+      sequence:
+      - variables:
+          prev_brightness: '{{ state_attr(''light.porch_light'', ''brightness'') }}'
+      - action: script.porch_light_control
+        data:
+          state: 'on'
+      - delay:
+          hours: 0
+          minutes: 10
+          seconds: 0
+          milliseconds: 0
+      - action: script.porch_light_control
+        data:
+          state: 'on'
+          brightness: '{{ prev_brightness }}'
+  mode: single

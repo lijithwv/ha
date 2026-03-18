@@ -1,0 +1,77 @@
+- id: '1772199853558'
+  alias: Time Phase Engine
+  description: ''
+  triggers:
+  # Morning - Sunrise
+  - trigger: sun
+    event: sunrise
+    id: morning
+
+  # Day - 10 AM
+  - trigger: time
+    at: '10:00:00'
+    id: day
+
+  # Evening - 2 hours before sunset
+  - trigger: sun
+    event: sunset
+    id: evening
+    offset: -02:00:00
+
+  # Night - Sunset
+  - event: sunset
+    trigger: sun
+    id: night
+    
+  # Midnight
+  - at: '23:59:59'
+    trigger: time
+    id: midnight
+  
+  actions:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.id == ''morning'' }}'
+      sequence:
+      - target:
+          entity_id: input_select.time_phase
+        data:
+          option: Morning
+        action: input_select.select_option
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.id == ''day'' }}'
+      sequence:
+      - target:
+          entity_id: input_select.time_phase
+        data:
+          option: Day
+        action: input_select.select_option
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.id == ''evening'' }}'
+      sequence:
+      - target:
+          entity_id: input_select.time_phase
+        data:
+          option: Evening
+        action: input_select.select_option
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.id == ''night'' }}'
+      sequence:
+      - target:
+          entity_id: input_select.time_phase
+        data:
+          option: Night
+        action: input_select.select_option
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.id == ''midnight'' }}'
+      sequence:
+      - target:
+          entity_id: input_select.time_phase
+        data:
+          option: Midnight
+        action: input_select.select_option

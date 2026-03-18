@@ -1,0 +1,35 @@
+- id: '1749085915742'
+  alias: Vaccum Error
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.roborock_qrevo_vacuum_error
+    from: none
+    to:
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  - trigger: state
+    entity_id:
+    - sensor.roborock_qrevo_dock_error
+    from: ok
+    to:
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  conditions: []
+  actions:
+  - action: notify.mobile_app_iphone_l
+    metadata: {}
+    data:
+      message: Vaccum error {{ trigger.to_state.name }}
+      title: Vacuum alert
+  - action: notify.mobile_app_sreelakshmis_iphone
+    metadata: {}
+    data:
+      message: Vaccum error {{ trigger.to_state.name }}
+      title: Vacuum alert
+  mode: single
