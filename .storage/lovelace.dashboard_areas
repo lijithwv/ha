@@ -12,14 +12,14 @@
             "kitchen"
           ],
           "order": [
+            "living_room",
             "front",
-            "east_path",
-            "west_path",
+            "theatre",
             "backyard",
             "laundry",
-            "living_room",
-            "study",
-            "theatre"
+            "east_path",
+            "west_path",
+            "study"
           ]
         },
         "areas_options": {

@@ -69,6 +69,16 @@
                   "text_only": true
                 },
                 {
+                  "type": "tile",
+                  "grid_options": {
+                    "columns": 6,
+                    "rows": 1
+                  },
+                  "entity": "light.living_corner_lamp",
+                  "vertical": true,
+                  "features_position": "bottom"
+                },
+                {
                   "show_name": true,
                   "show_icon": true,
                   "type": "button",
@@ -116,6 +126,12 @@
                   "fill_container": false,
                   "secondary_info": "last-changed",
                   "entity": "input_select.living_mode"
+                },
+                {
+                  "type": "custom:mushroom-select-card",
+                  "fill_container": false,
+                  "secondary_info": "last-changed",
+                  "entity": "input_select.theatre_mode"
                 },
                 {
                   "type": "markdown",
@@ -439,6 +455,15 @@
                   "max": 0,
                   "entity": "sensor.roborock_qrevo_filter_time_left",
                   "name": "Main Filter"
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "heading",
+                  "heading": "Living corner lamp"
                 }
               ]
             }
