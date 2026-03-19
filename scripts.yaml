@@ -1,10 +1,1 @@
 # Empty, all scripts managed via modular folder
-
-theatre_evening_routine:
-  sequence:
-  - action: script.theatre_sunset_light_on
-    metadata: {}
-    data: {}
-  alias: Theatre Evening Routine
-  description: ''
-

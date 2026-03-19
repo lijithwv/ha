@@ -78,10 +78,10 @@ living_mode_handler:
             data:
               state: 'on'
 
-    # Away
+    # Away / Off
     - conditions:
       - condition: template
-        value_template: "{{ mode | lower == 'away' }}"
+        value_template: "{{ mode | lower == 'away' or mode | lower == 'off' }}"
       sequence:
         - action: light.turn_off
           target:

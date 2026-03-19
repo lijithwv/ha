@@ -1,0 +1,12 @@
+- id: '1773889837524'
+  alias: Theatre Mode Engine
+  description: ''
+  use_blueprint:
+    path: room_mode_engine.yaml
+    input:
+      mode_handler: script.theatre_mode_handler
+      reset_at_sunrise: true
+      room_intent: input_select.theatre_mode
+      house_state: input_select.house_mode
+      time_phase: input_select.time_phase
+      manual_override: input_boolean.theatre_manual_override

@@ -19,15 +19,15 @@
       - condition: template
         value_template: '{{ trigger.id == ''on'' }}'
       sequence:
-      - action: script.porch_light_on
-        metadata: {}
+      - action: script.porch_light_control
         data:
+          state: 'on'
           brightness: 10
     - conditions:
       - condition: template
         value_template: '{{ trigger.id == ''off'' }}'
       sequence:
-      - action: script.porch_light_off
-        metadata: {}
-        data: {}
+      - action: script.porch_light_control
+        data:
+          state: 'off'
   mode: single

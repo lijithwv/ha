@@ -20,9 +20,9 @@
       - condition: template
         value_template: '{{ trigger.id == ''on'' }}'
       sequence:
-      - action: script.theatre_sunset_light_on
-        metadata: {}
-        data: {}
+      - action: script.theatre_sunset_light_control
+        data:
+          state: 'on'
     - conditions:
       - condition: template
         value_template: '{{ trigger.id == ''off'' }}'
@@ -33,14 +33,14 @@
         - unavailable
         - unknown
       sequence:
-      - action: script.theatre_sunset_light_off
-        metadata: {}
-        data: {}
+      - action: script.theatre_sunset_light_control
+        data:
+          state: 'off'
     - conditions:
       - condition: template
         value_template: '{{ trigger.id == ''sunrise'' }}'
       sequence:
-      - action: script.theatre_sunset_light_off
-        metadata: {}
-        data: {}
+      - action: script.theatre_sunset_light_control
+        data:
+          state: 'off'
   mode: single

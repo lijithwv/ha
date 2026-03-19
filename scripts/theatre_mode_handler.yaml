@@ -1,0 +1,58 @@
+theatre_mode_handler:
+  alias: Theatre Mode Handler
+  description: ''
+  fields:
+    mode:
+      description: Mode to be handled
+      example: Auto, Away etc
+  sequence:
+  - choose:
+    # Morning
+    - conditions:
+      - condition: template
+        value_template: "{{ mode | lower == 'morning' }}"
+      sequence:
+        - parallel:
+          - action: script.theatre_sunset_light_control
+            data:
+              state: 'off'
+                
+    # Evening
+    - conditions:
+      - condition: template
+        value_template: "{{ mode | lower == 'evening' }}"
+      sequence:
+        - parallel:
+          - action: script.theatre_sunset_light_control
+            data:
+              state: 'on'
+
+    # Midnight
+    - conditions:
+      - condition: template
+        value_template: "{{ mode | lower == 'midnight' }}"
+      sequence:
+        - parallel:
+          - action: script.theatre_sunset_light_control
+            data:
+              state: 'off'
+
+    # Movie
+    - conditions:
+      - condition: template
+        value_template: "{{ mode | lower == 'movie' }}"
+      sequence:
+        - parallel:
+          - action: script.theatre_sunset_light_control
+            data:
+              state: 'on'
+
+
+    # Away / Off
+    - conditions:
+      - condition: template
+        value_template: "{{ mode | lower == 'away' or mode | lower == 'off' }}"
+      sequence:
+        - action: light.turn_off
+          target:
+            area_id: theatre
