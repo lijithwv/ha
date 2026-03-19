@@ -66,6 +66,21 @@
                 ]
               }
             }
+          },
+          "living_room": {
+            "groups_options": {
+              "actions": {
+                "hidden": [],
+                "order": [
+                  "script.living_corner_lamp_control",
+                  "script.living_mode_handler",
+                  "script.living_table_lamp_control",
+                  "script.living_tv_control",
+                  "automation.living_sunset_lights_on",
+                  "automation.living_mode_engine"
+                ]
+              }
+            }
           }
         }
       }

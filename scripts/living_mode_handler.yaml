@@ -7,26 +7,10 @@ living_mode_handler:
       example: Auto, Away etc
   sequence:
   - choose:
-    # Morning
-    - conditions:
-      - condition: template
-        value_template: "{{ mode | lower == 'morning' }}"
-      sequence:
-        - parallel:
-          - action: script.living_corner_lamp_control
-            data:
-              state: 'off'
-          - action: script.living_table_lamp_control
-            data:
-              state: 'off'
-          - action: script.living_tv_control
-            data:
-              state: 'off'
-                
     # Evening
     - conditions:
       - condition: template
-        value_template: "{{ mode | lower == 'evening' }}"
+        value_template: "{{ mode | lower in ['evening', 'night'] }}"
       sequence:
         - parallel:
           - action: script.living_table_lamp_control
@@ -61,7 +45,7 @@ living_mode_handler:
     # Movie
     - conditions:
       - condition: template
-        value_template: "{{ mode | lower == 'movie' }}"
+        value_template: "{{ mode | lower in ['movie', 'party'] }}"
       sequence:
         - parallel:
           - action: script.living_table_lamp_control
@@ -78,14 +62,16 @@ living_mode_handler:
             data:
               state: 'on'
 
-    # Away / Off
-    - conditions:
-      - condition: template
-        value_template: "{{ mode | lower == 'away' or mode | lower == 'off' }}"
+    # Off by default
+    default:
       sequence:
-        - action: light.turn_off
-          target:
-            area_id: living_room
-        - action: script.living_tv_control
-          data:
-            state: 'off'
+        - parallel:
+          - action: script.living_table_lamp_control
+            data:
+              state: 'off'
+          - action: script.living_corner_lamp_control
+            data:
+              state: 'off'
+          - action: script.living_tv_control
+            data:
+              state: 'off'

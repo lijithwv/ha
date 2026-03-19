@@ -10,6 +10,11 @@
           "sections": [
             {
               "type": "grid",
+              "cards": [],
+              "column_span": 4
+            },
+            {
+              "type": "grid",
               "cards": [
                 {
                   "type": "tile",
@@ -47,15 +52,6 @@
                   "features_position": "bottom"
                 },
                 {
-                  "type": "tile",
-                  "entity": "light.backyard_floodlight",
-                  "vertical": false,
-                  "tap_action": {
-                    "action": "toggle"
-                  },
-                  "features_position": "bottom"
-                },
-                {
                   "type": "entities",
                   "entities": [
                     {
@@ -70,45 +66,49 @@
                 },
                 {
                   "type": "tile",
+                  "entity": "light.backyard_floodlight",
+                  "vertical": true,
+                  "features_position": "bottom"
+                },
+                {
+                  "type": "tile",
                   "grid_options": {
                     "columns": 6,
                     "rows": 1
                   },
                   "entity": "light.living_corner_lamp",
+                  "name": "Living Corner Lamp",
                   "vertical": true,
                   "features_position": "bottom"
                 },
                 {
-                  "show_name": true,
-                  "show_icon": true,
-                  "type": "button",
-                  "icon": "",
-                  "show_state": false,
-                  "entity": "light.porch_light"
+                  "type": "tile",
+                  "grid_options": {
+                    "columns": 6,
+                    "rows": 1
+                  },
+                  "entity": "light.living_table_lamp",
+                  "name": "Living Table Lamp",
+                  "vertical": true,
+                  "features_position": "bottom"
                 },
                 {
-                  "show_name": true,
-                  "show_icon": true,
-                  "type": "button",
-                  "icon": "",
-                  "show_state": false,
-                  "entity": "light.living_table_lamp"
+                  "type": "tile",
+                  "entity": "light.porch_light",
+                  "name": "Porch Light",
+                  "vertical": true,
+                  "features_position": "bottom"
                 },
                 {
-                  "show_name": true,
-                  "show_icon": true,
-                  "type": "button",
-                  "icon": "",
-                  "show_state": false,
-                  "entity": "light.living_corner_lamp"
-                },
-                {
-                  "show_name": true,
-                  "show_icon": true,
-                  "type": "button",
-                  "icon": "",
-                  "show_state": false,
-                  "entity": "light.anko_wi_fi_sunset_light"
+                  "type": "tile",
+                  "grid_options": {
+                    "columns": 6,
+                    "rows": 1
+                  },
+                  "entity": "light.anko_wi_fi_sunset_light",
+                  "name": "Theatre Sunset Light",
+                  "vertical": true,
+                  "features_position": "bottom"
                 }
               ]
             },
@@ -455,15 +455,6 @@
                   "max": 0,
                   "entity": "sensor.roborock_qrevo_filter_time_left",
                   "name": "Main Filter"
-                }
-              ]
-            },
-            {
-              "type": "grid",
-              "cards": [
-                {
-                  "type": "heading",
-                  "heading": "Living corner lamp"
                 }
               ]
             }

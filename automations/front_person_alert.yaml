@@ -7,7 +7,7 @@
       camera:
       - camera.garage_cam
       - camera.doorbell_cam
-      notify_device: 83f5d3039d66859d74a9998ea9308889
+      notify_device: bb910cd930116e37af6579027f41ee96
       base_url: https://riverhills85.duckdns.org:8123
       zone_filter: true
       zones:
