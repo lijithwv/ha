@@ -457,6 +457,19 @@
                   "name": "Main Filter"
                 }
               ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "heading",
+                  "heading": "Backup"
+                },
+                {
+                  "type": "tile",
+                  "entity": "event.backup_automatic_backup"
+                }
+              ]
             }
           ],
           "cards": [],
@@ -530,7 +543,7 @@
             },
             {
               "type": "custom:mushroom-template-badge",
-              "icon": "mdi:door-open",
+              "icon": "mdi:garage-open",
               "color": "red",
               "visibility": [
                 {
@@ -663,6 +676,43 @@
               "show_state": true,
               "show_icon": true,
               "entity": "binary_sensor.8_8_8_8"
+            },
+            {
+              "type": "custom:mushroom-template-badge",
+              "icon": "mdi:fire",
+              "color": "red",
+              "tap_action": {
+                "action": "navigate",
+                "navigation_path": "/dashboard-cameras"
+              },
+              "entity": "sensor.home_fire_danger_0",
+              "label": "Fire Danger",
+              "content": "{{ states(\"sensor.home_fire_danger_0\") }}",
+              "visibility": [
+                {
+                  "condition": "state",
+                  "entity": "sensor.home_fire_danger_0",
+                  "state_not": "Moderate"
+                }
+              ]
+            },
+            {
+              "type": "custom:mushroom-template-badge",
+              "icon": "mdi:wind-power",
+              "color": "red",
+              "tap_action": {
+                "action": "navigate",
+                "navigation_path": "/dashboard-cameras"
+              },
+              "label": "Wind Gust",
+              "content": "{% set gust = states(\"sensor.home_gust_speed_kilometre\") | float %}\n{% set gust_display = gust ~ ' km/h' %}\n\n{% if gust >= 100 -%}\n  Severe\n{%- elif gust >= 80 %}\n  Damaging\n{%- elif gust >= 60 %}\n  Strong\n{%- elif gust >= 40 %}\n  Windy\n{%- else %}\n  Normal\n{%- endif %}",
+              "visibility": [
+                {
+                  "condition": "numeric_state",
+                  "entity": "sensor.home_gust_speed_kilometre",
+                  "above": 40
+                }
+              ]
             }
           ],
           "max_columns": 4,
