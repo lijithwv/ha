@@ -41,7 +41,7 @@
           milliseconds: 0
       - action: script.porch_light_control
         data:
-          state: 'on'
+          state: 'off'
     - conditions:
       - condition: state
         entity_id: light.porch_light
