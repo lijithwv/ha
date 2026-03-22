@@ -10,7 +10,7 @@ theatre_mode_handler:
     # Active / On
     - conditions:
       - condition: template
-        value_template: "{{ mode | lower in ['evening', 'movie', 'game']}}"
+        value_template: "{{ mode | lower in ['evening', 'night', 'movie', 'game']}}"
       sequence:
         - parallel:
           - action: script.theatre_sunset_light_control
