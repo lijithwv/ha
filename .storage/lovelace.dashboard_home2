@@ -485,6 +485,53 @@
           },
           "badges": [
             {
+              "event_grouping": true,
+              "drop_todayevents_from": "10:00:00",
+              "next_days": 2,
+              "pattern": [
+                {
+                  "icon": "mdi:flower",
+                  "color": "lime",
+                  "type": "organic"
+                },
+                {
+                  "icon": "mdi:newspaper",
+                  "color": "blue",
+                  "type": "paper"
+                },
+                {
+                  "icon": "mdi:recycle-variant",
+                  "color": "amber",
+                  "type": "recycle",
+                  "pattern": "Yellow Bin"
+                },
+                {
+                  "icon": "mdi:trash-can-outline",
+                  "color": "red",
+                  "type": "waste",
+                  "pattern": "Red Bin"
+                },
+                {
+                  "icon": "mdi:dump-truck",
+                  "color": "purple",
+                  "type": "others"
+                }
+              ],
+              "day_style": "counter",
+              "card_style": "chip",
+              "alignment_style": "left",
+              "color_mode": "icon",
+              "items_per_row": 1,
+              "refresh_rate": 60,
+              "with_label": true,
+              "type": "custom:trash-card",
+              "entities": [
+                "calendar.bin_collection"
+              ],
+              "hide_time_range": true,
+              "use_summary": false
+            },
+            {
               "type": "custom:mushroom-template-badge",
               "content": "Entrance  ",
               "icon": "mdi:door-open",
