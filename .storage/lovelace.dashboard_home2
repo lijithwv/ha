@@ -702,7 +702,10 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "tap_action": {
+                "action": "more-info"
+              }
             },
             {
               "type": "custom:mushroom-template-badge",
@@ -715,7 +718,10 @@
                   "entity": "sensor.git_status",
                   "state": "failed"
                 }
-              ]
+              ],
+              "tap_action": {
+                "action": "more-info"
+              }
             },
             {
               "type": "entity",
@@ -729,8 +735,7 @@
               "icon": "mdi:fire",
               "color": "red",
               "tap_action": {
-                "action": "navigate",
-                "navigation_path": "/dashboard-cameras"
+                "action": "more-info"
               },
               "entity": "sensor.home_fire_danger_0",
               "label": "Fire Danger",
@@ -747,10 +752,6 @@
               "type": "custom:mushroom-template-badge",
               "icon": "mdi:wind-power",
               "color": "red",
-              "tap_action": {
-                "action": "navigate",
-                "navigation_path": "/dashboard-cameras"
-              },
               "label": "Wind Gust",
               "content": "{% set gust = states(\"sensor.home_gust_speed_kilometre\") | float %}\n{% set gust_display = gust ~ ' km/h' %}\n\n{% if gust >= 100 -%}\n  Severe\n{%- elif gust >= 80 %}\n  Damaging\n{%- elif gust >= 60 %}\n  Strong\n{%- elif gust >= 40 %}\n  Windy\n{%- else %}\n  Normal\n{%- endif %}",
               "visibility": [
@@ -759,7 +760,11 @@
                   "entity": "sensor.home_gust_speed_kilometre",
                   "above": 40
                 }
-              ]
+              ],
+              "tap_action": {
+                "action": "more-info"
+              },
+              "entity": "sensor.home_gust_speed_kilometre"
             }
           ],
           "max_columns": 4,
