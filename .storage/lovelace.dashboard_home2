@@ -191,6 +191,10 @@
                     "action": "none"
                   },
                   "features_position": "bottom"
+                },
+                {
+                  "type": "tile",
+                  "entity": "event.backup_automatic_backup"
                 }
               ]
             },
@@ -455,19 +459,6 @@
                   "max": 0,
                   "entity": "sensor.roborock_qrevo_filter_time_left",
                   "name": "Main Filter"
-                }
-              ]
-            },
-            {
-              "type": "grid",
-              "cards": [
-                {
-                  "type": "heading",
-                  "heading": "Backup"
-                },
-                {
-                  "type": "tile",
-                  "entity": "event.backup_automatic_backup"
                 }
               ]
             }
