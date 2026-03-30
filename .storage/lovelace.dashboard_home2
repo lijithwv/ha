@@ -478,7 +478,7 @@
             {
               "event_grouping": true,
               "drop_todayevents_from": "10:00:00",
-              "next_days": 2,
+              "next_days": 1,
               "pattern": [
                 {
                   "icon": "mdi:flower",
