@@ -599,59 +599,6 @@
               "entity": "cover.smart_garage"
             },
             {
-              "event_grouping": true,
-              "drop_todayevents_from": "10:00:00",
-              "next_days": 1,
-              "pattern": [
-                {
-                  "icon": "mdi:trash-can",
-                  "color": "red",
-                  "type": "organic",
-                  "label": "Red",
-                  "pattern": "Red Bin"
-                },
-                {
-                  "icon": "mdi:glass-cocktail",
-                  "color": "deep-purple",
-                  "type": "paper",
-                  "label": "Purple",
-                  "pattern": "Purple Bin"
-                },
-                {
-                  "icon": "mdi:recycle-variant",
-                  "color": "amber",
-                  "type": "recycle",
-                  "label": "Yellow",
-                  "pattern": "Yellow Bin"
-                },
-                {
-                  "icon": "mdi:trash-can-outline",
-                  "color": "grey",
-                  "type": "waste"
-                },
-                {
-                  "icon": "mdi:dump-truck",
-                  "color": "purple",
-                  "type": "others"
-                }
-              ],
-              "day_style": "counter",
-              "card_style": "chip",
-              "alignment_style": "left",
-              "color_mode": "icon",
-              "items_per_row": 2,
-              "refresh_rate": 60,
-              "with_label": true,
-              "type": "custom:trash-card",
-              "entities": [
-                "calendar.bin_collection"
-              ],
-              "filter_events": false,
-              "use_summary": true,
-              "hide_time_range": true,
-              "full_size": false
-            },
-            {
               "type": "custom:mushroom-template-badge",
               "content": "Vaccum Error",
               "icon": "mdi:vacuum",
