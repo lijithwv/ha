@@ -461,6 +461,27 @@
                   "name": "Main Filter"
                 }
               ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "heading",
+                  "heading": "Living OD"
+                },
+                {
+                  "type": "tile",
+                  "entity": "sensor.living_od_detected_activity"
+                },
+                {
+                  "type": "tile",
+                  "entity": "sensor.living_od_occupancy_probability"
+                },
+                {
+                  "type": "tile",
+                  "entity": "binary_sensor.living_od_occupancy_status"
+                }
+              ]
             }
           ],
           "cards": [],
@@ -470,7 +491,6 @@
             "badges_wrap": "wrap",
             "card": {
               "type": "markdown",
-              "text_only": true,
               "content": "{% set now_dt = now() %}\n{% set greeting = \"🌅 Good Morning\" if now_dt.hour < 12\n  else \"🌞 Good Afternoon\" if now_dt.hour < 18\n  else \"🌙 Good Evening\" %}\n\n# {{ greeting }}  \n### {{ now_dt.strftime('%H:%M · %A, %d %B') }}"
             }
           },
@@ -707,7 +727,8 @@
           ],
           "max_columns": 4,
           "icon": "mdi:monitor",
-          "path": "desktop"
+          "path": "desktop",
+          "theme": "Frosted Glass Dark Lite"
         },
         {
           "type": "sections",
@@ -787,7 +808,8 @@
               ]
             }
           ],
-          "cards": []
+          "cards": [],
+          "theme": "Frosted Glass"
         }
       ]
     }

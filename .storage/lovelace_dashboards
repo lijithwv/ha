@@ -11,7 +11,7 @@
         "url_path": "map",
         "mode": "storage",
         "require_admin": false,
-        "show_in_sidebar": true
+        "show_in_sidebar": false
       },
       {
         "id": "dashboard_areas",
@@ -30,15 +30,6 @@
         "require_admin": false,
         "mode": "storage",
         "url_path": "dashboard-cameras"
-      },
-      {
-        "id": "lovelace",
-        "icon": "mdi:view-dashboard",
-        "title": "Overview",
-        "url_path": "lovelace",
-        "require_admin": false,
-        "mode": "storage",
-        "show_in_sidebar": true
       },
       {
         "id": "dashboard_home2",
