@@ -728,7 +728,7 @@
           "max_columns": 4,
           "icon": "mdi:monitor",
           "path": "desktop",
-          "theme": "Frosted Glass Dark Lite"
+          "theme": "Frosted Glass"
         },
         {
           "type": "sections",
