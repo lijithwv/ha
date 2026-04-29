@@ -12,11 +12,11 @@
     at: '10:00:00'
     id: day
 
-  # Evening - 2 hours before sunset
+  # Evening - 1 hour before sunset
   - trigger: sun
     event: sunset
     id: evening
-    offset: -02:00:00
+    offset: -01:00:00
 
   # Night - Sunset
   - event: sunset
