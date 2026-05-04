@@ -8,7 +8,7 @@
       - camera.garage_cam
       - camera.doorbell_cam
       notify_device: bb910cd930116e37af6579027f41ee96
-      base_url: https://riverhills85.duckdns.org:8123
+      base_url: '{{ states("input_text.base_url") }}'
       zone_filter: true
       zones:
       - Driveway
@@ -30,5 +30,7 @@
         entity_id: switch.front_cams_push_notify
         state:
         - 'on'
-      tap_action: '{{ states(''input_text.camera_dashboard_url'') }}'
+      tap_action:
+        action: navigate
+        navigation_path: /dashboard-home2/cams
       url_1: '{{base_url}}/api/frigate{{client_id}}/notifications/{{id}}/{{camera}}/master.m3u8'
