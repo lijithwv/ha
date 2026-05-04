@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "input_text",
+  "data": {
+    "items": [
+      {
+        "id": "base_url",
+        "name": "Base URL",
+        "icon": "mdi:web",
+        "min": 0,
+        "max": 100,
+        "mode": "text"
+      },
+      {
+        "id": "camera_dashboard_url",
+        "name": "Camera dashboard url",
+        "icon": "mdi:cctv",
+        "min": 0,
+        "max": 100,
+        "mode": "text"
+      }
+    ]
+  }
+}

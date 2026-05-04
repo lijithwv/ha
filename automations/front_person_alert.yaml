@@ -30,7 +30,5 @@
         entity_id: switch.front_cams_push_notify
         state:
         - 'on'
-      tap_action:
-        action: navigate
-        navigation_path: /dashboard-home2/cams
+      tap_action: '{{ states("input_text.camera_dashboard_url") }}'
       url_1: '{{base_url}}/api/frigate{{client_id}}/notifications/{{id}}/{{camera}}/master.m3u8'

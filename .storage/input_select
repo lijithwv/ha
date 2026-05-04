@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "minor_version": 2,
+  "key": "input_select",
+  "data": {
+    "items": [
+      {
+        "id": "living_mode",
+        "name": "House Mode",
+        "options": [
+          "Home",
+          "Away",
+          "Vacation",
+          "Sleeping"
+        ],
+        "icon": "mdi:home-outline"
+      },
+      {
+        "id": "living_mode_2",
+        "name": "Living Mode",
+        "icon": "mdi:sofa-outline",
+        "options": [
+          "Auto",
+          "Evening",
+          "Night",
+          "Movie",
+          "Day",
+          "Party",
+          "Off"
+        ]
+      },
+      {
+        "id": "time_phase",
+        "name": "Time Phase",
+        "icon": "mdi:sun-clock-outline",
+        "options": [
+          "Morning",
+          "Day",
+          "Evening",
+          "Night",
+          "Midnight"
+        ]
+      },
+      {
+        "id": "theatre_mode",
+        "name": "Theatre Mode",
+        "icon": "mdi:theater",
+        "options": [
+          "Auto",
+          "Movie",
+          "Evening",
+          "Game",
+          "Off"
+        ]
+      }
+    ]
+  }
+}

@@ -18,6 +18,7 @@ tts/
 .storage/*
 !.storage/
 !.storage/lovelace*
+!.storage/input*
 
 www/snapshots/
 .ha_run.lock
