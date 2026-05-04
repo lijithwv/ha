@@ -461,27 +461,6 @@
                   "name": "Main Filter"
                 }
               ]
-            },
-            {
-              "type": "grid",
-              "cards": [
-                {
-                  "type": "heading",
-                  "heading": "Living OD"
-                },
-                {
-                  "type": "tile",
-                  "entity": "sensor.living_od_detected_activity"
-                },
-                {
-                  "type": "tile",
-                  "entity": "sensor.living_od_occupancy_probability"
-                },
-                {
-                  "type": "tile",
-                  "entity": "binary_sensor.living_od_occupancy_status"
-                }
-              ]
             }
           ],
           "cards": [],
