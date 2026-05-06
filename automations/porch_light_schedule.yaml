@@ -6,6 +6,10 @@
     event: sunset
     offset: -00:10:00
     id: 'on'
+  - trigger: sun
+    event: sunset
+    offset: 00:10:00
+    id: 'off'
   - trigger: time
     at: '21:00:00'
     id: 'off'
