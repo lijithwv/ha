@@ -11,8 +11,7 @@
   - choose:
     - conditions:
       - condition: template
-        value_template: '{{ states(''sensor.bosch_dishwasher_operation_state'') !=
-          ''run'' }}'
+        value_template: '{{ states(''sensor.bosch_dishwasher_operation_state'') | lower not in [''run'', ''delayedstart'']  }}'
       sequence:
       - action: notify.all_devices
         metadata: {}
