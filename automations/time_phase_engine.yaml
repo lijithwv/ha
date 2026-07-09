@@ -2,10 +2,11 @@
   alias: Time Phase Engine
   description: ''
   triggers:
-  # Morning - Sunrise
+  # Morning - 1 hour before Sunrise
   - trigger: sun
     event: sunrise
     id: morning
+    offset: -01:00:00
 
   # Day - 10 AM
   - trigger: time
