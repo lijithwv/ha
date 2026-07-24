@@ -1,0 +1,44 @@
+- alias: Daily Weather Update
+  description: ''
+  triggers:
+  - trigger: time
+    at: '08:00:00'
+  conditions: []
+  actions:
+  - variables:
+      weather_summary: "{{ states('sensor.home_short_text_0') }}"
+      uv_forecast: "{{ states('sensor.home_uv_forecast_0') }}"
+      weather_condition: "{{ states('weather.home_2') }}"
+      weather_icon: >-
+        {% set icons = {
+          'clear-night': '🌙',
+          'cloudy': '☁️',
+          'exceptional': '⚠️',
+          'fog': '🌫️',
+          'hail': '🌨️',
+          'lightning': '🌩️',
+          'lightning-rainy': '⛈️',
+          'partlycloudy': '⛅',
+          'pouring': '🌧️',
+          'rainy': '🌦️',
+          'snowy': '🌨️',
+          'snowy-rainy': '🌨️',
+          'sunny': '☀️',
+          'windy': '💨',
+          'windy-variant': '🌬️'
+        } %}
+        {{ icons.get(weather_condition, '🌡️') }}
+  - action: notify.all_devices
+    metadata: {}
+    data:
+      title: "{{ weather_icon | trim }} Today's Weather"
+      message: >-
+        {{ weather_summary }}
+
+        {{ uv_forecast }}
+      data:
+        group: weather-updates
+        tag: daily-weather
+        push:
+          interruption-level: active
+  mode: single
