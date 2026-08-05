@@ -787,6 +787,452 @@
           ],
           "cards": [],
           "theme": "Frosted Glass"
+        },
+        {
+          "type": "sections",
+          "sections": [
+            {
+              "type": "grid",
+              "cards": [],
+              "column_span": 4
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "switch.front_cams_push_notify"
+                    },
+                    {
+                      "entity": "switch.all_cams_push_notify"
+                    }
+                  ],
+                  "title": "Notifications",
+                  "state_color": true
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "light.porch_light"
+                    },
+                    {
+                      "entity": "light.backyard_floodlight"
+                    }
+                  ],
+                  "show_header_toggle": true,
+                  "state_color": true,
+                  "title": "Lights - Exterior"
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "light.living_corner_lamp",
+                      "icon": "mdi:floor-lamp-torchiere-variant"
+                    },
+                    {
+                      "entity": "light.living_table_lamp",
+                      "icon": "mdi:lamp"
+                    },
+                    {
+                      "entity": "light.anko_wi_fi_sunset_light",
+                      "name": "Theatre Sunset Light",
+                      "icon": "mdi:floor-lamp-dual"
+                    }
+                  ],
+                  "show_header_toggle": true,
+                  "state_color": true,
+                  "title": "Lights - Interior"
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "input_select.house_mode"
+                    },
+                    {
+                      "entity": "input_select.living_mode"
+                    },
+                    {
+                      "entity": "input_select.theatre_mode"
+                    }
+                  ],
+                  "show_header_toggle": false,
+                  "state_color": true,
+                  "title": "Modes"
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "media_player.livingroomtv_smartthings"
+                    },
+                    {
+                      "entity": "media_player.theatre_tv",
+                      "name": "Theatre TV"
+                    }
+                  ],
+                  "show_header_toggle": false,
+                  "state_color": true,
+                  "title": "TVs"
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "type": "section",
+                      "label": "Garage"
+                    },
+                    {
+                      "entity": "sensor.garage_status",
+                      "icon": "mdi:garage-variant",
+                      "name": "Status",
+                      "secondary_info": "none"
+                    },
+                    {
+                      "entity": "sensor.garage_status_last_changed",
+                      "name": "Last Changed",
+                      "secondary_info": "none"
+                    },
+                    {
+                      "type": "attribute",
+                      "entity": "sensor.garage_status",
+                      "attribute": "error",
+                      "name": "Error",
+                      "icon": "mdi:alert-circle"
+                    },
+                    {
+                      "type": "attribute",
+                      "entity": "sensor.garage_status",
+                      "attribute": "camera",
+                      "name": "Camera",
+                      "icon": "mdi:camera"
+                    },
+                    {
+                      "type": "section",
+                      "label": "Doors"
+                    },
+                    {
+                      "entity": "binary_sensor.entrance_sensor_door",
+                      "secondary_info": "last-changed",
+                      "name": "Front Main Door"
+                    },
+                    {
+                      "entity": "binary_sensor.laundry_room_sensor_sliding_door_window_2",
+                      "secondary_info": "last-changed",
+                      "name": "Laundry Sliding Door"
+                    },
+                    {
+                      "entity": "binary_sensor.living_room_sensor_sliding_door_window",
+                      "secondary_info": "last-changed",
+                      "name": "Living Sliding Door"
+                    },
+                    {
+                      "type": "section",
+                      "label": "Cameras"
+                    },
+                    {
+                      "entity": "binary_sensor.reolink_video_doorbell_poe_motion",
+                      "secondary_info": "last-changed"
+                    },
+                    {
+                      "entity": "binary_sensor.garage_front_motion",
+                      "secondary_info": "last-changed"
+                    },
+                    {
+                      "entity": "binary_sensor.east_motion",
+                      "secondary_info": "last-changed"
+                    },
+                    {
+                      "entity": "binary_sensor.west_motion",
+                      "secondary_info": "last-changed"
+                    },
+                    {
+                      "entity": "binary_sensor.backyard_motion",
+                      "secondary_info": "last-changed"
+                    },
+                    {
+                      "type": "section",
+                      "label": "Alarms"
+                    },
+                    {
+                      "entity": "siren.reolink_video_doorbell_poe_siren"
+                    },
+                    {
+                      "entity": "siren.backyard_siren",
+                      "secondary_info": "none"
+                    }
+                  ],
+                  "state_color": true,
+                  "show_header_toggle": false,
+                  "title": "Security"
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "heading",
+                  "heading": "New section"
+                }
+              ]
+            }
+          ],
+          "cards": [],
+          "header": {
+            "layout": "responsive",
+            "badges_position": "top",
+            "badges_wrap": "wrap",
+            "card": {
+              "type": "markdown",
+              "content": "{% set now_dt = now() %}\n{% set greeting = \"🌅 Good Morning\" if now_dt.hour < 12\n  else \"🌞 Good Afternoon\" if now_dt.hour < 18\n  else \"🌙 Good Evening\" %}\n\n# {{ greeting }}  \n### {{ now_dt.strftime('%H:%M · %A, %d %B') }}\n{{ states('sensor.home_short_text_0') }}\n{{ states('sensor.home_uv_forecast_0') }}"
+            }
+          },
+          "badges": [
+            {
+              "event_grouping": true,
+              "drop_todayevents_from": "10:00:00",
+              "next_days": 1,
+              "pattern": [
+                {
+                  "icon": "mdi:flower",
+                  "color": "lime",
+                  "type": "organic",
+                  "pattern": "Green Bin"
+                },
+                {
+                  "icon": "mdi:newspaper",
+                  "color": "blue",
+                  "type": "paper"
+                },
+                {
+                  "icon": "mdi:recycle-variant",
+                  "color": "amber",
+                  "type": "recycle",
+                  "pattern": "Yellow Bin"
+                },
+                {
+                  "icon": "mdi:trash-can-outline",
+                  "color": "red",
+                  "type": "waste",
+                  "pattern": "Red Bin"
+                },
+                {
+                  "icon": "mdi:dump-truck",
+                  "color": "purple",
+                  "type": "others"
+                }
+              ],
+              "day_style": "counter",
+              "day_style_format": "yyyy.MM.dd",
+              "card_style": "chip",
+              "alignment_style": "left",
+              "color_mode": "icon",
+              "items_per_row": 1,
+              "refresh_rate": 60,
+              "with_label": true,
+              "layout": "default",
+              "type": "custom:trash-card",
+              "entities": [
+                "calendar.bin_collection"
+              ],
+              "hide_time_range": true,
+              "use_summary": false
+            },
+            {
+              "type": "custom:mushroom-template-badge",
+              "content": "Entrance  ",
+              "icon": "mdi:door-open",
+              "color": "red",
+              "visibility": [
+                {
+                  "condition": "state",
+                  "entity": "binary_sensor.entrance_sensor_door",
+                  "state_not": "off"
+                }
+              ],
+              "entity": "binary_sensor.entrance_sensor_door",
+              "label": "Open Door",
+              "tap_action": {
+                "action": "navigate",
+                "navigation_path": "/dashboard-cameras"
+              }
+            },
+            {
+              "type": "custom:mushroom-template-badge",
+              "icon": "mdi:door-open",
+              "color": "red",
+              "visibility": [
+                {
+                  "condition": "state",
+                  "entity": "binary_sensor.laundry_room_sensor_sliding_door_window_2",
+                  "state_not": "off"
+                }
+              ],
+              "entity": "binary_sensor.laundry_room_sensor_sliding_door_window_2",
+              "label": "Open Door",
+              "content": "Laundry",
+              "tap_action": {
+                "action": "navigate",
+                "navigation_path": "/dashboard-cameras"
+              }
+            },
+            {
+              "type": "custom:mushroom-template-badge",
+              "icon": "mdi:door-open",
+              "color": "red",
+              "visibility": [
+                {
+                  "condition": "state",
+                  "entity": "binary_sensor.living_room_sensor_sliding_door_window",
+                  "state_not": "off"
+                }
+              ],
+              "label": "Open Door",
+              "content": "Living",
+              "tap_action": {
+                "action": "navigate",
+                "navigation_path": "/dashboard-cameras"
+              },
+              "entity": "binary_sensor.living_room_sensor_sliding_door_window"
+            },
+            {
+              "type": "custom:mushroom-template-badge",
+              "icon": "mdi:garage-open",
+              "color": "red",
+              "visibility": [
+                {
+                  "condition": "state",
+                  "entity": "sensor.garage_door_simple",
+                  "state_not": "closed"
+                }
+              ],
+              "label": "Open Door",
+              "content": "Garage",
+              "tap_action": {
+                "action": "navigate",
+                "navigation_path": "/dashboard-cameras"
+              },
+              "entity": "cover.smart_garage"
+            },
+            {
+              "type": "custom:mushroom-template-badge",
+              "content": "Vaccum Error",
+              "icon": "mdi:vacuum",
+              "color": "red",
+              "entity": "sensor.roborock_qrevo_vacuum_error",
+              "visibility": [
+                {
+                  "condition": "or",
+                  "conditions": [
+                    {
+                      "condition": "state",
+                      "entity": "sensor.roborock_qrevo_dock_error",
+                      "state_not": "ok"
+                    },
+                    {
+                      "condition": "state",
+                      "entity": "sensor.roborock_qrevo_vacuum_error",
+                      "state_not": "none"
+                    },
+                    {
+                      "condition": "state",
+                      "entity": "binary_sensor.roborock_qrevo_water_shortage",
+                      "state_not": "off"
+                    },
+                    {
+                      "condition": "state",
+                      "entity": "binary_sensor.kunjappan_dock_clean_water_box",
+                      "state_not": "off"
+                    },
+                    {
+                      "condition": "state",
+                      "entity": "binary_sensor.kunjappan_dock_dirty_water_box",
+                      "state_not": "off"
+                    },
+                    {
+                      "condition": "state",
+                      "entity": "binary_sensor.roborock_qrevo_water_box_attached",
+                      "state_not": "on"
+                    }
+                  ]
+                }
+              ],
+              "tap_action": {
+                "action": "more-info"
+              }
+            },
+            {
+              "type": "custom:mushroom-template-badge",
+              "content": "Git Error",
+              "icon": "mdi:git",
+              "color": "red",
+              "visibility": [
+                {
+                  "condition": "state",
+                  "entity": "sensor.git_status",
+                  "state": "failed"
+                }
+              ],
+              "tap_action": {
+                "action": "more-info"
+              }
+            },
+            {
+              "type": "custom:mushroom-template-badge",
+              "icon": "mdi:fire",
+              "color": "red",
+              "tap_action": {
+                "action": "more-info"
+              },
+              "entity": "sensor.home_fire_danger_0",
+              "label": "Fire Danger",
+              "content": "{{ states(\"sensor.home_fire_danger_0\") }}",
+              "visibility": [
+                {
+                  "condition": "state",
+                  "entity": "sensor.home_fire_danger_0",
+                  "state_not": "Moderate"
+                }
+              ]
+            },
+            {
+              "type": "custom:mushroom-template-badge",
+              "icon": "mdi:wind-power",
+              "color": "red",
+              "label": "Wind Gust",
+              "content": "{% set gust = states(\"sensor.home_gust_speed_kilometre\") | float %}\n{% set gust_display = gust ~ ' km/h' %}\n\n{% if gust >= 100 -%}\n  Severe\n{%- elif gust >= 80 %}\n  Damaging\n{%- elif gust >= 60 %}\n  Strong\n{%- elif gust >= 40 %}\n  Windy\n{%- else %}\n  Normal\n{%- endif %}",
+              "visibility": [
+                {
+                  "condition": "numeric_state",
+                  "entity": "sensor.home_gust_speed_kilometre",
+                  "above": 40
+                }
+              ],
+              "tap_action": {
+                "action": "more-info"
+              },
+              "entity": "sensor.home_gust_speed_kilometre"
+            }
+          ],
+          "max_columns": 4,
+          "icon": "mdi:monitor",
+          "path": "desktopx",
+          "theme": "Frosted Glass Dark Lite"
         }
       ]
     }
