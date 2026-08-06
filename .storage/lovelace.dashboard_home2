@@ -60,9 +60,11 @@
                   ]
                 },
                 {
-                  "type": "markdown",
-                  "content": "# `Lights`",
-                  "text_only": true
+                  "type": "heading",
+                  "icon": "mdi:ceiling-light-multiple",
+                  "heading": "Lights",
+                  "heading_style": "title",
+                  "badges": []
                 },
                 {
                   "type": "tile",
@@ -134,24 +136,36 @@
                   "entity": "input_select.theatre_mode"
                 },
                 {
-                  "type": "markdown",
-                  "content": "# `TVs`",
-                  "text_only": true
+                  "type": "tile",
+                  "entity": "input_select.time_phase",
+                  "show_entity_picture": false,
+                  "hide_state": false,
+                  "vertical": false,
+                  "tap_action": {
+                    "action": "none"
+                  },
+                  "features_position": "bottom"
                 },
                 {
                   "type": "tile",
-                  "entity": "media_player.livingroomtv_qa65ls03dawxxy",
-                  "vertical": false,
-                  "features_position": "bottom"
+                  "entity": "event.backup_automatic_backup"
+                },
+                {
+                  "type": "heading",
+                  "icon": "mdi:television",
+                  "heading": "Media center",
+                  "heading_style": "title",
+                  "badges": []
                 },
                 {
                   "type": "tile",
                   "entity": "media_player.theatre_tv"
                 },
                 {
-                  "type": "markdown",
-                  "content": "# `Misc`",
-                  "text_only": true
+                  "type": "tile",
+                  "entity": "media_player.livingroomtv_qa65ls03dawxxy",
+                  "vertical": false,
+                  "features_position": "bottom"
                 },
                 {
                   "show_name": true,
@@ -182,21 +196,6 @@
                     }
                   },
                   "name": "Refresh Plex"
-                },
-                {
-                  "type": "tile",
-                  "entity": "input_select.time_phase",
-                  "show_entity_picture": false,
-                  "hide_state": false,
-                  "vertical": false,
-                  "tap_action": {
-                    "action": "none"
-                  },
-                  "features_position": "bottom"
-                },
-                {
-                  "type": "tile",
-                  "entity": "event.backup_automatic_backup"
                 }
               ]
             },
@@ -300,16 +299,6 @@
               "type": "grid",
               "cards": [
                 {
-                  "type": "markdown",
-                  "content": "# `Today's Forecast`",
-                  "text_only": true
-                },
-                {
-                  "type": "markdown",
-                  "content": "{{ states('sensor.home_short_text_0') }}\n\n{{ states('sensor.home_uv_forecast_0') }}",
-                  "text_only": true
-                },
-                {
                   "type": "custom:clock-weather-card",
                   "entity": "weather.home_2",
                   "weather_icon_type": "fill",
@@ -325,11 +314,6 @@
                     "dawn": false,
                     "dusk": false
                   }
-                },
-                {
-                  "type": "markdown",
-                  "content": "# `Vacuum`",
-                  "text_only": true
                 },
                 {
                   "type": "custom:mushroom-vacuum-card",
@@ -472,7 +456,7 @@
             "badges_wrap": "wrap",
             "card": {
               "type": "markdown",
-              "content": "{% set now_dt = now() %}\n{% set greeting = \"🌅 Good Morning\" if now_dt.hour < 12\n  else \"🌞 Good Afternoon\" if now_dt.hour < 18\n  else \"🌙 Good Evening\" %}\n\n# {{ greeting }}  \n### {{ now_dt.strftime('%H:%M · %A, %d %B') }}"
+              "content": "{% set now_dt = now() %}\n{% set greeting = \"🌅 Good Morning\" if now_dt.hour < 12\n  else \"🌞 Good Afternoon\" if now_dt.hour < 18\n  else \"🌙 Good Evening\" %}\n\n# {{ greeting }}  \n### {{ now_dt.strftime('%H:%M · %A, %d %B') }}\n{{ states('sensor.home_short_text_0') }}\n{{ states('sensor.home_uv_forecast_0') }}"
             }
           },
           "badges": [
@@ -803,14 +787,38 @@
                   "type": "entities",
                   "entities": [
                     {
-                      "entity": "switch.front_cams_push_notify"
+                      "entity": "switch.front_cams_push_notify",
+                      "name": "Front Cameras",
+                      "icon": "mdi:cctv"
                     },
                     {
-                      "entity": "switch.all_cams_push_notify"
+                      "entity": "switch.all_cams_push_notify",
+                      "icon": "mdi:cctv",
+                      "name": "All Cameras"
                     }
                   ],
-                  "title": "Notifications",
-                  "state_color": true
+                  "state_color": true,
+                  "title": "Notifications"
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "cover.smart_garage",
+                      "name": "Door"
+                    },
+                    {
+                      "entity": "sensor.garage_status",
+                      "name": "Status"
+                    },
+                    {
+                      "entity": "sensor.garage_status_last_changed",
+                      "name": "Last Changed"
+                    }
+                  ],
+                  "show_header_toggle": false,
+                  "state_color": true,
+                  "title": "Garage"
                 },
                 {
                   "type": "entities",
@@ -867,7 +875,7 @@
                   ],
                   "show_header_toggle": false,
                   "state_color": true,
-                  "title": "Modes"
+                  "title": "Mode"
                 },
                 {
                   "type": "entities",
@@ -892,35 +900,6 @@
                 {
                   "type": "entities",
                   "entities": [
-                    {
-                      "type": "section",
-                      "label": "Garage"
-                    },
-                    {
-                      "entity": "sensor.garage_status",
-                      "icon": "mdi:garage-variant",
-                      "name": "Status",
-                      "secondary_info": "none"
-                    },
-                    {
-                      "entity": "sensor.garage_status_last_changed",
-                      "name": "Last Changed",
-                      "secondary_info": "none"
-                    },
-                    {
-                      "type": "attribute",
-                      "entity": "sensor.garage_status",
-                      "attribute": "error",
-                      "name": "Error",
-                      "icon": "mdi:alert-circle"
-                    },
-                    {
-                      "type": "attribute",
-                      "entity": "sensor.garage_status",
-                      "attribute": "camera",
-                      "name": "Camera",
-                      "icon": "mdi:camera"
-                    },
                     {
                       "type": "section",
                       "label": "Doors"
@@ -984,12 +963,7 @@
             },
             {
               "type": "grid",
-              "cards": [
-                {
-                  "type": "heading",
-                  "heading": "New section"
-                }
-              ]
+              "cards": []
             }
           ],
           "cards": [],
