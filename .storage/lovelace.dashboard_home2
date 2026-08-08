@@ -1477,7 +1477,11 @@
                       "type": "cover-open-close"
                     }
                   ],
-                  "features_position": "bottom"
+                  "features_position": "bottom",
+                  "grid_options": {
+                    "columns": 3,
+                    "rows": 2
+                  }
                 },
                 {
                   "type": "tile",
@@ -1511,6 +1515,125 @@
                   "features_position": "bottom"
                 }
               ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "heading",
+                  "heading": "Lights",
+                  "heading_style": "title",
+                  "icon": "mdi:ceiling-light-multiple",
+                  "badges": []
+                },
+                {
+                  "type": "tile",
+                  "entity": "light.backyard_floodlight",
+                  "name": "Backyard Floodlight",
+                  "vertical": true,
+                  "features_position": "bottom",
+                  "grid_options": {
+                    "columns": 6,
+                    "rows": 2
+                  }
+                },
+                {
+                  "type": "tile",
+                  "entity": "light.porch_light",
+                  "name": "Porch Light",
+                  "vertical": true,
+                  "features_position": "bottom",
+                  "grid_options": {
+                    "columns": 6,
+                    "rows": 2
+                  }
+                },
+                {
+                  "type": "tile",
+                  "entity": "light.living_corner_lamp",
+                  "name": "Living Corner Lamp",
+                  "vertical": true,
+                  "features_position": "bottom",
+                  "grid_options": {
+                    "columns": 4,
+                    "rows": 2
+                  }
+                },
+                {
+                  "type": "tile",
+                  "entity": "light.living_table_lamp",
+                  "name": "Living Table Lamp",
+                  "vertical": true,
+                  "features_position": "bottom",
+                  "grid_options": {
+                    "columns": 4,
+                    "rows": 2
+                  }
+                },
+                {
+                  "type": "tile",
+                  "entity": "light.anko_wi_fi_sunset_light",
+                  "name": "Theatre Sunset Light",
+                  "vertical": true,
+                  "features_position": "bottom",
+                  "grid_options": {
+                    "columns": 4,
+                    "rows": 2
+                  }
+                },
+                {
+                  "type": "heading",
+                  "heading": "Media",
+                  "heading_style": "title",
+                  "icon": "mdi:television-play",
+                  "badges": [],
+                  "grid_options": {
+                    "columns": "full",
+                    "rows": "auto"
+                  }
+                },
+                {
+                  "type": "tile",
+                  "entity": "media_player.theatre_tv",
+                  "name": "Theatre TV",
+                  "features_position": "bottom",
+                  "grid_options": {
+                    "columns": 6,
+                    "rows": 1
+                  }
+                },
+                {
+                  "type": "tile",
+                  "entity": "media_player.livingroomtv_qa65ls03dawxxy",
+                  "name": "Living Room TV",
+                  "features_position": "bottom",
+                  "grid_options": {
+                    "columns": 6,
+                    "rows": 1
+                  }
+                },
+                {
+                  "type": "button",
+                  "name": "Refresh Plex",
+                  "icon": "mdi:plex",
+                  "show_name": true,
+                  "show_icon": true,
+                  "show_state": false,
+                  "tap_action": {
+                    "action": "perform-action",
+                    "perform_action": "plex.refresh_library",
+                    "target": {},
+                    "data": {
+                      "library_name": "MiniMovies"
+                    }
+                  },
+                  "grid_options": {
+                    "columns": "full",
+                    "rows": 2
+                  }
+                }
+              ],
+              "column_span": 1
             },
             {
               "type": "grid",
@@ -1587,101 +1710,8 @@
                     }
                   ]
                 }
-              ]
-            },
-            {
-              "type": "grid",
-              "cards": [
-                {
-                  "type": "heading",
-                  "heading": "Lights",
-                  "heading_style": "title",
-                  "icon": "mdi:ceiling-light-multiple",
-                  "badges": []
-                },
-                {
-                  "type": "tile",
-                  "entity": "light.backyard_floodlight",
-                  "name": "Backyard Floodlight",
-                  "vertical": true,
-                  "features_position": "bottom"
-                },
-                {
-                  "type": "tile",
-                  "entity": "light.porch_light",
-                  "name": "Porch Light",
-                  "vertical": true,
-                  "features_position": "bottom"
-                },
-                {
-                  "type": "tile",
-                  "entity": "light.living_corner_lamp",
-                  "name": "Living Corner Lamp",
-                  "vertical": true,
-                  "features_position": "bottom",
-                  "grid_options": {
-                    "columns": 6,
-                    "rows": 1
-                  }
-                },
-                {
-                  "type": "tile",
-                  "entity": "light.living_table_lamp",
-                  "name": "Living Table Lamp",
-                  "vertical": true,
-                  "features_position": "bottom",
-                  "grid_options": {
-                    "columns": 6,
-                    "rows": 1
-                  }
-                },
-                {
-                  "type": "tile",
-                  "entity": "light.anko_wi_fi_sunset_light",
-                  "name": "Theatre Sunset Light",
-                  "vertical": true,
-                  "features_position": "bottom",
-                  "grid_options": {
-                    "columns": 6,
-                    "rows": 1
-                  }
-                },
-                {
-                  "type": "heading",
-                  "heading": "Media",
-                  "heading_style": "title",
-                  "icon": "mdi:television-play",
-                  "badges": []
-                },
-                {
-                  "type": "tile",
-                  "entity": "media_player.theatre_tv",
-                  "name": "Theatre TV",
-                  "features_position": "bottom"
-                },
-                {
-                  "type": "tile",
-                  "entity": "media_player.livingroomtv_qa65ls03dawxxy",
-                  "name": "Living Room TV",
-                  "features_position": "bottom"
-                },
-                {
-                  "type": "button",
-                  "name": "Refresh Plex",
-                  "icon": "mdi:plex",
-                  "show_name": true,
-                  "show_icon": true,
-                  "show_state": false,
-                  "tap_action": {
-                    "action": "perform-action",
-                    "perform_action": "plex.refresh_library",
-                    "target": {},
-                    "data": {
-                      "library_name": "MiniMovies"
-                    }
-                  }
-                }
-              ]
+              ],
+              "column_span": 1
             },
             {
               "type": "grid",
@@ -1740,7 +1770,8 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "column_span": 1
             },
             {
               "type": "grid",
@@ -1915,18 +1946,23 @@
                     "rows": "auto"
                   }
                 }
-              ]
+              ],
+              "column_span": 1
             },
             {
               "type": "grid",
-              "column_span": 4,
+              "column_span": 2,
               "cards": [
                 {
                   "type": "heading",
                   "heading": "Automation modes",
                   "heading_style": "title",
                   "icon": "mdi:calendar-clock",
-                  "badges": []
+                  "badges": [],
+                  "grid_options": {
+                    "columns": "full",
+                    "rows": "auto"
+                  }
                 },
                 {
                   "type": "custom:mushroom-select-card",
@@ -1935,7 +1971,7 @@
                   "secondary_info": "last-changed",
                   "fill_container": true,
                   "grid_options": {
-                    "columns": 4,
+                    "columns": 6,
                     "rows": 1
                   }
                 },
@@ -1946,7 +1982,7 @@
                   "secondary_info": "last-changed",
                   "fill_container": true,
                   "grid_options": {
-                    "columns": 4,
+                    "columns": 6,
                     "rows": 1
                   }
                 },
@@ -1957,7 +1993,7 @@
                   "secondary_info": "last-changed",
                   "fill_container": true,
                   "grid_options": {
-                    "columns": 4,
+                    "columns": 6,
                     "rows": 1
                   }
                 },
@@ -1971,7 +2007,7 @@
                   },
                   "features_position": "bottom",
                   "grid_options": {
-                    "columns": 4,
+                    "columns": 6,
                     "rows": 1
                   }
                 }
@@ -1985,7 +2021,11 @@
                   "heading": "System",
                   "heading_style": "title",
                   "icon": "mdi:cog-outline",
-                  "badges": []
+                  "badges": [],
+                  "grid_options": {
+                    "columns": "full",
+                    "rows": "auto"
+                  }
                 },
                 {
                   "type": "button",
@@ -1999,13 +2039,21 @@
                     "action": "perform-action",
                     "perform_action": "script.backup_ha_config_to_github",
                     "target": {}
+                  },
+                  "grid_options": {
+                    "columns": 6,
+                    "rows": 2
                   }
                 },
                 {
                   "type": "tile",
                   "entity": "event.backup_automatic_backup",
                   "name": "Automatic Backup",
-                  "features_position": "bottom"
+                  "features_position": "bottom",
+                  "grid_options": {
+                    "columns": 6,
+                    "rows": 2
+                  }
                 },
                 {
                   "type": "entities",
@@ -2038,9 +2086,14 @@
                       "name": "Camera",
                       "icon": "mdi:camera"
                     }
-                  ]
+                  ],
+                  "grid_options": {
+                    "columns": "full",
+                    "rows": "auto"
+                  }
                 }
-              ]
+              ],
+              "column_span": 2
             }
           ]
         }
