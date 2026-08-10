@@ -38,3 +38,12 @@
         {% else %}
           unknown
         {% endif %}          
+- sensor:
+  - name: "Garage Diagnostic Error"
+    icon: mdi:alert-circle
+    state: >
+      {{ state_attr('sensor.garage_status', 'error') | default('unknown', true) }}
+  - name: "Garage Diagnostic Camera"
+    icon: mdi:camera
+    state: >
+      {{ state_attr('sensor.garage_status', 'camera') | default('unknown', true) }}

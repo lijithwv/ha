@@ -7,6 +7,19 @@ sensor: !include sensors.yaml
 shell_command: !include shell_commands.yaml
 scene: !include scenes.yaml
 
+light:
+  - platform: group
+    name: Interior Lights
+    entities:
+      - light.living_corner_lamp
+      - light.living_table_lamp
+      - light.anko_wi_fi_sunset_light
+  - platform: group
+    name: Exterior Lights
+    entities:
+      - light.porch_light
+      - light.backyard_floodlight
+
 # Scripts
 script:
   - !include scripts.yaml
@@ -23,6 +36,9 @@ frontend:
 recorder:
   purge_keep_days: 3
   auto_purge: true
+  exclude:
+    entity_globs:
+      - sensor.home_extended_text_*
 
 http:
   use_x_forwarded_for: true

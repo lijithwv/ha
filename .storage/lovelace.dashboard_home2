@@ -1432,6 +1432,16 @@
                   "condition": "state",
                   "entity": "sensor.home_fire_danger_0",
                   "state_not": "Moderate"
+                },
+                {
+                  "condition": "state",
+                  "entity": "sensor.home_fire_danger_0",
+                  "state_not": "unavailable"
+                },
+                {
+                  "condition": "state",
+                  "entity": "sensor.home_fire_danger_0",
+                  "state_not": "unknown"
                 }
               ]
             },
@@ -1468,6 +1478,10 @@
                 },
                 {
                   "type": "tile",
+                  "grid_options": {
+                    "columns": 6,
+                    "rows": 2
+                  },
                   "entity": "cover.smart_garage",
                   "icon": "mdi:garage-variant",
                   "hide_state": true,
@@ -1477,11 +1491,7 @@
                       "type": "cover-open-close"
                     }
                   ],
-                  "features_position": "bottom",
-                  "grid_options": {
-                    "columns": 3,
-                    "rows": 2
-                  }
+                  "features_position": "bottom"
                 },
                 {
                   "type": "tile",
@@ -1505,10 +1515,37 @@
                 },
                 {
                   "type": "tile",
+                  "entity": "light.interior_lights",
+                  "name": "Interior Lights",
+                  "icon": "mdi:home-lightbulb",
+                  "hide_state": false,
+                  "state_content": "state",
+                  "vertical": false,
+                  "tap_action": {
+                    "action": "toggle"
+                  },
+                  "features_position": "bottom"
+                },
+                {
+                  "type": "tile",
+                  "entity": "light.exterior_lights",
+                  "name": "Exterior Lights",
+                  "icon": "mdi:outdoor-lamp",
+                  "state_content": "state",
+                  "vertical": false,
+                  "tap_action": {
+                    "action": "toggle"
+                  },
+                  "features_position": "bottom"
+                },
+                {
+                  "type": "tile",
                   "entity": "script.doors_check",
                   "name": "Doors Check",
                   "icon": "mdi:door-closed-lock",
-                  "hide_state": true,
+                  "hide_state": false,
+                  "state_content": "last_triggered",
+                  "vertical": false,
                   "tap_action": {
                     "action": "toggle"
                   },
@@ -1698,6 +1735,68 @@
                 },
                 {
                   "type": "entities",
+                  "title": "Garage Diagnostics",
+                  "show_header_toggle": false,
+                  "state_color": true,
+                  "entities": [
+                    {
+                      "entity": "sensor.garage_status"
+                    },
+                    {
+                      "entity": "sensor.garage_status_last_changed"
+                    },
+                    {
+                      "type": "conditional",
+                      "conditions": [
+                        {
+                          "condition": "state",
+                          "entity": "sensor.garage_diagnostic_error",
+                          "state_not": "0"
+                        }
+                      ],
+                      "row": {
+                        "entity": "sensor.garage_diagnostic_error",
+                        "name": "Error"
+                      }
+                    },
+                    {
+                      "type": "conditional",
+                      "conditions": [
+                        {
+                          "condition": "state",
+                          "entity": "sensor.garage_diagnostic_camera",
+                          "state_not": "OK"
+                        }
+                      ],
+                      "row": {
+                        "entity": "sensor.garage_diagnostic_camera",
+                        "name": "Camera"
+                      }
+                    }
+                  ],
+                  "grid_options": {
+                    "rows": "auto"
+                  },
+                  "visibility": [
+                    {
+                      "condition": "or",
+                      "conditions": [
+                        {
+                          "condition": "state",
+                          "entity": "sensor.garage_diagnostic_error",
+                          "state_not": "Ok"
+                        },
+                        {
+                          "condition": "state",
+                          "entity": "sensor.garage_diagnostic_camera",
+                          "state_not": "0"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "entities",
                   "title": "Alarms",
                   "show_header_toggle": false,
                   "state_color": true,
@@ -1759,14 +1858,6 @@
                     {
                       "entity": "sensor.home_gust_speed_kilometre",
                       "name": "Wind Gust"
-                    },
-                    {
-                      "entity": "sensor.home_short_text_0",
-                      "name": "Summary"
-                    },
-                    {
-                      "entity": "sensor.home_uv_forecast_0",
-                      "name": "UV Forecast"
                     }
                   ]
                 }
@@ -1806,28 +1897,125 @@
                   "state_color": true,
                   "entities": [
                     {
-                      "entity": "sensor.roborock_qrevo_dock_error",
-                      "name": "Dock Error"
+                      "type": "conditional",
+                      "conditions": [
+                        {
+                          "condition": "state",
+                          "entity": "sensor.roborock_qrevo_dock_error",
+                          "state_not": "ok"
+                        }
+                      ],
+                      "row": {
+                        "entity": "sensor.roborock_qrevo_dock_error",
+                        "name": "Dock Error"
+                      }
                     },
                     {
-                      "entity": "sensor.roborock_qrevo_vacuum_error",
-                      "name": "Vacuum Error"
+                      "type": "conditional",
+                      "conditions": [
+                        {
+                          "condition": "state",
+                          "entity": "sensor.roborock_qrevo_vacuum_error",
+                          "state_not": "none"
+                        }
+                      ],
+                      "row": {
+                        "entity": "sensor.roborock_qrevo_vacuum_error",
+                        "name": "Vacuum Error"
+                      }
                     },
                     {
-                      "entity": "binary_sensor.roborock_qrevo_water_shortage",
-                      "name": "Water Shortage"
+                      "type": "conditional",
+                      "conditions": [
+                        {
+                          "condition": "state",
+                          "entity": "binary_sensor.roborock_qrevo_water_shortage",
+                          "state_not": "off"
+                        }
+                      ],
+                      "row": {
+                        "entity": "binary_sensor.roborock_qrevo_water_shortage",
+                        "name": "Water Shortage"
+                      }
                     },
                     {
-                      "entity": "binary_sensor.kunjappan_dock_clean_water_box",
-                      "name": "Clean Water Box"
+                      "type": "conditional",
+                      "conditions": [
+                        {
+                          "condition": "state",
+                          "entity": "binary_sensor.kunjappan_dock_clean_water_box",
+                          "state_not": "off"
+                        }
+                      ],
+                      "row": {
+                        "entity": "binary_sensor.kunjappan_dock_clean_water_box",
+                        "name": "Clean Water Box"
+                      }
                     },
                     {
-                      "entity": "binary_sensor.kunjappan_dock_dirty_water_box",
-                      "name": "Dirty Water Box"
+                      "type": "conditional",
+                      "conditions": [
+                        {
+                          "condition": "state",
+                          "entity": "binary_sensor.kunjappan_dock_dirty_water_box",
+                          "state_not": "off"
+                        }
+                      ],
+                      "row": {
+                        "entity": "binary_sensor.kunjappan_dock_dirty_water_box",
+                        "name": "Dirty Water Box"
+                      }
                     },
                     {
-                      "entity": "binary_sensor.roborock_qrevo_water_box_attached",
-                      "name": "Water Box Attached"
+                      "type": "conditional",
+                      "conditions": [
+                        {
+                          "condition": "state",
+                          "entity": "binary_sensor.roborock_qrevo_water_box_attached",
+                          "state_not": "on"
+                        }
+                      ],
+                      "row": {
+                        "entity": "binary_sensor.roborock_qrevo_water_box_attached",
+                        "name": "Water Box Attached"
+                      }
+                    }
+                  ],
+                  "visibility": [
+                    {
+                      "condition": "or",
+                      "conditions": [
+                        {
+                          "condition": "state",
+                          "entity": "sensor.roborock_qrevo_dock_error",
+                          "state_not": "ok"
+                        },
+                        {
+                          "condition": "state",
+                          "entity": "sensor.roborock_qrevo_vacuum_error",
+                          "state_not": "none"
+                        },
+                        {
+                          "condition": "state",
+                          "entity": "binary_sensor.roborock_qrevo_water_shortage",
+                          "state_not": "off"
+                        },
+                        {
+                          "condition": "state",
+                          "entity": "binary_sensor.kunjappan_dock_clean_water_box",
+                          "state_not": "off"
+                        },
+                        {
+                          "condition": "state",
+                          "entity": "binary_sensor.kunjappan_dock_dirty_water_box",
+                          "state_not": "off"
+                        },
+                        {
+                          "condition": "state",
+                          "entity": "binary_sensor.roborock_qrevo_water_box_attached",
+                          "state_not": "on"
+                        }
+                      ]
                     }
                   ]
                 },
@@ -1945,14 +2133,7 @@
                     "columns": 3,
                     "rows": "auto"
                   }
-                }
-              ],
-              "column_span": 1
-            },
-            {
-              "type": "grid",
-              "column_span": 2,
-              "cards": [
+                },
                 {
                   "type": "heading",
                   "heading": "Automation modes",
@@ -2011,7 +2192,8 @@
                     "rows": 1
                   }
                 }
-              ]
+              ],
+              "column_span": 1
             },
             {
               "type": "grid",
@@ -2053,43 +2235,6 @@
                   "grid_options": {
                     "columns": 6,
                     "rows": 2
-                  }
-                },
-                {
-                  "type": "entities",
-                  "title": "Garage Diagnostics",
-                  "show_header_toggle": false,
-                  "state_color": true,
-                  "entities": [
-                    {
-                      "entity": "sensor.garage_status",
-                      "icon": "mdi:garage-variant",
-                      "name": "Status",
-                      "secondary_info": "none"
-                    },
-                    {
-                      "entity": "sensor.garage_status_last_changed",
-                      "name": "Last Changed",
-                      "secondary_info": "none"
-                    },
-                    {
-                      "type": "attribute",
-                      "entity": "sensor.garage_status",
-                      "attribute": "error",
-                      "name": "Error",
-                      "icon": "mdi:alert-circle"
-                    },
-                    {
-                      "type": "attribute",
-                      "entity": "sensor.garage_status",
-                      "attribute": "camera",
-                      "name": "Camera",
-                      "icon": "mdi:camera"
-                    }
-                  ],
-                  "grid_options": {
-                    "columns": "full",
-                    "rows": "auto"
                   }
                 }
               ],
