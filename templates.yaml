@@ -7,7 +7,19 @@
     - action: rest_command.garage_stop
     default_entity_id: cover.smart_garage
     name: Garage Door
-    state: '{{ states(''sensor.garage_status'') }}'
+    state: >
+      {% set door = states('sensor.garage_status') | lower %}
+      {% if 'closing' in door %}
+        closing
+      {% elif 'opening' in door %}
+        opening
+      {% elif 'closed' in door %}
+        closed
+      {% elif 'open' in door %}
+        open
+      {% else %}
+        unknown
+      {% endif %}
 - trigger:
   - platform: time_pattern
     minutes: "/1"
@@ -27,17 +39,17 @@
     - name: "Garage Door Simple"
       state: >
         {% set door = states('sensor.garage_status') | lower %}
-        {% if 'closed' in door %}
-          closed
-        {% elif 'opened' in door %}
-          opened
-        {% elif 'closing' in door %}
+        {% if 'closing' in door %}
           closing
         {% elif 'opening' in door %}
           opening
+        {% elif 'closed' in door %}
+          closed
+        {% elif 'open' in door %}
+          open
         {% else %}
           unknown
-        {% endif %}          
+        {% endif %}
 - sensor:
   - name: "Garage Diagnostic Error"
     icon: mdi:alert-circle

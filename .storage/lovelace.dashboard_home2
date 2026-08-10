@@ -1484,14 +1484,15 @@
                   },
                   "entity": "cover.smart_garage",
                   "icon": "mdi:garage-variant",
-                  "hide_state": true,
+                  "hide_state": false,
                   "vertical": false,
                   "features": [
                     {
                       "type": "cover-open-close"
                     }
                   ],
-                  "features_position": "bottom"
+                  "features_position": "bottom",
+                  "state_content": "state"
                 },
                 {
                   "type": "tile",
@@ -1707,34 +1708,6 @@
                 },
                 {
                   "type": "entities",
-                  "title": "Camera Motion",
-                  "show_header_toggle": false,
-                  "state_color": true,
-                  "entities": [
-                    {
-                      "entity": "binary_sensor.reolink_video_doorbell_poe_motion",
-                      "secondary_info": "last-changed"
-                    },
-                    {
-                      "entity": "binary_sensor.garage_front_motion",
-                      "secondary_info": "last-changed"
-                    },
-                    {
-                      "entity": "binary_sensor.east_motion",
-                      "secondary_info": "last-changed"
-                    },
-                    {
-                      "entity": "binary_sensor.west_motion",
-                      "secondary_info": "last-changed"
-                    },
-                    {
-                      "entity": "binary_sensor.backyard_motion",
-                      "secondary_info": "last-changed"
-                    }
-                  ]
-                },
-                {
-                  "type": "entities",
                   "title": "Garage Diagnostics",
                   "show_header_toggle": false,
                   "state_color": true,
@@ -1792,6 +1765,34 @@
                           "state_not": "0"
                         }
                       ]
+                    }
+                  ]
+                },
+                {
+                  "type": "entities",
+                  "title": "Camera Motion",
+                  "show_header_toggle": false,
+                  "state_color": true,
+                  "entities": [
+                    {
+                      "entity": "binary_sensor.reolink_video_doorbell_poe_motion",
+                      "secondary_info": "last-changed"
+                    },
+                    {
+                      "entity": "binary_sensor.garage_front_motion",
+                      "secondary_info": "last-changed"
+                    },
+                    {
+                      "entity": "binary_sensor.east_motion",
+                      "secondary_info": "last-changed"
+                    },
+                    {
+                      "entity": "binary_sensor.west_motion",
+                      "secondary_info": "last-changed"
+                    },
+                    {
+                      "entity": "binary_sensor.backyard_motion",
+                      "secondary_info": "last-changed"
                     }
                   ]
                 },
