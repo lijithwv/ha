@@ -1,0 +1,29 @@
+- id: '1786320000000'
+  alias: Notion Door After Midnight Alert
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.living_room_sensor_sliding_door_window
+    - binary_sensor.laundry_room_sensor_sliding_door_window_2
+    - binary_sensor.entrance_sensor_door
+    to: 'on'
+  conditions:
+  - condition: time
+    after: '00:00:00'
+  actions:
+  - action: notify.mobile_app_iphone_l
+    metadata: {}
+    data:
+      title: Door Open Alert
+      message: '{{ trigger.to_state.attributes.friendly_name }} opened after midnight.'
+      data:
+        group: notion-door-alerts
+        tag: notion-door-after-midnight
+        push:
+          interruption-level: critical
+          sound:
+            name: default
+            critical: 1
+            volume: 1.0
+  mode: single

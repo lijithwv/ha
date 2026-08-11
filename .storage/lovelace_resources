@@ -11,12 +11,12 @@
       },
       {
         "id": "dc7f3874e72f47bf9df28f222436a841",
-        "url": "/hacsfiles/clock-weather-card/clock-weather-card.js?hacstag=522634019293",
+        "url": "/hacsfiles/clock-weather-card/clock-weather-card.js?hacstag=522634019294",
         "type": "module"
       },
       {
         "id": "2a5f5fb9c95740f3a735cf0fda736d0f",
-        "url": "/hacsfiles/atomic-calendar-revive/atomic-calendar-revive.js?hacstag=2465497471022",
+        "url": "/hacsfiles/atomic-calendar-revive/atomic-calendar-revive.js?hacstag=2465497471031",
         "type": "module"
       },
       {
@@ -31,12 +31,12 @@
       },
       {
         "id": "9b23e4b7a46a4131bd95f00bdd4a3552",
-        "url": "/hacsfiles/lovelace-mushroom/mushroom.js?hacstag=444350375511",
+        "url": "/hacsfiles/lovelace-mushroom/mushroom.js?hacstag=444350375522",
         "type": "module"
       },
       {
         "id": "1645cbc9a2914a6dbe1cd6566a2eb6e0",
-        "url": "/hacsfiles/lovelace-horizon-card/lovelace-horizon-card.js?hacstag=614083491140",
+        "url": "/hacsfiles/lovelace-horizon-card/lovelace-horizon-card.js?hacstag=614083491153",
         "type": "module"
       }
     ]
