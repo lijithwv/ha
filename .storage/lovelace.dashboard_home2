@@ -18,7 +18,7 @@
             "badges_wrap": "wrap",
             "card": {
               "type": "markdown",
-              "content": "{% set now_dt = now() %}\n{% set greeting = \"Good morning\" if now_dt.hour < 12\n  else \"Good afternoon\" if now_dt.hour < 18\n  else \"Good evening\" %}\n{% set condition = states(\"weather.home_2\") %}\n{% set temp = state_attr(\"weather.home_2\", \"temperature\") %}\n{% set humidity = state_attr(\"weather.home_2\", \"humidity\") %}\n{% set apparent = state_attr(\"weather.home_2\", \"apparent_temperature\") %}\n{% set icon_map = {\n  \"clear-night\": \"mdi:weather-night\",\n  \"cloudy\": \"mdi:weather-cloudy\",\n  \"fog\": \"mdi:weather-fog\",\n  \"hail\": \"mdi:weather-hail\",\n  \"lightning\": \"mdi:weather-lightning\",\n  \"lightning-rainy\": \"mdi:weather-lightning-rainy\",\n  \"partlycloudy\": \"mdi:weather-partly-cloudy\",\n  \"pouring\": \"mdi:weather-pouring\",\n  \"rainy\": \"mdi:weather-rainy\",\n  \"snowy\": \"mdi:weather-snowy\",\n  \"snowy-rainy\": \"mdi:weather-snowy-rainy\",\n  \"sunny\": \"mdi:weather-sunny\",\n  \"windy\": \"mdi:weather-windy\",\n  \"windy-variant\": \"mdi:weather-windy-variant\",\n  \"exceptional\": \"mdi:alert-circle-outline\"\n} %}\n{% set weather_icon = icon_map.get(condition, \"mdi:weather-partly-cloudy\") %}\n\n# <ha-icon icon=\"{{ weather_icon }}\"></ha-icon> {{ greeting }}\n### {{ now_dt.strftime(\"%H:%M · %A, %d %B\") }}\n{% if condition not in [\"unknown\", \"unavailable\"] -%}\n{{ condition | replace(\"_\", \" \") | title }}{% if temp is not none %} · {{ temp }}°C{% endif %}{% if apparent is not none %} · Feels like {{ apparent }}°C{% endif %}{% if humidity is not none %} · {{ humidity }}% humidity{% endif %}\n{%- endif %}\n{{ states(\"sensor.home_uv_forecast_0\") }}"
+              "content": "{% set now_dt = now() %}\n{% set greeting = \"Good morning\" if now_dt.hour < 12\n  else \"Good afternoon\" if now_dt.hour < 18\n  else \"Good evening\" %}\n{% set condition = states(\"weather.home_2\") %}\n{% set temp = state_attr(\"weather.home_2\", \"temperature\") %}\n{% set humidity = state_attr(\"weather.home_2\", \"humidity\") %}\n{% set apparent = state_attr(\"weather.home_2\", \"apparent_temperature\") %}\n{% set icon = states(\"sensor.home_mdi_icon_0\") %}\n\n# <ha-icon icon=\"{{ icon }}\"></ha-icon> {{ greeting }}\n### {{ now_dt.strftime(\"%H:%M · %A, %d %B\") }}\n{% if condition not in [\"unknown\", \"unavailable\"] -%}\n{{ condition | replace(\"_\", \" \") | title }}{% if temp is not none %} · {{ temp }}°C{% endif %}{% if apparent is not none %} · Feels like {{ apparent }}°C{% endif %}{% if humidity is not none %} · {{ humidity }}% humidity{% endif %}\n{%- endif %}\n"
             }
           },
           "badges": [
@@ -626,6 +626,10 @@
                   "grid_options": {
                     "columns": "full"
                   }
+                },
+                {
+                  "type": "markdown",
+                  "content": "{{ states(\"sensor.home_uv_forecast_0\") }}"
                 },
                 {
                   "type": "custom:horizon-card",

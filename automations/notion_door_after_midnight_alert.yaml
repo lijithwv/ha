@@ -11,6 +11,7 @@
   conditions:
   - condition: time
     after: '00:00:00'
+    before: '07:00:00'
   actions:
   - action: notify.mobile_app_iphone_l
     metadata: {}
