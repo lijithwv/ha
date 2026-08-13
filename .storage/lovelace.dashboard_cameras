@@ -10,6 +10,57 @@
           "sections": [
             {
               "type": "grid",
+              "column_span": 4,
+              "cards": [
+                {
+                  "type": "custom:mushroom-template-card",
+                  "entity": "sensor.perimeter_status",
+                  "primary": "{{ states('sensor.perimeter_status') == 'Clear' and 'Perimeter clear' or states('sensor.perimeter_status') == 'Not clear' and 'Person detected' or 'Perimeter status unknown' }}",
+                  "secondary": "{{ state_attr('sensor.perimeter_status', 'active_detections') }} active · {{ state_attr('sensor.perimeter_status', 'cameras_monitored') }} cameras monitored{% set offline = state_attr('sensor.perimeter_status', 'unavailable_cameras') | int(0) %}{% if offline %} · {{ offline }} unavailable{% endif %}",
+                  "icon": "{{ states('sensor.perimeter_status') == 'Clear' and 'mdi:shield-check' or states('sensor.perimeter_status') == 'Not clear' and 'mdi:shield-alert' or 'mdi:shield-off-outline' }}",
+                  "icon_color": "{{ states('sensor.perimeter_status') == 'Clear' and 'green' or states('sensor.perimeter_status') == 'Not clear' and 'red' or 'amber' }}",
+                  "multiline_secondary": true,
+                  "fill_container": true
+                },
+                {
+                  "type": "markdown",
+                  "title": "Perimeter activity",
+                  "content": "{% set cameras = [\n  dict(area='Front', camera='Doorbell', sensor='binary_sensor.reolink_video_doorbell_poe_person'),\n  dict(area='Front', camera='Garage Front', sensor='binary_sensor.garage_front_person'),\n  dict(area='West Path', camera='West', sensor='binary_sensor.west_person'),\n  dict(area='East Path', camera='East', sensor='binary_sensor.east_person'),\n  dict(area='Backyard', camera='Backyard', sensor='binary_sensor.backyard_person')\n] %}\n{% set active = cameras | selectattr('sensor', 'is_state', 'on') | list %}\n{% set offline = cameras | rejectattr('sensor', 'has_value') | list %}\n{% if active | count == 0 and offline | count == 0 %}\n## ✅ All areas clear\nNo person is currently detected by any perimeter camera.\n{% else %}\n{% if active | count > 0 %}\n## 🚨 {{ active | count }} active detection{{ 's' if active | count != 1 }}\n{% for item in active %}\n- **{{ item.area }} — {{ item.camera }}**  \n  Detected **{{ relative_time(states[item.sensor].last_changed) }} ago** · since {{ as_local(states[item.sensor].last_changed).strftime('%-I:%M:%S %p') }}\n{% endfor %}\n{% endif %}\n{% if offline | count > 0 %}\n## ⚠️ Coverage issue\n{% for item in offline %}\n- **{{ item.area }} — {{ item.camera }}:** {{ states(item.sensor) | title }}\n{% endfor %}\n{% endif %}\n{% endif %}\n\n_Last checked {{ now().strftime('%-I:%M %p') }} · updates automatically_"
+                },
+                {
+                  "type": "glance",
+                  "title": "Camera coverage",
+                  "show_name": true,
+                  "show_state": true,
+                  "state_color": true,
+                  "columns": 5,
+                  "entities": [
+                    {
+                      "entity": "binary_sensor.reolink_video_doorbell_poe_person",
+                      "name": "Front · Doorbell"
+                    },
+                    {
+                      "entity": "binary_sensor.garage_front_person",
+                      "name": "Front · Garage"
+                    },
+                    {
+                      "entity": "binary_sensor.west_person",
+                      "name": "West Path"
+                    },
+                    {
+                      "entity": "binary_sensor.east_person",
+                      "name": "East Path"
+                    },
+                    {
+                      "entity": "binary_sensor.backyard_person",
+                      "name": "Backyard"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "grid",
               "cards": [
                 {
                   "type": "heading",

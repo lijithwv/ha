@@ -59,3 +59,63 @@
     icon: mdi:camera
     state: >
       {{ state_attr('sensor.garage_status', 'camera') | default('unknown', true) }}
+
+# One status entity for every Reolink camera protecting the property perimeter.
+- sensor:
+  - name: "Perimeter Status"
+    unique_id: perimeter_status
+    icon: >
+      {% set cameras = [
+        'binary_sensor.reolink_video_doorbell_poe_person',
+        'binary_sensor.garage_front_person',
+        'binary_sensor.west_person',
+        'binary_sensor.east_person',
+        'binary_sensor.backyard_person'
+      ] %}
+      {% if cameras | select('is_state', 'on') | list | count > 0 %}
+        mdi:shield-alert
+      {% elif cameras | select('is_state', 'unavailable') | list | count > 0
+          or cameras | select('is_state', 'unknown') | list | count > 0 %}
+        mdi:shield-off-outline
+      {% else %}
+        mdi:shield-check
+      {% endif %}
+    state: >
+      {% set cameras = [
+        'binary_sensor.reolink_video_doorbell_poe_person',
+        'binary_sensor.garage_front_person',
+        'binary_sensor.west_person',
+        'binary_sensor.east_person',
+        'binary_sensor.backyard_person'
+      ] %}
+      {% set active = cameras | select('is_state', 'on') | list | count %}
+      {% set offline = cameras | select('is_state', 'unavailable') | list | count
+        + cameras | select('is_state', 'unknown') | list | count %}
+      {% if active > 0 %}
+        Not clear
+      {% elif offline > 0 %}
+        Status unknown
+      {% else %}
+        Clear
+      {% endif %}
+    attributes:
+      cameras_monitored: 5
+      active_detections: >
+        {% set cameras = [
+          'binary_sensor.reolink_video_doorbell_poe_person',
+          'binary_sensor.garage_front_person',
+          'binary_sensor.west_person',
+          'binary_sensor.east_person',
+          'binary_sensor.backyard_person'
+        ] %}
+        {{ cameras | select('is_state', 'on') | list | count }}
+      unavailable_cameras: >
+        {% set cameras = [
+          'binary_sensor.reolink_video_doorbell_poe_person',
+          'binary_sensor.garage_front_person',
+          'binary_sensor.west_person',
+          'binary_sensor.east_person',
+          'binary_sensor.backyard_person'
+        ] %}
+        {{ cameras | select('is_state', 'unavailable') | list | count
+          + cameras | select('is_state', 'unknown') | list | count }}
