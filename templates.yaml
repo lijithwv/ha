@@ -61,7 +61,18 @@
       {{ state_attr('sensor.garage_status', 'camera') | default('unknown', true) }}
 
 # One status entity for every Reolink camera protecting the property perimeter.
-- sensor:
+# Trigger-based so last_non_clear_camera is retained after detection clears.
+- trigger:
+  - platform: state
+    entity_id:
+      - binary_sensor.reolink_video_doorbell_poe_person
+      - binary_sensor.garage_front_person
+      - binary_sensor.west_person
+      - binary_sensor.east_person
+      - binary_sensor.backyard_person
+  - platform: homeassistant
+    event: start
+  sensor:
   - name: "Perimeter Status"
     unique_id: perimeter_status
     icon: >
@@ -100,6 +111,40 @@
       {% endif %}
     attributes:
       cameras_monitored: 5
+      current_non_clear_camera: >
+        {% set cameras = {
+          'binary_sensor.reolink_video_doorbell_poe_person': 'Doorbell',
+          'binary_sensor.garage_front_person': 'Garage Front',
+          'binary_sensor.west_person': 'West',
+          'binary_sensor.east_person': 'East',
+          'binary_sensor.backyard_person': 'Backyard'
+        } %}
+        {% set ns = namespace(active=[]) %}
+        {% for entity, name in cameras.items() %}
+          {% if is_state(entity, 'on') %}
+            {% set ns.active = ns.active + [name] %}
+          {% endif %}
+        {% endfor %}
+        {{ ns.active | join(', ') if ns.active else 'None' }}
+      last_non_clear_camera: >
+        {% set names = {
+          'binary_sensor.reolink_video_doorbell_poe_person': 'Doorbell',
+          'binary_sensor.garage_front_person': 'Garage Front',
+          'binary_sensor.west_person': 'West',
+          'binary_sensor.east_person': 'East',
+          'binary_sensor.backyard_person': 'Backyard'
+        } %}
+        {% if trigger.platform == 'state' and trigger.to_state.state == 'on' %}
+          {{ names.get(trigger.entity_id, trigger.to_state.name) }}
+        {% else %}
+          {{ this.attributes.get('last_non_clear_camera', 'None') }}
+        {% endif %}
+      last_non_clear_since: >
+        {% if trigger.platform == 'state' and trigger.to_state.state == 'on' %}
+          {{ trigger.to_state.last_changed.isoformat() }}
+        {% else %}
+          {{ this.attributes.get('last_non_clear_since', 'unknown') }}
+        {% endif %}
       active_detections: >
         {% set cameras = [
           'binary_sensor.reolink_video_doorbell_poe_person',
