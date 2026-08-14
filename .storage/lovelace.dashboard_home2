@@ -479,7 +479,7 @@
                   "type": "custom:mushroom-template-card",
                   "entity": "sensor.perimeter_status",
                   "primary": "{{ states('sensor.perimeter_status') == 'Clear' and 'Perimeter clear' or states('sensor.perimeter_status') == 'Not clear' and 'Person detected' or 'Perimeter status unknown' }}",
-                  "secondary": "{% if states(\"sensor.perimeter_status\") == \"Not clear\" %}Active: {{ state_attr(\"sensor.perimeter_status\", \"current_non_clear_camera\") }}{% else %}Last activity: {{ state_attr(\"sensor.perimeter_status\", \"last_non_clear_camera\") }}{% set since = state_attr(\"sensor.perimeter_status\", \"last_non_clear_since\") %}{% if since not in [none, \"unknown\"] %} · {{ relative_time(as_datetime(since)) }} ago{% endif %}{% endif %} · {{ state_attr(\"sensor.perimeter_status\", \"cameras_monitored\") }} cameras monitored{% set offline = state_attr(\"sensor.perimeter_status\", \"unavailable_cameras\") | int(0) %}{% if offline %} · {{ offline }} unavailable{% endif %}",
+                  "secondary": "{% if states(\"sensor.perimeter_status\") == \"Not clear\" %}Active: {{ state_attr(\"sensor.perimeter_status\", \"current_non_clear_camera\") }}{% else %}Last activity: {{ state_attr(\"sensor.perimeter_status\", \"last_non_clear_camera\") }}{% set since = state_attr(\"sensor.perimeter_status\", \"last_non_clear_since\") %}{% if since not in [none, \"unknown\"] %} - {{ relative_time(as_datetime(since)) }} ago{% endif %}{% endif %}\n{{ state_attr(\"sensor.perimeter_status\", \"cameras_monitored\") }} cameras monitored{% set offline = state_attr(\"sensor.perimeter_status\", \"unavailable_cameras\") | int(0) %}{% if offline %} · {{ offline }} unavailable{% endif %}",
                   "icon": "{{ states('sensor.perimeter_status') == 'Clear' and 'mdi:shield-check' or states('sensor.perimeter_status') == 'Not clear' and 'mdi:shield-alert' or 'mdi:shield-off-outline' }}",
                   "multiline_secondary": true,
                   "color": "{{ states('sensor.perimeter_status') == 'Clear' and 'green' or states('sensor.perimeter_status') == 'Not clear' and 'red' or 'amber' }}",
@@ -541,16 +541,18 @@
                   ]
                 },
                 {
+                  "color": "state",
                   "type": "entities",
                   "title": "Garage Diagnostics",
                   "show_header_toggle": false,
-                  "state_color": true,
                   "entities": [
                     {
-                      "entity": "sensor.garage_status"
+                      "entity": "sensor.garage_status",
+                      "name": "Status"
                     },
                     {
-                      "entity": "sensor.garage_status_last_changed"
+                      "entity": "sensor.garage_status_last_changed",
+                      "name": "Last Changed"
                     },
                     {
                       "type": "conditional",
