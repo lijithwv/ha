@@ -164,3 +164,103 @@
         ] %}
         {{ cameras | select('is_state', 'unavailable') | list | count
           + cameras | select('is_state', 'unknown') | list | count }}
+
+# Daily garage-front vehicle statistics. A new Frigate tracked car increments the
+# total when the garage camera's car occupancy changes from clear to occupied.
+# Recognized number plates are retained as a de-duplicated list for the day.
+- trigger:
+  - platform: state
+    entity_id: binary_sensor.garage_cam_car_occupancy
+    from: "off"
+    to: "on"
+    id: car_seen
+  - platform: state
+    entity_id: sensor.garage_cam_last_recognized_plate
+    id: plate_seen
+  - platform: time
+    at: "00:00:00"
+    id: midnight
+  - platform: homeassistant
+    event: start
+    id: startup
+  sensor:
+  - name: "Garage Front Cars Today"
+    unique_id: garage_front_cars_today
+    icon: mdi:car-multiple
+    unit_of_measurement: cars
+    state_class: total
+    state: >
+      {% set same_day = this.attributes.get('counter_date', '') == now().date() | string %}
+      {% set previous = this.state | int(0) if same_day else 0 %}
+      {{ previous + 1 if trigger.id == 'car_seen' else previous }}
+    attributes:
+      counter_date: "{{ now().date() }}"
+      unique_cars: >
+        {% set same_day = this.attributes.get('counter_date', '') == now().date() | string %}
+        {% set plates = this.attributes.get('recognized_plates', []) if same_day else [] %}
+        {% set plate = trigger.to_state.state | upper | trim
+          if trigger.id == 'plate_seen' and trigger.to_state is not none else '' %}
+        {% if plate not in ['', 'UNKNOWN', 'UNAVAILABLE', 'NONE', 'NULL'] and plate not in plates %}
+          {{ (plates + [plate]) | count }}
+        {% else %}
+          {{ plates | count }}
+        {% endif %}
+      recognized_plates: >
+        {% set same_day = this.attributes.get('counter_date', '') == now().date() | string %}
+        {% set plates = this.attributes.get('recognized_plates', []) if same_day else [] %}
+        {% set plate = trigger.to_state.state | upper | trim
+          if trigger.id == 'plate_seen' and trigger.to_state is not none else '' %}
+        {% if plate not in ['', 'UNKNOWN', 'UNAVAILABLE', 'NONE', 'NULL'] and plate not in plates %}
+          {{ plates + [plate] }}
+        {% else %}
+          {{ plates }}
+        {% endif %}
+      recognized_passes: >
+        {% set same_day = this.attributes.get('counter_date', '') == now().date() | string %}
+        {% set previous = this.attributes.get('recognized_passes', 0) | int(0) if same_day else 0 %}
+        {% set plate = trigger.to_state.state | upper | trim
+          if trigger.id == 'plate_seen' and trigger.to_state is not none else '' %}
+        {{ previous + 1 if plate not in ['', 'UNKNOWN', 'UNAVAILABLE', 'NONE', 'NULL'] else previous }}
+      last_plate: >
+        {% set same_day = this.attributes.get('counter_date', '') == now().date() | string %}
+        {% set plate = trigger.to_state.state | upper | trim
+          if trigger.id == 'plate_seen' and trigger.to_state is not none else '' %}
+        {% if plate not in ['', 'UNKNOWN', 'UNAVAILABLE', 'NONE', 'NULL'] %}
+          {{ plate }}
+        {% elif same_day %}
+          {{ this.attributes.get('last_plate', 'None') }}
+        {% else %}
+          None
+        {% endif %}
+      last_vehicle_seen: >
+        {% set same_day = this.attributes.get('counter_date', '') == now().date() | string %}
+        {% if trigger.id == 'car_seen' %}
+          {{ now().isoformat() }}
+        {% elif same_day %}
+          {{ this.attributes.get('last_vehicle_seen', 'unknown') }}
+        {% else %}
+          unknown
+        {% endif %}
+
+- sensor:
+  - name: "Garage Front Unique Cars Today"
+    unique_id: garage_front_unique_cars_today
+    icon: mdi:car-info
+    unit_of_measurement: cars
+    state_class: measurement
+    state: "{{ state_attr('sensor.garage_front_cars_today', 'unique_cars') | int(0) }}"
+  - name: "Garage Front Recognized Passes Today"
+    unique_id: garage_front_recognized_passes_today
+    icon: mdi:car-search
+    unit_of_measurement: cars
+    state_class: measurement
+    state: "{{ state_attr('sensor.garage_front_cars_today', 'recognized_passes') | int(0) }}"
+  - name: "Garage Front Unidentified Cars Today"
+    unique_id: garage_front_unidentified_cars_today
+    icon: mdi:car-off
+    unit_of_measurement: cars
+    state_class: measurement
+    state: >
+      {% set total = states('sensor.garage_front_cars_today') | int(0) %}
+      {% set recognized = state_attr('sensor.garage_front_cars_today', 'recognized_passes') | int(0) %}
+      {{ [total - recognized, 0] | max }}
