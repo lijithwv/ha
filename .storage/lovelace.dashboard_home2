@@ -398,7 +398,8 @@
                   },
                   "entity": "light.porch_light",
                   "name": "Porch Light",
-                  "state_content": "state",
+                  "hide_state": false,
+                  "state_content": "brightness",
                   "vertical": true,
                   "features_position": "bottom"
                 },
