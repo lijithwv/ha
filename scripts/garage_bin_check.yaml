@@ -1,0 +1,76 @@
+garage_bin_check:
+  alias: Garage - Check Bins
+  description: Take a fresh garage snapshot and check only our kerbside pickup area.
+  mode: single
+  sequence:
+    - action: calendar.get_events
+      target:
+        entity_id: calendar.bin_collection
+      data:
+        start_date_time: "{{ (today_at('00:00') + timedelta(days=(2 - now().weekday()) % 7)).isoformat() }}"
+        end_date_time: "{{ (today_at('00:00') + timedelta(days=(2 - now().weekday()) % 7 + 1)).isoformat() }}"
+      response_variable: collection_calendar
+      continue_on_error: true
+    - variables:
+        check_started: "{{ now().isoformat() }}"
+        check_started_epoch: "{{ as_timestamp(now()) }}"
+        expected_secondary: >-
+          {% set response = collection_calendar | default({}) %}
+          {% set events = response.get('calendar.bin_collection', {}).get('events', []) %}
+          {% set ns = namespace(green=false, yellow=false) %}
+          {% for e in events %}
+            {% set summary = e.get('summary', '') | lower | trim %}
+            {% if summary == 'green bin' %}{% set ns.green = true %}{% endif %}
+            {% if summary == 'yellow bin' %}{% set ns.yellow = true %}{% endif %}
+          {% endfor %}
+          {{ 'green' if ns.green and not ns.yellow else 'yellow' if ns.yellow and not ns.green else 'unknown' }}
+    - action: camera.snapshot
+      target:
+        entity_id: camera.garage_cam
+      data:
+        filename: /config/frigate_ai/bin_check_snapshot.jpg
+      continue_on_error: true
+    - action: shell_command.garage_bin_check_analyze
+      data:
+        started_at: "{{ check_started_epoch }}"
+        expected_secondary: "{{ expected_secondary | trim }}"
+      response_variable: bin_response
+      continue_on_error: true
+    - variables:
+        result: >-
+          {% set response = bin_response | default({}) %}
+          {% set parsed = response.get('stdout', '') | from_json({}) %}
+          {{ parsed if response.get('returncode', -1) == 0 and parsed is mapping else {} }}
+    - variables:
+        status: >-
+          {{ result.get('status') if result.get('status') in ['out', 'missing', 'uncertain'] else 'uncertain' }}
+        reason: "{{ result.get('reason', 'Camera snapshot or image analysis failed.') }}"
+        bin_count: "{{ result.get('bin_count', 0) }}"
+    - event: garage_bin_check_completed
+      event_data:
+        status: "{{ status }}"
+        reason: "{{ reason }}"
+        bin_count: "{{ bin_count }}"
+        minimum_bins: "{{ result.get('minimum_bins', 2) }}"
+        expected_colours: "{{ result.get('expected_colours', ['red', expected_secondary | trim]) }}"
+        verified_colours: "{{ result.get('verified_colours', []) }}"
+        checked_at: "{{ result.get('checked_at', check_started) }}"
+    - action: notify.all_devices
+      data:
+        title: Wednesday Bin Check
+        message: >-
+          {% if status == 'out' %}
+            Bin check passed: red and {{ expected_secondary | trim }} bins verified just in front of our driveway.
+          {% elif status == 'missing' %}
+            {% if expected_secondary | trim in ['green', 'yellow'] %}
+              Please put the red and {{ expected_secondary | trim }} bins out just in front of our driveway.
+            {% else %}
+              The pickup area is empty. Please put the two bins out just in front of our driveway.
+            {% endif %}
+          {% else %}
+            Couldn't verify the bins. Please check our driveway pickup area yourself.
+          {% endif %}
+          {{ reason }}
+        data:
+          tag: garage-bin-check
+          group: bin-alerts

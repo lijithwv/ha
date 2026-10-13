@@ -22,5 +22,8 @@ tts/
 
 www/snapshots/
 .ha_run.lock
+frigate_ai/*.jsonl
+frigate_ai/bin_check_*.jpg
+frigate_ai/bin_check_result.json
 
 www/git_backup_status.json

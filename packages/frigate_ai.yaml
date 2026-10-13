@@ -1,0 +1,162 @@
+rest_command:
+  frigate_ai_get_event:
+    url: "http://ccab4aaf-frigate:5000/api/events/{{ event_id | urlencode }}"
+    method: GET
+    timeout: 10
+
+input_text:
+  frigate_ai_search:
+    name: Frigate AI Search
+    icon: mdi:magnify
+    max: 100
+
+# Base64 keeps descriptions out of shell syntax; the archive stays outside www.
+shell_command:
+  frigate_ai_append_history: >-
+    sh /config/frigate_ai/append_history.sh '{{ entry_base64 }}'
+
+automation:
+  - id: frigate_ai_process_descriptions
+    alias: "Frigate AI - Process Descriptions"
+    description: Classify existing Frigate descriptions locally and archive all activity.
+    mode: queued
+    max: 100
+    triggers:
+      - trigger: mqtt
+        topic: frigate/tracked_object_update
+    conditions:
+      - condition: template
+        value_template: >-
+          {% set p = trigger.payload | from_json({}) %}
+          {{ p is mapping and p.get('type') == 'description'
+             and p.get('id') is string and p.get('id') | length > 0
+             and p.get('description') is string
+             and p.get('description') | trim | length > 0 }}
+    actions:
+      - variables:
+          event_id: "{{ trigger.payload_json.id }}"
+          description: "{{ trigger.payload_json.description | trim }}"
+          text_lower: "{{ trigger.payload_json.description | lower }}"
+      - action: rest_command.frigate_ai_get_event
+        data:
+          event_id: "{{ event_id }}"
+        response_variable: frigate_response
+        continue_on_error: true
+      - if:
+          - condition: template
+            value_template: >-
+              {{ frigate_response is not defined or frigate_response is not mapping
+                 or frigate_response.get('status') != 200
+                 or frigate_response.get('content') is not mapping }}
+        then:
+          - action: system_log.write
+            data:
+              level: warning
+              logger: frigate_ai
+              message: "Could not fetch Frigate metadata for event {{ event_id }}."
+          - stop: Frigate event metadata unavailable
+      - condition: template
+        value_template: >-
+          {{ frigate_response['content'].get('camera') in ['DoorBell_Cam', 'Garage_Cam'] }}
+      - variables:
+          camera: "{{ frigate_response['content']['camera'] }}"
+          label: "{{ frigate_response['content'].get('label', 'unknown') }}"
+          zones: "{{ frigate_response['content'].get('entered_zones', []) }}"
+          event_time: >-
+            {{ as_datetime(frigate_response['content'].get('start_time'), now()).isoformat() }}
+          received_at: "{{ now().isoformat() }}"
+          category: >-
+            {% set t = text_lower %}
+            {% set delivery = ['parcel', 'package', 'delivery', 'courier', 'delivered',
+              'drops off', 'dropped off', 'leaves a box', 'leaves a bag'] %}
+            {% set vehicle = ['car door', 'vehicle door', 'opens the car', 'opens a car',
+              'touches the car', 'touches a car', 'looking inside the car',
+              'looking into the car', 'interacts with the vehicle',
+              'unlocks the car', 'unlocks a car'] %}
+            {% set routine = ['walks past', 'walking past', 'walks by', 'walking by',
+              'passes by', 'passing by', 'along the footpath', 'along the sidewalk'] %}
+            {% set visitor = ['front door', 'front entrance', 'doorbell', 'knocks on',
+              'rings the bell', 'approaches the door', 'approaches the entrance'] %}
+            {% if camera == 'DoorBell_Cam' and delivery | select('in', t) | list | count > 0 %}
+              delivery
+            {% elif camera == 'Garage_Cam' and vehicle | select('in', t) | list | count > 0 %}
+              vehicle_interaction
+            {% elif routine | select('in', t) | list | count > 0 %}
+              routine
+            {% elif camera == 'DoorBell_Cam' and visitor | select('in', t) | list | count > 0 %}
+              visitor
+            {% else %}
+              other
+            {% endif %}
+      - variables:
+          importance: >-
+            {{ 'high' if category | trim in ['delivery', 'vehicle_interaction']
+               else 'medium' if category | trim == 'visitor' else 'low' }}
+          log_entry:
+            timestamp: "{{ event_time }}"
+            received_at: "{{ received_at }}"
+            camera: "{{ camera }}"
+            event_id: "{{ event_id }}"
+            category: "{{ category | trim }}"
+            importance: "{{ importance | trim }}"
+            label: "{{ label }}"
+            zones: "{{ zones }}"
+            description: "{{ description }}"
+      - event: frigate_ai_activity
+        event_data:
+          timestamp: "{{ event_time }}"
+          received_at: "{{ received_at }}"
+          camera: "{{ camera }}"
+          event_id: "{{ event_id }}"
+          category: "{{ category | trim }}"
+          importance: "{{ importance | trim }}"
+          label: "{{ label }}"
+          zones: "{{ zones }}"
+          description: "{{ description }}"
+      - action: shell_command.frigate_ai_append_history
+        data:
+          entry_base64: "{{ ((log_entry | tojson) ~ '\n') | base64_encode }}"
+        response_variable: archive_response
+      - if:
+          - condition: template
+            value_template: "{{ archive_response.get('returncode', -1) != 0 }}"
+        then:
+          - action: system_log.write
+            data:
+              level: error
+              logger: frigate_ai
+              message: "Failed to archive Frigate event {{ event_id }}: {{ archive_response.get('stderr', '') }}"
+      - if:
+          - condition: template
+            value_template: "{{ importance | trim in ['high', 'medium'] }}"
+        then:
+          - action: logbook.log
+            data:
+              name: "Frigate AI - {{ camera }}"
+              message: "[{{ category | trim }}] {{ description }}"
+              entity_id: sensor.frigate_ai_latest_activity
+
+template:
+  - triggers:
+      - trigger: event
+        event_type: frigate_ai_activity
+    sensor:
+      - name: Frigate AI Latest Activity
+        unique_id: frigate_ai_latest_activity
+        icon: mdi:cctv
+        state: "{{ trigger.event.data.category }}"
+        attributes:
+          timestamp: "{{ trigger.event.data.timestamp }}"
+          received_at: "{{ trigger.event.data.received_at }}"
+          camera: "{{ trigger.event.data.camera }}"
+          event_id: "{{ trigger.event.data.event_id }}"
+          importance: "{{ trigger.event.data.importance }}"
+          description: "{{ trigger.event.data.description }}"
+      - name: Frigate AI Recent History
+        unique_id: frigate_ai_recent_history
+        icon: mdi:history
+        state: "{{ trigger.event.data.event_id }}"
+        attributes:
+          events: >-
+            {% set old = this.attributes.get('events', []) %}
+            {{ ([trigger.event.data] + (old if old is list else []))[:40] }}

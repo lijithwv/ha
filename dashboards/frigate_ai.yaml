@@ -1,0 +1,65 @@
+title: Frigate AI
+views:
+  - title: Activity
+    path: activity
+    icon: mdi:cctv
+    cards:
+      - type: entities
+        title: Driveway Bin Check
+        entities:
+          - entity: sensor.garage_bin_check
+            name: Latest Result
+          - entity: script.garage_bin_check
+            name: Check Bins Now
+      - type: markdown
+        title: Latest Camera AI Activity
+        content: |-
+          {% set s = 'sensor.frigate_ai_latest_activity' %}
+          {% set desc = state_attr(s, 'description') %}
+          {% set ts = as_datetime(state_attr(s, 'timestamp'), none) %}
+          {% if desc %}
+          ### {{ states(s) | replace('_', ' ') | title }}
+
+          **Camera:** {{ state_attr(s, 'camera') }}
+
+          **Time:** {{ as_local(ts).strftime('%d %b %Y, %I:%M %p') if ts else 'Unknown' }}
+
+          **Priority:** {{ state_attr(s, 'importance') | upper }}
+
+          {{ desc | e }}
+
+          [Open snapshot](/api/frigate/notifications/{{ state_attr(s, 'event_id') }}/snapshot.jpg)
+          {% else %}
+          No AI activity recorded yet.
+          {% endif %}
+      - type: entities
+        title: Search Camera Activity
+        entities:
+          - entity: input_text.frigate_ai_search
+            name: Search
+      - type: markdown
+        title: Recent AI Camera History
+        content: |-
+          {% set items = state_attr('sensor.frigate_ai_recent_history', 'events') or [] %}
+          {% set search = states('input_text.frigate_ai_search') | lower | trim %}
+          {% set search = '' if search in ['unknown', 'unavailable'] else search %}
+          {% set ns = namespace(count=0) %}
+          {% for e in items %}
+          {% set searchable = (e.camera ~ ' ' ~ e.category ~ ' ' ~ e.description) | lower %}
+          {% if not search or search in searchable %}
+          {% set ns.count = ns.count + 1 %}
+          {% set ts = as_datetime(e.timestamp, none) %}
+          **{{ as_local(ts).strftime('%d %b, %I:%M %p') if ts else 'Unknown time' }}** · {{ e.camera }}
+
+          **{{ e.category | replace('_', ' ') | title }}** · {{ e.importance | upper }}
+
+          {{ e.description | e }}
+
+          [Open snapshot](/api/frigate/notifications/{{ e.event_id }}/snapshot.jpg)
+
+          ---
+          {% endif %}
+          {% endfor %}
+          {% if ns.count == 0 %}
+          No matching camera activity found.
+          {% endif %}

@@ -33,6 +33,16 @@ automation manual: !include_dir_merge_list automations/
 frontend:
   themes: !include_dir_merge_named themes
 
+lovelace:
+  dashboards:
+    frigate-ai:
+      mode: yaml
+      title: Frigate AI
+      icon: mdi:cctv
+      show_in_sidebar: true
+      require_admin: false
+      filename: dashboards/frigate_ai.yaml
+
 recorder:
   purge_keep_days: 3
   auto_purge: true
@@ -48,6 +58,7 @@ http:
 ffmpeg:
 
 homeassistant:
+  packages: !include_dir_named packages
   allowlist_external_dirs:
     - "/config"
     - "/config/www"

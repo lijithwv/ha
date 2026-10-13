@@ -1,0 +1,34 @@
+shell_command:
+  garage_bin_check_analyze: python3 /config/frigate_ai/check_bins.py '{{ started_at }}' '{{ expected_secondary }}'
+
+automation:
+  - id: garage_bin_check_wednesday_2100
+    alias: Garage - Wednesday 9pm Bin Check
+    description: Check our driveway pickup area every Wednesday at 9pm local time.
+    mode: single
+    triggers:
+      - trigger: time
+        at: "21:00:00"
+    conditions:
+      - condition: time
+        weekday:
+          - wed
+    actions:
+      - action: script.garage_bin_check
+
+template:
+  - triggers:
+      - trigger: event
+        event_type: garage_bin_check_completed
+    sensor:
+      - name: Garage Bin Check
+        unique_id: garage_bin_check
+        icon: mdi:trash-can
+        state: "{{ trigger.event.data.status }}"
+        attributes:
+          reason: "{{ trigger.event.data.reason }}"
+          bin_count: "{{ trigger.event.data.bin_count }}"
+          minimum_bins: "{{ trigger.event.data.minimum_bins }}"
+          expected_colours: "{{ trigger.event.data.expected_colours }}"
+          verified_colours: "{{ trigger.event.data.verified_colours }}"
+          checked_at: "{{ trigger.event.data.checked_at }}"

@@ -1,0 +1,9 @@
+{
+  "frigate_url": "http://ccab4aaf-frigate:5000",
+  "camera": "Garage_Cam",
+  "model": "gpt-4o-mini",
+  "minimum_bins": 2,
+  "minimum_confidence": 0.85,
+  "pickup_area": "Just in front of our driveway entrance, on our side of the road. Ignore the garden/mailbox frontage to the right, the opposite side of the road, neighbouring properties, and bins stored back near the garage.",
+  "pickup_polygon": [[0.0, 0.50], [0.34, 0.29], [0.40, 0.38], [0.05, 0.62]]
+}
