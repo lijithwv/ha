@@ -410,7 +410,7 @@
                   "vertical": true,
                   "features_position": "bottom",
                   "grid_options": {
-                    "columns": 4,
+                    "columns": 6,
                     "rows": 2
                   }
                 },
@@ -421,9 +421,20 @@
                   "vertical": true,
                   "features_position": "bottom",
                   "grid_options": {
-                    "columns": 4,
+                    "columns": 6,
                     "rows": 2
                   }
+                },
+                {
+                  "type": "tile",
+                  "grid_options": {
+                    "columns": 6,
+                    "rows": 2
+                  },
+                  "entity": "light.theatre_theatre_light",
+                  "name": "Theatre Light",
+                  "vertical": true,
+                  "features_position": "bottom"
                 },
                 {
                   "type": "tile",
@@ -432,7 +443,7 @@
                   "vertical": true,
                   "features_position": "bottom",
                   "grid_options": {
-                    "columns": 4,
+                    "columns": 6,
                     "rows": 2
                   }
                 },
