@@ -1,0 +1,13 @@
+title: Overhead
+views:
+  - title: Overhead
+    path: sky
+    icon: mdi:airplane
+    panel: true
+    cards:
+      - type: custom:overhead-flights-card
+        entity: sensor.overhead_aircraft_feed
+        radius_km: 20
+        photo_source: planespotters
+        latitude: -37.612497476096884
+        longitude: 145.04686508190858

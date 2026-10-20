@@ -1,0 +1,19 @@
+rest:
+  - resource: https://api.adsb.lol/v2/point/-37.612497476096884/145.04686508190858/11
+    scan_interval: 30
+    timeout: 20
+    sensor:
+      - name: Overhead Aircraft Feed
+        unique_id: overhead_aircraft_feed
+        force_update: true
+        value_template: "{{ value_json.now }}"
+        availability: "{{ value_json is defined and value_json.ac is defined and value_json.now is defined }}"
+        json_attributes:
+          - ac
+          - now
+        icon: mdi:airplane
+
+recorder:
+  exclude:
+    entities:
+      - sensor.overhead_aircraft_feed
