@@ -1,0 +1,19 @@
+overhead_flights_refresh:
+  alias: Overhead - Refresh Visible Dashboard
+  mode: single
+  max_exceeded: silent
+  sequence:
+    - action: rest_command.overhead_flights_fetch
+      response_variable: response
+      continue_on_error: true
+    - event: overhead_flights_updated
+      event_data:
+        ok: >-
+          {{ response is defined and response.status == 200
+             and response.content is mapping and response.content.ac is defined
+             and response.content.now is defined }}
+        payload: >-
+          {{ response.content if response is defined and response.content is mapping else {} }}
+        status: "{{ response.status if response is defined else 0 }}"
+    - delay:
+        seconds: 30

@@ -1,0 +1,10 @@
+{
+  "domain": "overhead_flights",
+  "name": "Overhead Flights Photos",
+  "version": "1.0.0",
+  "documentation": "https://www.planespotters.net/photo/api",
+  "dependencies": ["websocket_api"],
+  "codeowners": [],
+  "iot_class": "cloud_polling",
+  "requirements": []
+}
