@@ -1,123 +1,46 @@
-import asyncio
-import re
-from time import monotonic
+from pathlib import Path
 
-import aiohttp
 import probatio
 
-from homeassistant.components import websocket_api
-from homeassistant.core import HomeAssistant
-from homeassistant.helpers import config_validation as cv
-from homeassistant.helpers.aiohttp_client import async_get_clientsession
+from homeassistant.components import frontend
+from homeassistant.components.http import StaticPathConfig
+from homeassistant.config_entries import SOURCE_IMPORT
+from homeassistant.const import Platform
 
-DOMAIN = "overhead_flights"
+from .const import CARD_URL, DOMAIN
+from .coordinator import OverheadFlightsCoordinator
+from .validation import settings_schema
+from .websocket import async_register_commands
+
 CONFIG_SCHEMA = probatio.Schema(
-    {
-        DOMAIN: probatio.Schema(
-            {probatio.Required("photo_contact"): cv.string}
-        )
-    },
-    extra=probatio.ALLOW_EXTRA,
+    {probatio.Optional(DOMAIN): settings_schema()}, extra=probatio.ALLOW_EXTRA
 )
+PLATFORMS = [Platform.SENSOR]
 
 
-class PhotoLookupError(Exception):
-    pass
-
-
-class PlanespottersClient:
-    def __init__(self, session, contact):
-        self.session = session
-        self.user_agent = f"OverheadFlightsHomeAssistant/1.0 (+{contact})"
-        self.cache = {}
-        self.lock = asyncio.Lock()
-        self.retry_after = 0
-
-    async def photos(self, aircraft_hex, registration):
-        paths = []
-        if aircraft_hex:
-            paths.append(f"hex/{aircraft_hex.lower()}")
-        if registration:
-            paths.append(f"reg/{registration.upper()}")
-
-        for path in paths:
-            async with self.lock:
-                cached = self.cache.get(path)
-                if cached and cached[0] > monotonic():
-                    photos = cached[1]
-                else:
-                    if monotonic() < self.retry_after:
-                        raise PhotoLookupError("Planespotters is temporarily unavailable; retry shortly")
-                    photos = await self._request(path)
-                    lifetime = 3600 if photos else 300
-                    self.cache[path] = (monotonic() + lifetime, photos)
-                    if len(self.cache) > 500:
-                        self.cache.pop(next(iter(self.cache)))
-            if photos:
-                return {"photos": photos, "hex": aircraft_hex, "registration": registration}
-        return {"photos": [], "hex": aircraft_hex, "registration": registration}
-
-    async def _request(self, path):
-        try:
-            async with self.session.get(
-                f"https://api.planespotters.net/pub/photos/{path}",
-                headers={"User-Agent": self.user_agent},
-                timeout=aiohttp.ClientTimeout(total=15),
-            ) as response:
-                if response.status == 404:
-                    return []
-                if response.status != 200:
-                    self.retry_after = monotonic() + 60
-                    if response.status == 429:
-                        retry = response.headers.get("Retry-After", "60")
-                        if retry.isdigit():
-                            self.retry_after = monotonic() + max(60, int(retry))
-                    raise PhotoLookupError(f"Planespotters returned HTTP {response.status}")
-                payload = await response.json(content_type=None)
-                photos = payload.get("photos") if isinstance(payload, dict) else None
-                if not isinstance(photos, list):
-                    raise PhotoLookupError("Planespotters returned an invalid photo response")
-                return [photo for photo in photos[:6] if isinstance(photo, dict)]
-        except (aiohttp.ClientError, TimeoutError, ValueError) as error:
-            self.retry_after = monotonic() + 60
-            raise PhotoLookupError("Could not connect to Planespotters") from error
-
-
-async def async_setup(hass: HomeAssistant, config):
-    contact = config[DOMAIN]["photo_contact"].strip()
-    valid_contact = re.fullmatch(r"[^\s@()]+@[^\s@()]+\.[^\s@()]+", contact) or re.fullmatch(
-        r"https://[^\s()]+", contact
+async def async_setup(hass, config):
+    await hass.http.async_register_static_paths(
+        [StaticPathConfig("/overhead_flights", str(Path(__file__).parent / "frontend"), False)]
     )
-    if not valid_contact:
-        return False
-    hass.data[DOMAIN] = PlanespottersClient(async_get_clientsession(hass), contact)
-    websocket_api.async_register_command(hass, websocket_photo)
+    frontend.add_extra_js_url(hass, CARD_URL)
+    async_register_commands(hass)
+    if DOMAIN in config and not hass.config_entries.async_entries(DOMAIN):
+        hass.async_create_task(
+            hass.config_entries.flow.async_init(
+                DOMAIN, context={"source": SOURCE_IMPORT}, data=config[DOMAIN]
+            )
+        )
     return True
 
 
-@websocket_api.websocket_command(
-    {
-        "type": "overhead_flights/photo",
-        probatio.Optional("hex", default=""): cv.string,
-        probatio.Optional("registration", default=""): cv.string,
-    }
-)
-@websocket_api.async_response
-async def websocket_photo(hass, connection, message):
-    aircraft_hex = message["hex"].strip().upper()
-    registration = message["registration"].strip().upper()
-    if aircraft_hex and not re.fullmatch(r"[0-9A-F]{6}", aircraft_hex):
-        connection.send_error(message["id"], "invalid_aircraft", "Invalid aircraft hex code")
-        return
-    if registration and not re.fullmatch(r"[A-Z0-9-]{2,12}", registration):
-        connection.send_error(message["id"], "invalid_aircraft", "Invalid registration")
-        return
-    if not aircraft_hex and not registration:
-        connection.send_error(message["id"], "invalid_aircraft", "An aircraft identifier is required")
-        return
-    try:
-        result = await hass.data[DOMAIN].photos(aircraft_hex, registration)
-    except PhotoLookupError as error:
-        connection.send_error(message["id"], "photo_lookup_failed", str(error))
-        return
-    connection.send_result(message["id"], result)
+async def async_setup_entry(hass, entry):
+    entry.runtime_data = OverheadFlightsCoordinator(hass, entry)
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+    return True
+
+
+async def async_unload_entry(hass, entry):
+    if await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
+        await entry.runtime_data.async_shutdown()
+        return True
+    return False

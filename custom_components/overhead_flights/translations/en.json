@@ -1,0 +1,33 @@
+{
+  "title": "Overhead Flights",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Set up Overhead Flights",
+        "description": "Choose fixed search coordinates (a nearby public landmark is fine). While this dashboard is visible, the coordinates are sent to ADSB.lol at most once every 30 seconds. Aircraft identifiers go to Planespotters for photos. Planespotters requires a contact email or HTTPS URL in the API User-Agent. Setup does not make external requests.",
+        "data": {
+          "latitude": "Fixed latitude",
+          "longitude": "Fixed longitude",
+          "photo_contact": "Planespotters contact email or HTTPS URL"
+        }
+      },
+      "reconfigure": {
+        "title": "Reconfigure Overhead Flights",
+        "description": "Changing these settings reloads the integration. The coordinates are sent to ADSB.lol only while a dashboard requests updates.",
+        "data": {
+          "latitude": "Fixed latitude",
+          "longitude": "Fixed longitude",
+          "photo_contact": "Planespotters contact email or HTTPS URL"
+        }
+      }
+    },
+    "error": {
+      "invalid_settings": "Enter valid finite coordinates and a contact email or HTTPS URL."
+    },
+    "abort": {
+      "single_instance_allowed": "Only one Overhead Flights integration is supported.",
+      "already_configured": "Overhead Flights is already configured.",
+      "reconfigure_successful": "Overhead Flights settings updated."
+    }
+  }
+}

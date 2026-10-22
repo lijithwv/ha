@@ -27,3 +27,6 @@ frigate_ai/bin_check_*.jpg
 frigate_ai/bin_check_result.json
 
 www/git_backup_status.json
+
+__pycache__/
+*.py[cod]

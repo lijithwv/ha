@@ -653,16 +653,10 @@ class OverheadFlightsCard extends HTMLElement {
   }
 
   setConfig(config) {
-    if (!config.entity) throw new Error("Set an aircraft feed entity.");
+    config = { entity: "sensor.overhead_aircraft_snapshot", ...config };
     const radius = config.radius_km ?? DEFAULT_SEARCH_RADIUS_KM;
     if (!SEARCH_RADIUS_OPTIONS_KM.includes(radius)) {
       throw new Error(`radius_km must be one of ${SEARCH_RADIUS_OPTIONS_KM.join(", ")} km.`);
-    }
-    if (config.latitude !== undefined || config.longitude !== undefined) {
-      if (!isFiniteNumber(config.latitude) || !isFiniteNumber(config.longitude)
-        || Math.abs(config.latitude) > 90 || Math.abs(config.longitude) > 180) {
-        throw new Error("Set both latitude and longitude to valid numeric coordinates.");
-      }
     }
     const interval = config.update_interval_seconds ?? DEFAULT_UPDATE_INTERVAL_SECONDS;
     const maxAge = config.max_age_seconds ?? MAX_POSITION_AGE_SECONDS;
@@ -679,7 +673,7 @@ class OverheadFlightsCard extends HTMLElement {
       () => this.render(),
       undefined,
       undefined,
-      (identifiers) => this.currentHass.callWS({ type: "overhead_flights/photo", ...identifiers }),
+      (identifiers) => this.currentHass.callWS({ type: "overhead_flights/photo", entry_id: this.getEntryId(), ...identifiers }),
     );
     this.routes = new OverheadRouteService(
       (url) => this.photos.json(url),
@@ -717,17 +711,20 @@ class OverheadFlightsCard extends HTMLElement {
     this.cardVisible = false;
   }
 
+  getEntryId() {
+    return this.currentHass?.states[this.config?.entity]?.attributes.entry_id;
+  }
+
   async requestFeedRefresh() {
-    const script = this.config?.refresh_script;
-    if (!script || !this.isConnected || !this.cardVisible || document.visibilityState !== "visible"
-      || !this.currentHass?.callService || this.refreshPending) return;
-    if (this.currentHass.states[script]?.state === "on") return;
+    const entryId = this.getEntryId();
+    if (!entryId || !this.isConnected || !this.cardVisible || document.visibilityState !== "visible"
+      || !this.currentHass?.callWS || this.refreshPending) return;
     if (Date.now() - (this.lastRefreshRequest || 0) < 30000) return;
 
     this.lastRefreshRequest = Date.now();
     this.refreshPending = true;
     try {
-      await this.currentHass.callService("script", "turn_on", { entity_id: script });
+      await this.currentHass.callWS({ type: "overhead_flights/refresh", entry_id: entryId });
       this.refreshError = false;
     } catch {
       this.refreshError = true;
@@ -779,6 +776,7 @@ class OverheadFlightsCard extends HTMLElement {
         </div>
         <figcaption>
           <span>${escapeHtml(caption)}</span>
+          ${this.renderPhotoCredit(photo)}
         </figcaption>
       </figure>`;
   }
@@ -849,9 +847,7 @@ class OverheadFlightsCard extends HTMLElement {
   getViewModel() {
     const hass = this.currentHass;
     const entity = hass.states[this.config.entity];
-    const fixedCentre = this.config.latitude !== undefined;
-    const home = fixedCentre ? { latitude: this.config.latitude, longitude: this.config.longitude }
-      : hass.states["zone.home"]?.attributes;
+    const home = entity?.attributes;
     const locationReady = isFiniteNumber(home?.latitude) && isFiniteNumber(home?.longitude);
     const timestamp = Number(entity?.attributes.now);
     const feedTime = timestamp > 1e12 ? timestamp : timestamp * 1000;
@@ -868,11 +864,11 @@ class OverheadFlightsCard extends HTMLElement {
     const timeOptions = { timeZone: hass.config?.time_zone || "Australia/Melbourne" };
     const update = Number.isFinite(feedTime) ? new Intl.DateTimeFormat("en-AU", { ...timeOptions, hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }).format(new Date(feedTime)) : "Awaiting feed";
     const rateLimited = Number(entity?.attributes.http_status) === 429;
-    const status = !locationReady ? "Home zone missing" : this.refreshError ? "Refresh failed"
+    const status = !locationReady ? "Integration not configured" : this.refreshError ? "Refresh failed"
       : unavailable ? rateLimited ? "Feed rate-limited" : "Feed unavailable" : stale ? "Feed delayed"
       : snapshot ? "Latest aircraft snapshot" : "In the air now";
-    const message = !locationReady ? "Set your Home zone location in Home Assistant to centre the search."
-      : this.refreshError ? "Home Assistant could not run the refresh script. Check your dashboard permissions and script configuration."
+    const message = !locationReady ? "Configure Overhead Flights in Settings → Devices & services, then select its snapshot entity."
+      : this.refreshError ? "Home Assistant could not refresh Overhead Flights. Check that the integration is loaded and your dashboard account has access."
       : unavailable ? rateLimited
         ? "The provider's request quota is exhausted. Refreshes retry while this dashboard is visible, after the shared cooldown."
         : `Waiting for aircraft data. Refreshes run only while this dashboard is visible, at most once every ${cadence}.`
